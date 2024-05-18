@@ -20,13 +20,35 @@ model dbuser {
 }
 
 model Player {
-  id   String  @id @default(auto()) @map("_id") @db.ObjectId
-  name String?
-  team String?
-  MPG  Float?
-  PPG  Float?
-  RPG  Float?
-  APG  Float?
-  SPG  Float?
-  BPG  Float?
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  Rk            Int?
+  Player        String?
+  Pos           String?
+  Age           Int?
+  Tm            String?
+  G             Int?
+  GS            Int?
+  MP            Float?
+  FG            Float?
+  FGA           Float?
+  FGPercent     Float?
+  threeP        Float?
+  threePA       Float?
+  threePPercent Float?
+  twoP          Float?
+  twoPA         Float?
+  twoPPercent   Float?
+  eFGPercent    Float?
+  FT            Float?
+  FTA           Float?
+  FTPercent     Float?
+  ORB           Float?
+  DRB           Float?
+  TRB           Float?
+  AST           Float?
+  STL           Float?
+  BLK           Float?
+  TOV           Float?
+  PF            Float?
+  PTS           Float?
 }

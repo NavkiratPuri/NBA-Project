@@ -29,19 +29,12 @@ export const PATCH = async (request, { params }) => {
     try {
         const body = await request.json();
         const { id } = params;
-        const { name,
-            team,
-            MPG,
-            PPG,
-            RPG,
-            APG,
-            SPG,
-            BPG, } = body;
-            // updates the player in the database
+        const { name, team, MPG, PPG, RPG, APG, SPG, BPG, FG, FGA, FGPercent,
+            threeP, threePA, threePPercent, twoP, twoPA, twoPPercent,
+            eFGPercent, FT, FTA, FTPercent, ORB, DRB, TRB, AST, STL, BLK, TOV, PF, PTS } = body;
+        // updates the player in the database
         const updatePlayer = await client.player.update({
-            where: {
-                id
-            },
+            where: { id },
             data: {
                 name,
                 team,
@@ -51,6 +44,28 @@ export const PATCH = async (request, { params }) => {
                 APG,
                 SPG,
                 BPG,
+                FG,
+                FGA,
+                FGPercent,
+                threeP,
+                threePA,
+                threePPercent,
+                twoP,
+                twoPA,
+                twoPPercent,
+                eFGPercent,
+                FT,
+                FTA,
+                FTPercent,
+                ORB,
+                DRB,
+                TRB,
+                AST,
+                STL,
+                BLK,
+                TOV,
+                PF,
+                PTS
             }
         });
         // if the player is not found, return a 404 status

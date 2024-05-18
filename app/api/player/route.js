@@ -7,7 +7,9 @@ import { NextResponse } from "next/server";
 export const POST = async (req) => {
     try {
         const body = await req.json();
-        const { name, team, MPG, PPG, RPG, APG, SPG, BPG } = body;
+        const { name, team, MPG, PPG, RPG, APG, SPG, BPG, FG, FGA, FGPercent,
+            threeP, threePA, threePPercent, twoP, twoPA, twoPPercent,
+            eFGPercent, FT, FTA, FTPercent, ORB, DRB, TRB, AST, STL, BLK, TOV, PF, PTS } = body;
         const newPlayer = await client.player.create({
             data: {
                 name,
@@ -18,7 +20,29 @@ export const POST = async (req) => {
                 APG,
                 SPG,
                 BPG,
-            },
+                FG,
+                FGA,
+                FGPercent,
+                threeP,
+                threePA,
+                threePPercent,
+                twoP,
+                twoPA,
+                twoPPercent,
+                eFGPercent,
+                FT,
+                FTA,
+                FTPercent,
+                ORB,
+                DRB,
+                TRB,
+                AST,
+                STL,
+                BLK,
+                TOV,
+                PF,
+                PTS
+            }
         });
         return NextResponse.json(newPlayer);
     } catch (error) {
