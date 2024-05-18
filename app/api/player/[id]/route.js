@@ -9,15 +9,15 @@ import { NextResponse } from "next/server";
 export const GET = async (request, { params }) => {
     try {
         const { id } = params;
-        const post = await client.Player.findUnique({
+        const player = await client.Player.findUnique({
             where: {
                 id
             }
         });
-        if (!post) {
+        if (!player) {
             return NextResponse.json({ status: 404 }, { message: "Post not found" })
         }
-        return NextResponse.json(post);
+        return NextResponse.json(player);
     } catch (error) {
         return NextResponse.json({ status: 500 }, { message: "Error getting post", error })
 

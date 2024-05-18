@@ -1,57 +1,86 @@
-"use client";
-import React, { useState } from "react";
-import Player from "./Player";
+"use client"
+import React, { useState, useEffect } from 'react';
+import Player from './Player';
+import axios from 'axios';
 
-// Component to display a list of players
-const PlayerList = ({ players }) => {
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [playerToEdit, setPlayerToEdit] = useState({});
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [inputValue, setInputValue] = useState(""); // To hold the value of the input field
-    const [searchTerm, setSearchTerm] = useState(""); // To hold the value used for filtering
+const PlayerList = () => {
+    const [players, setPlayers] = useState([]);
+    const [filteredPlayers, setFilteredPlayers] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
-    // Function to handle input change
-    const handleInputChange = (event) => {
-        setInputValue(event.target.value);
+    useEffect(() => {
+        fetchPlayers();
+    }, []);
+
+    useEffect(() => {
+        if (searchTerm) {
+            setFilteredPlayers(players.filter(player =>
+                player.name && player.name.toLowerCase().includes(searchTerm.toLowerCase())
+            ));
+        } else {
+            setFilteredPlayers(players);
+        }
+    }, [players, searchTerm]);
+
+    const fetchPlayers = async () => {
+        setIsLoading(true);
+        try {
+            const response = await axios.get('/api/Player');
+            if (response.data) {
+                setPlayers(response.data);
+                setFilteredPlayers(response.data);  // Initially set filteredPlayers to all players
+            }
+            setError('');
+        } catch (err) {
+            setError('Failed to fetch players');
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    // Function to handle search
-    const handleSearch = () => {
-        setSearchTerm(inputValue);
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
     };
 
-    // Filter the players based on search term
-    // Filter the players based on search term
-    const filteredPlayers = players.filter((player) =>
-        player.name && player.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const handleUpdatePlayer = (id, updatedPlayer) => {
+        setPlayers(prevPlayers =>
+            prevPlayers.map(player =>
+                player.id === id ? { ...player, ...updatedPlayer } : player
+            )
+        );
+    };
 
+    const handleDeletePlayer = (id) => {
+        setPlayers(prevPlayers =>
+            prevPlayers.filter(player => player.id !== id)
+        );
+    };
+
+    if (error) return <div>Error: {error}</div>;
+    if (isLoading) return <div>Loading...</div>;
 
     return (
         <div>
             <input
                 type="text"
                 placeholder="Search by name..."
-                value={inputValue}
-                onChange={handleInputChange}
-                className="p-2 ml-4 my-2 border-2"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="p-2 mb-4 w-full"
             />
-            <button onClick={handleSearch} className="p-2 ml-2 my-2 bg-blue-500 text-white">
-                Search
-            </button>
-
             <ul>
-                {filteredPlayers.map((player) => (
+                {filteredPlayers.map(player => (
                     <Player
                         key={player.id}
                         player={player}
-                        setShowEditModal={setShowEditModal}
-                        setShowDeleteModal={setShowDeleteModal}
+                        onPlayerUpdate={handleUpdatePlayer}
+                        onPlayerDelete={handleDeletePlayer}
                     />
                 ))}
             </ul>
-
-
         </div>
     );
 };
