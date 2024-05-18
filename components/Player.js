@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
+"use client"
+import React, { useState } from "react";
+import Modal from "./Modal";
 import axios from "axios";
-
-
+import { useRouter } from "next/navigation";
+// Component to edit player details
 const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
-
+    const Router = useRouter();
     const [showEditModal, setShowEditModal] = useState(false);
-    const [playerToEdit, setPlayerToEdit] = useState(player);
+    const [playerToEdit, setPlayerToEdit] = useState({ ...player });
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-
-    useEffect(() => {
-        setPlayerToEdit(player);
-    }, [player]);
-
+    // function to handle input field changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         const numericFields = ['Age', 'G', 'GS', 'MP', 'FG', 'FGA', 'FGPercent', 'threeP', 'threePA', 'threePPercent', 'twoP', 'twoPA', 'twoPPercent', 'eFGPercent', 'FT', 'FTA', 'FTPercent', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS'];
@@ -23,35 +21,39 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
         }));
     };
 
-    const handleEditSubmit = async (e) => {
+    // function to handle form submission
+    const handleEditSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
-        try {
-            const res = await axios.patch(`/api/player/${player.id}`, playerToEdit);
-            onPlayerUpdate(player.id, playerToEdit);
-            setShowEditModal(false);
-            setError('');
-        } catch (err) {
-            console.error(err);
-            setError('Failed to update player.');
-        } finally {
-            setIsLoading(false);
-        }
+        axios.patch(`/api/Player/${player.id}`, playerToEdit)
+            .then((res) => {
+                console.log(res);
+                if (onPlayerUpdate) onPlayerUpdate(player.id, playerToEdit);
+            })
+            .catch((err) => {
+                console.error(err);
+                setError('Failed to update player details.');
+            })
+            .finally(() => {
+                setShowEditModal(false);
+                Router.refresh();
+            });
     };
 
-    const handleDeletePlayer = async () => {
-        setIsLoading(true);
-        try {
-            await axios.delete(`/api/Player/${player.id}`);
-            onPlayerDelete(player.id);
-            setShowDeleteModal(false);
-            setError('');
-        } catch (err) {
-            console.error(err);
-            setError('Failed to delete player.');
-        } finally {
-            setIsLoading(false);
-        }
+    // function to handle player deletion using player id
+    const handleDeletePlayer = () => {
+        axios.delete(`/api/Player/${player.id}`)
+            .then((res) => {
+                console.log(res);
+                if (onPlayerDelete) onPlayerDelete(player.id);
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+            .finally(() => {
+                setShowDeleteModal(false);
+                Router.refresh();
+            });
     };
 
     return (
