@@ -37,7 +37,7 @@ const PlayersList = ({ player = [] }) => {
             </button>
             <ul>
                 {filteredPlayers.map(p => (
-                    <li key={p.id} player={p} />
+                    <li key={p.id} player={player} />
                 ))}
             </ul>
         </div>

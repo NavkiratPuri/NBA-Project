@@ -5,24 +5,15 @@ import axios from 'axios';
 
 const PlayerList = () => {
     const [players, setPlayers] = useState([]);
-    const [filteredPlayers, setFilteredPlayers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
+    const [inputValue, setInputValue] = useState("");
+    const [searchTerm, setSearchTerm] = useState(""); // Adding searchTerm state
+    const [filteredPlayers, setFilteredPlayers] = useState([]);
 
     useEffect(() => {
         fetchPlayers();
     }, []);
-
-    useEffect(() => {
-        if (searchTerm) {
-            setFilteredPlayers(players.filter(player =>
-                player.name && player.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ));
-        } else {
-            setFilteredPlayers(players);
-        }
-    }, [players, searchTerm]);
 
     const fetchPlayers = async () => {
         setIsLoading(true);
@@ -30,7 +21,7 @@ const PlayerList = () => {
             const response = await axios.get('/api/Player');
             if (response.data) {
                 setPlayers(response.data);
-                setFilteredPlayers(response.data);  // Initially set filteredPlayers to all players
+                setFilteredPlayers(response.data); // Initially set filteredPlayers to all players
             }
             setError('');
         } catch (err) {
@@ -39,10 +30,6 @@ const PlayerList = () => {
         } finally {
             setIsLoading(false);
         }
-    };
-
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
     };
 
     const handleUpdatePlayer = (id, updatedPlayer) => {
@@ -59,18 +46,32 @@ const PlayerList = () => {
         );
     };
 
-    if (error) return <div>Error: {error}</div>;
-    if (isLoading) return <div>Loading...</div>;
+    const handleInputChange = (event) => {
+        setInputValue(event.target.value);
+    };
+
+    // Function to handle search
+    const handleSearch = () => {
+        setSearchTerm(inputValue);
+        const newFilteredPlayers = players.filter(player =>
+            player.Player?.toLowerCase().includes(inputValue.toLowerCase())
+        );
+        setFilteredPlayers(newFilteredPlayers); // Update the filteredPlayers state
+    };
 
     return (
         <div>
             <input
                 type="text"
-                placeholder="Search by name..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="p-2 mb-4 w-full"
+                placeholder="Search by player name..."
+                value={inputValue}
+                onChange={handleInputChange}
+                className="p-2 my-2 w-full" // Ensuring the input field uses full width
             />
+
+            <button onClick={handleSearch} className="p-2 mt-2 bg-blue-500 text-white w-full">
+                Search
+            </button>
             <ul>
                 {filteredPlayers.map(player => (
                     <Player

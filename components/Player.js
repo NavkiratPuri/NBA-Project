@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-// Component to edit player details
+
 const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
     const Router = useRouter();
     const [showEditModal, setShowEditModal] = useState(false);
     const [playerToEdit, setPlayerToEdit] = useState({ ...player });
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null); // Define the error state
     const [isLoading, setIsLoading] = useState(false);
+
     // function to handle input field changes
     const handleChange = (e) => {
         const { name, value } = e.target;
