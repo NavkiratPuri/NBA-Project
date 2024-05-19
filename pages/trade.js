@@ -5,26 +5,29 @@ import Footer from '../components/footer';
 import '../app/globals.css';
 
 const TradeSimulator = () => {
-    const [players, setPlayers] = useState([]);
+    const [players, setPlayer] = useState([]);
     const [player1, setPlayer1] = useState(null);
     const [player2, setPlayer2] = useState(null);
     const [tradeResult, setTradeResult] = useState('');
 
     useEffect(() => {
-        async function fetchData() {
+        const fetchData = async () => {
             try {
-                const response = await fetch('/api/post', { cache: "no-cache" });
-                if (!response.ok) {
+                const res = await fetch('/api/Player', { cache: "no-cache" });
+                if (!res.ok) {
                     throw new Error("Failed to fetch data");
                 }
-                const data = await response.json();
-                setPlayers(data);
+                const data = await res.json();
+                console.log('Data received:', data); // Verify the structure here
+                setPlayer(data); // Assuming setPlayer is the state setter for players
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
-        }
+        };
+
         fetchData();
     }, []);
+
 
     const simulateTrade = () => {
         if (!player1 || !player2) {
