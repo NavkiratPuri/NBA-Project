@@ -1,20 +1,23 @@
 import React from "react";
 
+
 // Overlay modal component, props for better functionality
 const Modal = ({ children, showModal, setShowModal }) => {
     return (
         <>
             {showModal && (
-                <div className="bg-black/50 fixed inset-0">
-                    <div className="flex justify-center items-center h-full">
-                        <div className="flex flex-col p-5 bg-slate-300 w-1/2 p-s">
+                <div className="bg-black/50 fixed inset-0 z-50 overflow-y-auto"> {/* Added overflow-y-auto for overall modal */}
+                    <div className="flex justify-center items-center min-h-screen">
+                        <div className="relative p-5 bg-slate-300 w-1/2 max-w-4xl mx-auto"> {/* Added max-w-4xl for responsiveness */}
                             <button
                                 onClick={() => setShowModal(false)}
-                                className="flex flex-col items-end text-2xl mb-3 px-2"
+                                className="absolute top-0 right-0 text-2xl p-2"
                             >
                                 &times;
                             </button>
-                            {children}
+                            <div className="overflow-y-auto h-96"> {/* Scrollable area with fixed height */}
+                                {children}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -24,3 +27,5 @@ const Modal = ({ children, showModal, setShowModal }) => {
 };
 
 export default Modal;
+
+

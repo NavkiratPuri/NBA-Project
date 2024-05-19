@@ -7,18 +7,18 @@ import Footer from '../components/footer';
 // Leaders Page for best performing players
 
 const Leaders = () => {
-    const [posts, setPosts] = useState([]);
+    const [players, setPlayers] = useState([]);
 
     // useEffect hook to fetch data from the server
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch('/api/post', { cache: "no-cache" });
+                const res = await fetch('/api/Player', { cache: "no-cache" });
                 if (!res.ok) {
                     throw new Error("Failed to fetch data");
                 }
                 const data = await res.json();
-                setPosts(data);
+                setPlayers(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -31,7 +31,7 @@ const Leaders = () => {
         <div className="flex flex-col min-h-screen">
             <Header />
             <main className="flex-grow p-8 pb-20">
-                <LeadersList players={posts} />
+                <LeadersList players={players} />
             </main>
             <Footer />
         </div>

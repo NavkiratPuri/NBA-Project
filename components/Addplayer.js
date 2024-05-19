@@ -18,7 +18,7 @@ const Addplayer = () => {
         const isNumericField = ['MPG', 'PPG', 'RPG', 'APG', 'SPG', 'BPG'].includes(name);
         setInput(prevState => ({
             ...prevState,
-            [name]: isNumericField ? parseFloat(value) : value
+            [name]: numericFields.includes(name) ? parseFloat(value) : value
         }));
     };
 
@@ -54,70 +54,70 @@ const Addplayer = () => {
                     <input
                         type="text"
                         placeholder="Name"
-                        name="name"
+                        name="Player"
                         className="w-full p-2 mb-3"
-                        value={input.name || ''}
+                        value={input.Player || ''}
                         onChange={handleChange}
                     />
                     <input
                         type="text"
-                        placeholder="Team"
-                        name="team"
+                        placeholder="Tm"
+                        name="Tm"
                         className="w-full p-2 mb-3"
-                        value={input.team || ''}
+                        value={input.Tm || ''}
                         onChange={handleChange}
                     />
                     <input
                         type="number"
-                        placeholder="MPG"
-                        name="MPG"
+                        placeholder="MP"
+                        name="MP"
                         className="w-full p-2 mb-3"
-                        value={input.MPG || ''}
-                        onChange={handleChange}
-                        step="0.1"
-                    />
-                    <input
-                        type="number"
-                        placeholder="PPG"
-                        name="PPG"
-                        className="w-full p-2 mb-3"
-                        value={input.PPG || ''}
+                        value={input.MP || ''}
                         onChange={handleChange}
                         step="0.1"
                     />
                     <input
                         type="number"
-                        placeholder="RPG"
-                        name="RPG"
+                        placeholder="PTS"
+                        name="PTS"
                         className="w-full p-2 mb-3"
-                        value={input.RPG || ''}
+                        value={input.PTS || ''}
                         onChange={handleChange}
                         step="0.1"
                     />
                     <input
                         type="number"
-                        placeholder="APG"
-                        name="APG"
+                        placeholder="TRB"
+                        name="TRB"
                         className="w-full p-2 mb-3"
-                        value={input.APG || ''}
+                        value={input.TRB || ''}
                         onChange={handleChange}
                         step="0.1"
                     />
                     <input
                         type="number"
-                        placeholder="SPG"
-                        name="SPG"
+                        placeholder="AST"
+                        name="AST"
                         className="w-full p-2 mb-3"
-                        value={input.SPG || ''}
+                        value={input.AST || ''}
                         onChange={handleChange}
                         step="0.1"
                     />
                     <input
                         type="number"
-                        placeholder="BPG"
-                        name="BPG"
+                        placeholder="STL"
+                        name="STL"
                         className="w-full p-2 mb-3"
-                        value={input.BPG || ''}
+                        value={input.STL || ''}
+                        onChange={handleChange}
+                        step="0.1"
+                    />
+                    <input
+                        type="number"
+                        placeholder="BLK"
+                        name="BLK"
+                        className="w-full p-2 mb-3"
+                        value={input.BLK || ''}
                         onChange={handleChange}
                         step="0.1"
                     />

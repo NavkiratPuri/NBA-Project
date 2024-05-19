@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 
 const LeadersList = () => {
-    const [posts, setPosts] = useState([]);
-    const [category, setCategory] = useState("MPG");
+    const [players, setPlayers] = useState([]);
+    const [category, setCategory] = useState("MP");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -13,7 +13,7 @@ const LeadersList = () => {
                     throw new Error("Failed to fetch data");
                 }
                 const data = await res.json();
-                setPosts(data);
+                setPlayers(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -24,7 +24,7 @@ const LeadersList = () => {
 
     // Sort players by category
     const sortPlayersByCategory = (category) => {
-        return posts.sort((a, b) => b[category] - a[category]).slice(0, 5);
+        return players.sort((a, b) => b[category] - a[category]).slice(0, 5);
     };
     // Render top players
     const renderTopPlayers = (category) => {
@@ -35,7 +35,7 @@ const LeadersList = () => {
                 <ul className="list-none pl-5">
                     {topPlayers.map((player, index) => (
                         <li key={index} className="py-1">
-                            {player.name} - {player[category]}
+                            {player.Player} - {player[category]}
                         </li>
                     ))}
                 </ul>
@@ -54,12 +54,12 @@ const LeadersList = () => {
                     className="form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     onChange={(e) => setCategory(e.target.value)}
                 >
-                    <option value="MPG">MPG</option>
-                    <option value="PPG">PPG</option>
-                    <option value="RPG">RPG</option>
-                    <option value="APG">APG</option>
-                    <option value="SPG">SPG</option>
-                    <option value="BPG">BPG</option>
+                    <option value="MP">MPG</option>
+                    <option value="PTS">PPG</option>
+                    <option value="TRB">RPG</option>
+                    <option value="AST">APG</option>
+                    <option value="STL">SPG</option>
+                    <option value="BLK">BPG</option>
                 </select>
             </div>
             {renderTopPlayers(category)}
