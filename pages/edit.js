@@ -14,7 +14,7 @@ const Add = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch('/api/Player', { cache: "no-cache" });
+                const res = await fetch('/api/player', { cache: "no-cache" });
                 if (!res.ok) {
                     throw new Error("Failed to fetch data");
                 }

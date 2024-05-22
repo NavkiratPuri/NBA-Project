@@ -26,7 +26,7 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
     const handleEditSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
-        axios.patch(`/api/Player/${player.id}`, playerToEdit)
+        axios.patch(`/api/player/${player.id}`, playerToEdit)
             .then((res) => {
                 console.log(res);
                 if (onPlayerUpdate) onPlayerUpdate(player.id, playerToEdit);
@@ -43,7 +43,7 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
 
     // function to handle player deletion using player id
     const handleDeletePlayer = () => {
-        axios.delete(`/api/Player/${player.id}`)
+        axios.delete(`/api/player/${player.id}`)
             .then((res) => {
                 console.log(res);
                 if (onPlayerDelete) onPlayerDelete(player.id);
