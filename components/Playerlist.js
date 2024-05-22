@@ -18,7 +18,7 @@ const PlayerList = () => {
     const fetchPlayers = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get('/api/Player');
+            const response = await axios.get('/api/player');
             if (response.data) {
                 setPlayers(response.data);
                 setFilteredPlayers(response.data); // Initially set filteredPlayers to all players

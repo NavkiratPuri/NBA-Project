@@ -19,7 +19,7 @@ model dbuser {
   password String @unique
 }
 
-model Player {
+model player {
   id            String  @id @default(auto()) @map("_id") @db.ObjectId
   Rk            Int?
   Player        String?

@@ -59,7 +59,7 @@ const AddPlayer = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post("/api/Player", input);
+            const response = await axios.post("/api/player", input);
             console.log('Successfully added player:', response.data);
             setInput({}); // Reset form after successful submission
             setShowModal(false);
