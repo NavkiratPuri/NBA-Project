@@ -61,6 +61,10 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
         <li className="p-3 my-5 bg-slate-300">
             <h1>{player.Player}</h1>
             <p>Position: {player.Pos}</p>
+            <p>Team: {player.Tm}</p>
+            <p>Age: {player.Age}</p>
+            <p>Games: {player.G}</p>
+            <p>Points: {player.PTS}</p>
             {/* Other player details here */}
             <div>
                 <button onClick={() => setShowEditModal(true)} className="bg-green-600 text-white mr-2">Edit</button>
