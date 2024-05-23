@@ -44,4 +44,8 @@ Johnson Giang : Johnson150
 
 Navkirat Puri : NavkiratPuri
 
-Isaac Marfo : isaacm31
+Zain Naeem : Zan5786
+
+Falmata Obsa : Falmata7
+
+Jashanpreet Singh : Jashanpreet-singh 
