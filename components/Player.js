@@ -58,7 +58,7 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
     };
 
     return (
-        <li className="p-3 my-5 bg-slate-300">
+        <li className=" text-center p-3 my-5 bg-slate-300">
             <h1>{player.Player}</h1>
             <p>Position: {player.Pos}</p>
             <p>Team: {player.Tm}</p>
