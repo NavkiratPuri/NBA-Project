@@ -65,3 +65,13 @@ model team {
   westLosses Int?
   conference String?
 }
+
+model trivia {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  question      String?
+  optionA       String?
+  optionB       String?
+  optionC       String?
+  optionD       String?
+  correctAnswer String?
+}

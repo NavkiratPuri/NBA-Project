@@ -8,15 +8,15 @@ import { NextResponse } from "next/server";
 export const GET = async (request, { params }) => {
     try {
         const { id } = params;
-        const teams = await client.teams.findUnique({
+        const team = await client.team.findUnique({
             where: {
                 id
             }
         });
-        if (!teams) {
+        if (!team) {
             return NextResponse.json({ status: 404 }, { message: "teams not found" })
         }
-        return NextResponse.json(teams);
+        return NextResponse.json(team);
     } catch (error) {
         return NextResponse.json({ status: 500 }, { message: "Error getting team", error })
 
@@ -38,7 +38,7 @@ export const PATCH = async (request, { params }) => {
             westLosses,
             conference } = body;
         // updates the player in the database
-        const updateEducation = await client.education.update({
+        const updateTeam = await client.team.update({
             where: {
                 id
             },
@@ -55,13 +55,13 @@ export const PATCH = async (request, { params }) => {
             }
         });
         // if the player is not found, return a 404 status
-        if (!updateEducation) {
-            return NextResponse.json({ status: 404 }, { message: "Education not found" })
+        if (!updateTeam) {
+            return NextResponse.json({ status: 404 }, { message: "Team not found" })
         }
-        return NextResponse.json(updateEducation);
+        return NextResponse.json(updateTeam);
 
     } catch (error) {
-        return NextResponse.json({ status: 500 }, { message: "Error updating Education", error })
+        return NextResponse.json({ status: 500 }, { message: "Error updating team", error })
     }
 }
 

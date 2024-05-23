@@ -97,12 +97,12 @@ export const PATCH = async (request, { params }) => {
         });
         // if the player is not found, return a 404 status
         if (!updatePlayer) {
-            return NextResponse.json({ status: 404 }, { message: "Post not found" })
+            return NextResponse.json({ status: 404 }, { message: "Player not found" })
         }
         return NextResponse.json(updatePlayer);
 
     } catch (error) {
-        return NextResponse.json({ status: 500 }, { message: "Error updating post", error })
+        return NextResponse.json({ status: 500 }, { message: "Error updating player", error })
     }
 }
 
