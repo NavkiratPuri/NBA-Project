@@ -48,49 +48,49 @@ const TeamStandings = () => {
         setShowConference(conference === '');
     };
 
-
-
     return (
         <div>
-            <h1>Team Standings</h1>
-            <div>
-                <button onClick={() => handleConferenceFilter('E')}>Eastern Conference</button>
-                <button onClick={() => handleConferenceFilter('W')}>Western Conference</button>
-                <button onClick={() => handleConferenceFilter('')}>League</button> {/* Add League button */}
+            <h1 className="text-center">Team Standings</h1>
+            <div className="flex space-x-4 mb-4 justify-center">
+                <button onClick={() => handleConferenceFilter('E')} className="px-4 py-2 bg-blue-500 text-white rounded-md">Eastern Conference</button>
+                <button onClick={() => handleConferenceFilter('W')} className="px-4 py-2 bg-green-500 text-white rounded-md">Western Conference</button>
+                <button onClick={() => handleConferenceFilter('')} className="px-4 py-2 bg-gray-500 text-white rounded-md">League</button>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Team</th>
-                        {showConference && <th>Conference</th>}
-                        <th>Wins</th>
-                        <th>Losses</th>
-                        <th>Eastern Conference Wins</th>
-                        <th>Eastern Conference Losses</th>
-                        <th>Western Conference Wins</th>
-                        <th>Western Conference Losses</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredStandings.map((team, index) => (
-                        <tr key={index}>
-                            <td>{team.rk}</td>
-                            <td>{team.team}</td>
-                            {showConference && <td>{team.conference}</td>}
-                            <td>{team.wins}</td>
-                            <td>{team.losses}</td>
-                            <td>{team.eastWins}</td>
-                            <td>{team.eastLosses}</td>
-                            <td>{team.westWins}</td>
-                            <td>{team.westLosses}</td>
+
+            <div className="max-h-screen overflow-y-auto">
+                <table className="w-full table-auto">
+                    <thead>
+                        <tr className="text-center">
+                            <th>Rank</th>
+                            <th>Team</th>
+                            {showConference && <th >Conference</th>}
+                            <th>Wins</th>
+                            <th>Losses</th>
+                            <th>Eastern Conference Wins</th>
+                            <th>Eastern Conference Losses</th>
+                            <th>Western Conference Wins</th>
+                            <th>Western Conference Losses</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody className="text-center">
+                        {filteredStandings.map((team, index) => (
+                            <tr key={index}>
+                                <td className="px-4 py-2">{team.rk}</td>
+                                <td className="px-4 py-2">{team.team}</td>
+                                {showConference && <td>{team.conference}</td>}
+                                <td className="px-4 py-2">{team.wins}</td>
+                                <td className="px-4 py-2">{team.losses}</td>
+                                <td className="px-4 py-2">{team.eastWins}</td>
+                                <td className="px-4 py-2">{team.eastLosses}</td>
+                                <td className="px-4 py-2">{team.westWins}</td>
+                                <td className="px-4 py-2">{team.westLosses}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
 
 export default TeamStandings;
-
