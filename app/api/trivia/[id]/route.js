@@ -59,3 +59,21 @@ export const PATCH = async (request, { params }) => {
 export const FETCH = async () => {
     return await GET();
 }
+
+// Function to handle GET requests to return multiple random trivia questions
+export const GET_RANDOM = async (request) => {
+    try {
+        const randomTrivia = await client.trivia.findMany({
+            take: 5,
+            orderBy: {
+                id: 'asc'  // Assuming MongoDB supports this; otherwise, modify based on available Prisma functions
+            }
+        });
+        if (randomTrivia.length === 0) {
+            return new NextResponse(JSON.stringify({ message: "No trivia questions found" }), { status: 404 });
+        }
+        return new NextResponse(JSON.stringify(randomTrivia));
+    } catch (error) {
+        return new NextResponse(JSON.stringify({ message: "Error getting trivia questions", error }), { status: 500 });
+    }
+}
