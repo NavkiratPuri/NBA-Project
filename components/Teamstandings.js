@@ -59,7 +59,11 @@ const TeamStandings = () => {
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`/api/team/${editData.id}`, editData);
+            const updatedTeam = { ...editData };
+            delete updatedTeam.id; // Remove ID before sending to the server if not needed for update
+
+            await axios.put(`/api/team/${editData.id}`, updatedTeam);
+
             const updatedStandings = [...filteredStandings];
             updatedStandings[editIndex] = editData;
             setFilteredStandings(updatedStandings);
