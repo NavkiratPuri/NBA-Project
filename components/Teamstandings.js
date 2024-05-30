@@ -10,6 +10,7 @@ const TeamStandings = () => {
     const [teamToEdit, setTeamToEdit] = useState(null);
     const [editData, setEditData] = useState({});
     const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const router = useRouter();
@@ -68,10 +69,31 @@ const TeamStandings = () => {
             const response = await axios.patch(`/api/team/${teamToEdit.id}`, editData);
             console.log('Update response:', response);
             setShowEditModal(false);
-            router.reload(); // Refresh the page after update
+            fetchStandings(); // Refresh standings after update
         } catch (err) {
             console.error('Error updating team details:', err.response ? err.response.data : err.message);
             setError('Failed to update team details.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleDeleteClick = (index) => {
+        setTeamToEdit(filteredStandings[index]);
+        setShowDeleteModal(true);
+    };
+
+    const handleDeleteTeam = async () => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const response = await axios.delete(`/api/team/${teamToEdit.id}`);
+            console.log('Delete response:', response);
+            setShowDeleteModal(false);
+            fetchStandings(); // Refresh standings after delete
+        } catch (err) {
+            console.error('Error deleting team:', err.response ? err.response.data : err.message);
+            setError('Failed to delete team.');
         } finally {
             setIsLoading(false);
         }
@@ -116,6 +138,7 @@ const TeamStandings = () => {
                                 <td className="px-4 py-2">{team.westLosses}</td>
                                 <td className="px-4 py-2">
                                     <button onClick={() => handleEditClick(index)} className="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                                    <button onClick={() => handleDeleteClick(index)} className="bg-red-500 text-white px-2 py-1 rounded ml-2">Delete</button>
                                 </td>
                             </tr>
                         ))}
@@ -145,6 +168,17 @@ const TeamStandings = () => {
                     </form>
                 </Modal>
             )}
+
+            {showDeleteModal && (
+                <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
+                    <div>
+                        <p className="text-lg text-grey-600 font-semibold my-2">Are you sure you want to delete this team?</p>
+                        <button onClick={handleDeleteTeam} className="bg-red-700 text-white mr-2 font-bold">Yes</button>
+                        <button onClick={() => setShowDeleteModal(false)} className="bg-blue-800 text-white font-bold">No</button>
+                    </div>
+                </Modal>
+            )}
+            {error && <p className="text-red-500">{error}</p>}
         </div>
     );
 };
