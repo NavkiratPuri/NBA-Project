@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Modal from './Modal'; // Import your Modal component
 
 const TeamStandings = () => {
     const [standings, setStandings] = useState([]);
@@ -7,45 +8,36 @@ const TeamStandings = () => {
     const [showConference, setShowConference] = useState(true);
     const [editIndex, setEditIndex] = useState(null);
     const [editData, setEditData] = useState({});
+    const [showEditModal, setShowEditModal] = useState(false);
 
     useEffect(() => {
-        // Fetch team standings data from your API endpoint when component mounts
         fetchStandings();
     }, []);
 
     const fetchStandings = async () => {
         try {
-            // Make a GET request to your API endpoint to fetch team standings data
-            const response = await axios.get('/api/team'); // Update this URL to match your API endpoint
+            const response = await axios.get('/api/team');
             setStandings(response.data);
-            setFilteredStandings(response.data); // Initialize filtered standings with all standings
+            setFilteredStandings(response.data);
         } catch (error) {
             console.error('Error fetching standings:', error);
         }
     };
 
     const handleConferenceFilter = (conference) => {
-        // Filter standings based on the selected conference
         let filtered;
-        let rankCounter = 1; // Initialize rank counter
+        let rankCounter = 1;
 
         if (conference === 'E' || conference === 'W') {
-            // Filter teams of the selected conference
             const conferenceTeams = standings.filter(team => team.conference === conference);
-
-            // Sort the teams within the conference by rank
             const sortedConferenceTeams = conferenceTeams.sort((a, b) => a.rk - b.rk);
-
-            // Update ranks for teams within the conference
             filtered = sortedConferenceTeams.map(team => ({ ...team, rk: rankCounter++ }));
         } else if (conference === '') {
-            // Show all teams in the league, reorder them by rank
             filtered = standings.sort((a, b) => a.rk - b.rk);
         } else {
-            filtered = []; // If no conference selected, show no teams
+            filtered = [];
         }
 
-        // Set the filtered standings and determine whether to show the conference column
         setFilteredStandings(filtered);
         setShowConference(conference === '');
     };
@@ -53,6 +45,7 @@ const TeamStandings = () => {
     const handleEditClick = (index) => {
         setEditIndex(index);
         setEditData(filteredStandings[index]);
+        setShowEditModal(true);
     };
 
     const handleInputChange = (e) => {
@@ -63,22 +56,18 @@ const TeamStandings = () => {
         });
     };
 
-    const handleSaveClick = async () => {
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
         try {
-            // Make a PUT request to update team data on your API endpoint
-            await axios.put(`/api/team/${editData.id}`, editData); // Update this URL to match your API endpoint
+            await axios.put(`/api/team/${editData.id}`, editData);
             const updatedStandings = [...filteredStandings];
             updatedStandings[editIndex] = editData;
             setFilteredStandings(updatedStandings);
             setEditIndex(null);
+            setShowEditModal(false);
         } catch (error) {
             console.error('Error updating team data:', error);
         }
-    };
-
-    const handleCancelClick = () => {
-        setEditIndex(null);
-        setEditData({});
     };
 
     return (
@@ -110,113 +99,42 @@ const TeamStandings = () => {
                         {filteredStandings.map((team, index) => (
                             <tr key={index}>
                                 <td className="px-4 py-2">{team.rk}</td>
-                                <td className="px-4 py-2">
-                                    {editIndex === index ? (
-                                        <input
-                                            type="text"
-                                            name="team"
-                                            value={editData.team}
-                                            onChange={handleInputChange}
-                                            className="border rounded px-2 py-1"
-                                        />
-                                    ) : (
-                                        team.team
-                                    )}
-                                </td>
+                                <td className="px-4 py-2">{team.team}</td>
                                 {showConference && <td className="px-4 py-2">{team.conference}</td>}
+                                <td className="px-4 py-2">{team.wins}</td>
+                                <td className="px-4 py-2">{team.losses}</td>
+                                <td className="px-4 py-2">{team.eastWins}</td>
+                                <td className="px-4 py-2">{team.eastLosses}</td>
+                                <td className="px-4 py-2">{team.westWins}</td>
+                                <td className="px-4 py-2">{team.westLosses}</td>
                                 <td className="px-4 py-2">
-                                    {editIndex === index ? (
-                                        <input
-                                            type="number"
-                                            name="wins"
-                                            value={editData.wins}
-                                            onChange={handleInputChange}
-                                            className="border rounded px-2 py-1"
-                                        />
-                                    ) : (
-                                        team.wins
-                                    )}
-                                </td>
-                                <td className="px-4 py-2">
-                                    {editIndex === index ? (
-                                        <input
-                                            type="number"
-                                            name="losses"
-                                            value={editData.losses}
-                                            onChange={handleInputChange}
-                                            className="border rounded px-2 py-1"
-                                        />
-                                    ) : (
-                                        team.losses
-                                    )}
-                                </td>
-                                <td className="px-4 py-2">
-                                    {editIndex === index ? (
-                                        <input
-                                            type="number"
-                                            name="eastWins"
-                                            value={editData.eastWins}
-                                            onChange={handleInputChange}
-                                            className="border rounded px-2 py-1"
-                                        />
-                                    ) : (
-                                        team.eastWins
-                                    )}
-                                </td>
-                                <td className="px-4 py-2">
-                                    {editIndex === index ? (
-                                        <input
-                                            type="number"
-                                            name="eastLosses"
-                                            value={editData.eastLosses}
-                                            onChange={handleInputChange}
-                                            className="border rounded px-2 py-1"
-                                        />
-                                    ) : (
-                                        team.eastLosses
-                                    )}
-                                </td>
-                                <td className="px-4 py-2">
-                                    {editIndex === index ? (
-                                        <input
-                                            type="number"
-                                            name="westWins"
-                                            value={editData.westWins}
-                                            onChange={handleInputChange}
-                                            className="border rounded px-2 py-1"
-                                        />
-                                    ) : (
-                                        team.westWins
-                                    )}
-                                </td>
-                                <td className="px-4 py-2">
-                                    {editIndex === index ? (
-                                        <input
-                                            type="number"
-                                            name="westLosses"
-                                            value={editData.westLosses}
-                                            onChange={handleInputChange}
-                                            className="border rounded px-2 py-1"
-                                        />
-                                    ) : (
-                                        team.westLosses
-                                    )}
-                                </td>
-                                <td className="px-4 py-2">
-                                    {editIndex === index ? (
-                                        <>
-                                            <button onClick={handleSaveClick} className="bg-green-500 text-white px-2 py-1 rounded">Save</button>
-                                            <button onClick={handleCancelClick} className="bg-red-500 text-white px-2 py-1 rounded">Cancel</button>
-                                        </>
-                                    ) : (
-                                        <button onClick={() => handleEditClick(index)} className="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                                    )}
+                                    <button onClick={() => handleEditClick(index)} className="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+
+            {showEditModal && (
+                <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
+                    <form onSubmit={handleEditSubmit} className="w-full px-5 pb-6">
+                        {Object.keys(editData).map(key => (
+                            <input
+                                key={key}
+                                type={typeof editData[key] === 'number' ? 'number' : 'text'}
+                                placeholder={key}
+                                name={key}
+                                className="w-full p-2 mb-3"
+                                value={editData[key] || ''}
+                                onChange={handleInputChange}
+                                step="0.1"
+                            />
+                        ))}
+                        <button type="submit" className="bg-blue-700 text-white px-5 py-2">Update Team</button>
+                    </form>
+                </Modal>
+            )}
         </div>
     );
 };
