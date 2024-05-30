@@ -7,7 +7,7 @@ const TeamStandings = () => {
     const [standings, setStandings] = useState([]);
     const [filteredStandings, setFilteredStandings] = useState([]);
     const [showConference, setShowConference] = useState(true);
-    const [editIndex, setEditIndex] = useState(null);
+    const [teamToEdit, setTeamToEdit] = useState(null);
     const [editData, setEditData] = useState({});
     const [showEditModal, setShowEditModal] = useState(false);
     const router = useRouter();
@@ -57,27 +57,28 @@ const TeamStandings = () => {
             [name]: value
         });
     };
-
-    const handleEditSubmit = async (e) => {
+    
+    const handleEditSubmit = (e) => {
         e.preventDefault();
-        try {
-            const updatedTeam = { ...editData };
-            delete updatedTeam.id; // Remove ID before sending to the server if not needed for update
-
-            await axios.put(`/api/team/${editData.id}`, updatedTeam);
-
-            const updatedStandings = [...filteredStandings];
-            updatedStandings[editIndex] = editData;
-            setFilteredStandings(updatedStandings);
-            setEditIndex(null);
-            setShowEditModal(false);
-
-            // Refresh the page after update
-            router.refresh();
-        } catch (error) {
-            console.error('Error updating team data:', error);
-        }
+        setIsLoading(true);
+        axios.patch(`/api/team/${teamToEdit.id}`, teamToEdit)
+            .then((res) => {
+                console.log(res);
+                // Assuming onPlayerUpdate and player.id are defined elsewhere in your code
+                if (onPlayerUpdate) onPlayerUpdate(player.id, teamToEdit);
+                setShowEditModal(false);
+                router.reload(); // Refresh the page after update
+            })
+            .catch((err) => {
+                console.error(err);
+                setError('Failed to update team details.');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
+    
+    
 
     return (
         <div>
@@ -128,14 +129,14 @@ const TeamStandings = () => {
             {showEditModal && (
                 <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
                     <form onSubmit={handleEditSubmit} className="w-full px-5 pb-6">
-                        {Object.keys(editData).map(key => (
+                        {Object.keys(teamToEdit).map(key => (
                             <input
                                 key={key}
-                                type={typeof editData[key] === 'number' ? 'number' : 'text'}
+                                type={typeof teamToEdit[key] === 'number' ? 'number' : 'text'}
                                 placeholder={key}
                                 name={key}
                                 className="w-full p-2 mb-3"
-                                value={editData[key] || ''}
+                                value={teamToEdit[key] || ''}
                                 onChange={handleInputChange}
                                 step="0.1"
                             />
