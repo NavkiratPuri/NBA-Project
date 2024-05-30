@@ -24,7 +24,7 @@ const LeadersList = () => {
 
     // Sort players by category
     const sortPlayersByCategory = (category) => {
-        return players.sort((a, b) => b[category] - a[category]).slice(0, 5);
+        return players.sort((a, b) => b[category] - a[category]).slice(0, 10);
     };
     // Render top players
     const renderTopPlayers = (category) => {

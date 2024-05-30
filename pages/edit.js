@@ -33,7 +33,6 @@ const Add = () => {
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
-            <p>dsadda</p>
             <h1 className="text-3xl font-bold text-center text-gray-800 mt-4 mb-4">Modify Player</h1>
             <div className="flex-grow">
                 <PlayerList players={Player} />

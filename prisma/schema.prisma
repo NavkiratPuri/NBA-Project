@@ -52,3 +52,26 @@ model player {
   PF            Float?
   PTS           Float?
 }
+
+model team {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  rk         Int?
+  team       String?
+  wins       Int?
+  losses     Int?
+  eastWins   Int?
+  eastLosses Int?
+  westWins   Int?
+  westLosses Int?
+  conference String?
+}
+
+model trivia {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  question      String?
+  optionA       String?
+  optionB       String?
+  optionC       String?
+  optionD       String?
+  correctAnswer String?
+}
