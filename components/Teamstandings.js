@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from './Modal'; // Import your Modal component
+import { useRouter } from 'next/navigation';
 
 const TeamStandings = () => {
     const [standings, setStandings] = useState([]);
@@ -9,6 +10,7 @@ const TeamStandings = () => {
     const [editIndex, setEditIndex] = useState(null);
     const [editData, setEditData] = useState({});
     const [showEditModal, setShowEditModal] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         fetchStandings();
@@ -69,6 +71,9 @@ const TeamStandings = () => {
             setFilteredStandings(updatedStandings);
             setEditIndex(null);
             setShowEditModal(false);
+
+            // Refresh the page after update
+            router.refresh();
         } catch (error) {
             console.error('Error updating team data:', error);
         }
