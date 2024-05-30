@@ -61,21 +61,22 @@ const TeamStandings = () => {
         });
     };
 
-    const handleEditSubmit = async (e) => {
+    const handleEditSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
-        setError(null);
-        try {
-            const response = await axios.patch(`/api/team/${teamToEdit.id}`, editData);
-            console.log('Update response:', response);
-            setShowEditModal(false);
-            fetchStandings(); // Refresh standings after update
-        } catch (err) {
-            console.error('Error updating team details:', err.response ? err.response.data : err.message);
-            setError('Failed to update team details.');
-        } finally {
-            setIsLoading(false);
-        }
+        axios.patch(`/api/team/${teamToEdit.id}`, editData)
+            .then((res) => {
+                console.log(res);
+                fetchStandings(); // Refresh standings after update
+                setShowEditModal(false);
+            })
+            .catch((err) => {
+                console.error(err);
+                setError('Failed to update team details.');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     const handleDeleteClick = (index) => {
@@ -83,20 +84,21 @@ const TeamStandings = () => {
         setShowDeleteModal(true);
     };
 
-    const handleDeleteTeam = async () => {
+    const handleDeleteTeam = () => {
         setIsLoading(true);
-        setError(null);
-        try {
-            const response = await axios.delete(`/api/team/${teamToEdit.id}`);
-            console.log('Delete response:', response);
-            setShowDeleteModal(false);
-            fetchStandings(); // Refresh standings after delete
-        } catch (err) {
-            console.error('Error deleting team:', err.response ? err.response.data : err.message);
-            setError('Failed to delete team.');
-        } finally {
-            setIsLoading(false);
-        }
+        axios.delete(`/api/team/${teamToEdit.id}`)
+            .then((res) => {
+                console.log(res);
+                fetchStandings(); // Refresh standings after delete
+                setShowDeleteModal(false);
+            })
+            .catch((err) => {
+                console.error(err);
+                setError('Failed to delete team.');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     return (
