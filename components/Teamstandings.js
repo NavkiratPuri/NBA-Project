@@ -65,11 +65,12 @@ const TeamStandings = () => {
         setIsLoading(true);
         setError(null);
         try {
-            await axios.patch(`/api/team/${teamToEdit.id}`, editData);
+            const response = await axios.patch(`/api/team/${teamToEdit.id}`, editData);
+            console.log('Update response:', response);
             setShowEditModal(false);
             router.reload(); // Refresh the page after update
         } catch (err) {
-            console.error(err);
+            console.error('Error updating team details:', err.response ? err.response.data : err.message);
             setError('Failed to update team details.');
         } finally {
             setIsLoading(false);
