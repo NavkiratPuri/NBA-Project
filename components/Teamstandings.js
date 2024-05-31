@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from './Modal'; // Ensure the path is correct
- 
- 
+
 const TeamStandings = () => {
     const [standings, setStandings] = useState([]);
     const [filteredStandings, setFilteredStandings] = useState([]);
     const [showConference, setShowConference] = useState(true);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [teamToEdit, setTeamToEdit] = useState({});
- 
+    const [teamToDelete, setTeamToDelete] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+
     useEffect(() => {
         fetchStandings();
     }, []);
- 
+
     const fetchStandings = async () => {
         try {
             const response = await axios.get('/api/team');
@@ -23,7 +26,7 @@ const TeamStandings = () => {
             console.error('Error fetching standings:', error);
         }
     };
- 
+
     const handleConferenceFilter = (conference) => {
         let filtered = [];
         if (conference === 'E' || conference === 'W') {
@@ -34,7 +37,7 @@ const TeamStandings = () => {
         setFilteredStandings(filtered);
         setShowConference(conference === '');
     };
- 
+
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -53,12 +56,31 @@ const TeamStandings = () => {
             console.error('Failed to update team:', error);
         }
     };
- 
+
+    const handleDeleteTeam = async () => {
+        setIsLoading(true);
+        try {
+            await axios.delete(`/api/team/${teamToDelete.id}`);
+            fetchStandings(); // Refresh data
+            setShowDeleteModal(false); // Close modal after deletion
+        } catch (error) {
+            console.error('Failed to delete team:', error);
+            setError('Failed to delete team.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const editTeam = (team) => {
         setTeamToEdit(team);
         setShowEditModal(true);
     };
- 
+
+    const confirmDeleteTeam = (team) => {
+        setTeamToDelete(team);
+        setShowDeleteModal(true);
+    };
+
     return (
         <div>
             <h1 className="text-3xl font-bold mb-6 text-center">Team Standings</h1>
@@ -80,6 +102,7 @@ const TeamStandings = () => {
                             <th>Eastern Conference Losses</th>
                             <th>Western Conference Wins</th>
                             <th>Western Conference Losses</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody className="text-center">
@@ -94,7 +117,10 @@ const TeamStandings = () => {
                                 <td>{team.eastLosses}</td>
                                 <td>{team.westWins}</td>
                                 <td>{team.westLosses}</td>
-                                <td><button onClick={() => editTeam(team)} className="bg-yellow-500 text-white px-3 py-1 rounded">Edit</button></td>
+                                <td>
+                                    <button onClick={() => editTeam(team)} className="bg-yellow-500 text-white px-3 py-1 rounded mr-2">Edit</button>
+                                    <button onClick={() => confirmDeleteTeam(team)} className="bg-red-500 text-white px-3 py-1 rounded">Delete</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -166,8 +192,19 @@ const TeamStandings = () => {
                     </form>
                 </Modal>
             )}
+            {showDeleteModal && (
+                <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
+                    <div className="text-center">
+                        <p className="mb-4">Are you sure you want to delete this team?</p>
+                        <div className="flex justify-center space-x-4">
+                            <button onClick={handleDeleteTeam} className="bg-red-500 text-white px-4 py-2 rounded-md">Yes</button>
+                            <button onClick={() => setShowDeleteModal(false)} className="bg-gray-500 text-white px-4 py-2 rounded-md">No</button>
+                        </div>
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 };
- 
+
 export default TeamStandings;
