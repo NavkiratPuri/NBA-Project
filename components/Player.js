@@ -1,4 +1,3 @@
-"use client"
 import React, { useState } from "react";
 import Modal from "./Modal";
 import axios from "axios";
@@ -56,16 +55,45 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
                 Router.refresh();
             });
     };
-
     return (
-        <li className="p-3 my-5 bg-slate-300">
-            <h1>{player.Player}</h1>
-            <p>Position: {player.Pos}</p>
-            {/* Other player details here */}
-            <div>
-                <button onClick={() => setShowEditModal(true)} className="bg-green-600 text-white mr-2">Edit</button>
-                <button onClick={() => setShowDeleteModal(true)} className="bg-red-600 text-white">Delete</button>
-            </div>
+        <>
+            <tr>
+                <td className="px-4 py-2">{player.Rk}</td>
+                <td className="px-4 py-2">{player.Player}</td>
+                <td className="px-4 py-2">{player.Pos}</td>
+                <td className="px-4 py-2">{player.Tm}</td>
+                <td className="px-4 py-2">{player.G}</td>
+                <td className="px-4 py-2">{player.GS}</td>
+                <td className="px-4 py-2">{player.MP}</td>
+                <td className="px-4 py-2">{player.FG}</td>
+                <td className="px-4 py-2">{player.FGA}</td>
+                <td className="px-4 py-2">{player.FGPercent}</td>
+                <td className="px-4 py-2">{player.threeP}</td>
+                <td className="px-4 py-2">{player.threePA}</td>
+                <td className="px-4 py-2">{player.threePPercent}</td>
+                <td className="px-4 py-2">{player.twoP}</td>
+                <td className="px-4 py-2">{player.twoPA}</td>
+                <td className="px-4 py-2">{player.twoPPercent}</td>
+                <td className="px-4 py-2">{player.eFGPercent}</td>
+                <td className="px-4 py-2">{player.FT}</td>
+                <td className="px-4 py-2">{player.FTA}</td>
+                <td className="px-4 py-2">{player.FTPercent}</td>
+                <td className="px-4 py-2">{player.ORB}</td>
+                <td className="px-4 py-2">{player.DRB}</td>
+                <td className="px-4 py-2">{player.TRB}</td>
+                <td className="px-4 py-2">{player.AST}</td>
+                <td className="px-4 py-2">{player.STL}</td>
+                <td className="px-4 py-2">{player.BLK}</td>
+                <td className="px-4 py-2">{player.TOV}</td>
+                <td className="px-4 py-2">{player.PF}</td>
+                <td className="px-4 py-2">{player.PTS}</td>
+                <td>
+                    <div>
+                        <button onClick={() => setShowEditModal(true)} className="bg-green-600 text-white mr-2">Edit</button>
+                        <button onClick={() => setShowDeleteModal(true)} className="bg-red-600 text-white">Delete</button>
+                    </div>
+                </td>
+            </tr>
             {showEditModal && (
                 <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
                     <form onSubmit={handleEditSubmit} className="w-full px-5 pb-6">
@@ -95,7 +123,7 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
                 </Modal>
             )}
             {error && <p className="text-red-500">{error}</p>}
-        </li>
+        </>
     );
 };
 

@@ -1,0 +1,15 @@
+Current work split as of May 29. 
+Johnson-Trivia
+Zain- Trade Simulator
+Navkirat- Authentication, Tokens and sessions
+Jashan- HiLo Game (includes images)
+Danrel- HiLo Game (includes images)
+Falmata- Team standings
+
+
+To do Items:
+
+Mobile
+Friends list / social components
+stat projections
+
