@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Modal from './Modal'; // Import your Modal component
-import { useRouter } from 'next/navigation';
-
+import Modal from './Modal'; // Ensure the path is correct
+ 
+ 
 const TeamStandings = () => {
     const [standings, setStandings] = useState([]);
     const [filteredStandings, setFilteredStandings] = useState([]);
     const [showConference, setShowConference] = useState(true);
-    const [teamToEdit, setTeamToEdit] = useState(null);
-    const [editData, setEditData] = useState({});
     const [showEditModal, setShowEditModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const router = useRouter();
-
+    const [teamToEdit, setTeamToEdit] = useState({});
+ 
     useEffect(() => {
         fetchStandings();
     }, []);
-
+ 
     const fetchStandings = async () => {
         try {
             const response = await axios.get('/api/team');
@@ -28,79 +23,42 @@ const TeamStandings = () => {
             console.error('Error fetching standings:', error);
         }
     };
-
+ 
     const handleConferenceFilter = (conference) => {
-        let filtered;
-        let rankCounter = 1;
-
+        let filtered = [];
         if (conference === 'E' || conference === 'W') {
-            const conferenceTeams = standings.filter(team => team.conference === conference);
-            const sortedConferenceTeams = conferenceTeams.sort((a, b) => a.rk - b.rk);
-            filtered = sortedConferenceTeams.map(team => ({ ...team, rk: rankCounter++ }));
+            filtered = standings.filter(team => team.conference === conference).sort((a, b) => a.rk - b.rk);
         } else if (conference === '') {
-            filtered = standings.sort((a, b) => a.rk - b.rk);
-        } else {
-            filtered = [];
+            filtered = [...standings].sort((a, b) => a.rk - b.rk);
         }
-
         setFilteredStandings(filtered);
         setShowConference(conference === '');
     };
-
-    const handleEditClick = (index) => {
-        setTeamToEdit(filteredStandings[index]);
-        setEditData(filteredStandings[index]);
+ 
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.patch(`/api/team/${teamToEdit.id}`, {
+                wins: teamToEdit.wins,
+                losses: teamToEdit.losses,
+                eastWins: teamToEdit.eastWins,
+                eastLosses: teamToEdit.eastLosses,
+                westWins: teamToEdit.westWins,
+                westLosses: teamToEdit.westLosses,
+                conference: teamToEdit.conference
+            });
+            fetchStandings(); // Refresh data
+            setShowEditModal(false); // Close modal after submission
+        } catch (error) {
+            console.error('Failed to update team:', error);
+        }
+    };
+ 
+    const editTeam = (team) => {
+        setTeamToEdit(team);
         setShowEditModal(true);
     };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setEditData({
-            ...editData,
-            [name]: value
-        });
-    };
-
-    const handleEditSubmit = (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        axios.patch(`/api/team/${teamToEdit.id}`, editData)
-            .then((res) => {
-                console.log(res);
-                fetchStandings(); // Refresh standings after update
-                setShowEditModal(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setError('Failed to update team details.');
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
-
-    const handleDeleteClick = (index) => {
-        setTeamToEdit(filteredStandings[index]);
-        setShowDeleteModal(true);
-    };
-
-    const handleDeleteTeam = () => {
-        setIsLoading(true);
-        axios.delete(`/api/team/${teamToEdit.id}`)
-            .then((res) => {
-                console.log(res);
-                fetchStandings(); // Refresh standings after delete
-                setShowDeleteModal(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setError('Failed to delete team.');
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
-
+ 
     return (
         <div>
             <h1 className="text-3xl font-bold mb-6 text-center">Team Standings</h1>
@@ -109,7 +67,6 @@ const TeamStandings = () => {
                 <button onClick={() => handleConferenceFilter('W')} className="px-4 py-2 bg-green-500 text-white rounded-md">Western Conference</button>
                 <button onClick={() => handleConferenceFilter('')} className="px-4 py-2 bg-gray-500 text-white rounded-md">League</button>
             </div>
-
             <div className="max-h-screen overflow-y-auto">
                 <table className="w-full table-auto">
                     <thead>
@@ -123,66 +80,94 @@ const TeamStandings = () => {
                             <th>Eastern Conference Losses</th>
                             <th>Western Conference Wins</th>
                             <th>Western Conference Losses</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody className="text-center">
                         {filteredStandings.map((team, index) => (
                             <tr key={index}>
-                                <td className="px-4 py-2">{team.rk}</td>
-                                <td className="px-4 py-2">{team.team}</td>
-                                {showConference && <td className="px-4 py-2">{team.conference}</td>}
-                                <td className="px-4 py-2">{team.wins}</td>
-                                <td className="px-4 py-2">{team.losses}</td>
-                                <td className="px-4 py-2">{team.eastWins}</td>
-                                <td className="px-4 py-2">{team.eastLosses}</td>
-                                <td className="px-4 py-2">{team.westWins}</td>
-                                <td className="px-4 py-2">{team.westLosses}</td>
-                                <td className="px-4 py-2">
-                                    <button onClick={() => handleEditClick(index)} className="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                                    <button onClick={() => handleDeleteClick(index)} className="bg-red-500 text-white px-2 py-1 rounded ml-2">Delete</button>
-                                </td>
+                                <td>{team.rk}</td>
+                                <td>{team.team}</td>
+                                {showConference && <td>{team.conference}</td>}
+                                <td>{team.wins}</td>
+                                <td>{team.losses}</td>
+                                <td>{team.eastWins}</td>
+                                <td>{team.eastLosses}</td>
+                                <td>{team.westWins}</td>
+                                <td>{team.westLosses}</td>
+                                <td><button onClick={() => editTeam(team)} className="bg-yellow-500 text-white px-3 py-1 rounded">Edit</button></td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-
             {showEditModal && (
                 <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
-                    <form onSubmit={handleEditSubmit} className="w-full px-5 pb-6">
-                        {Object.keys(editData).map(key => (
+                    <form onSubmit={handleEditSubmit} className="space-y-4">
+                        <div>
+                            <label>Wins: </label>
                             <input
-                                key={key}
-                                type={typeof editData[key] === 'number' ? 'number' : 'text'}
-                                placeholder={key}
-                                name={key}
-                                className="w-full p-2 mb-3"
-                                value={editData[key] || ''}
-                                onChange={handleInputChange}
-                                step="0.1"
+                                type="number"
+                                value={teamToEdit.wins || ''}
+                                onChange={e => setTeamToEdit({ ...teamToEdit, wins: parseInt(e.target.value, 10) })}
                             />
-                        ))}
-                        <button type="submit" className="bg-blue-700 text-white px-5 py-2" disabled={isLoading}>
-                            {isLoading ? 'Updating...' : 'Update Team'}
-                        </button>
-                        {error && <p className="text-red-500 mt-2">{error}</p>}
+                        </div>
+                        <div>
+                            <label>Losses: </label>
+                            <input
+                                type="number"
+                                value={teamToEdit.losses || ''}
+                                onChange={e => setTeamToEdit({ ...teamToEdit, losses: parseInt(e.target.value, 10) })}
+                            />
+                        </div>
+                        <div>
+                            <label>Eastern Conference Wins: </label>
+                            <input
+                                type="number"
+                                value={teamToEdit.eastWins || ''}
+                                onChange={e => setTeamToEdit({ ...teamToEdit, eastWins: parseInt(e.target.value, 10) })}
+                            />
+                        </div>
+                        <div>
+                            <label>Eastern Conference Losses: </label>
+                            <input
+                                type="number"
+                                value={teamToEdit.eastLosses || ''}
+                                onChange={e => setTeamToEdit({ ...teamToEdit, eastLosses: parseInt(e.target.value, 10) })}
+                            />
+                        </div>
+                        <div>
+                            <label>Western Conference Wins: </label>
+                            <input
+                                type="number"
+                                value={teamToEdit.westWins || ''}
+                                onChange={e => setTeamToEdit({ ...teamToEdit, westWins: parseInt(e.target.value, 10) })}
+                            />
+                        </div>
+                        <div>
+                            <label>Western Conference Losses: </label>
+                            <input
+                                type="number"
+                                value={teamToEdit.westLosses || ''}
+                                onChange={e => setTeamToEdit({ ...teamToEdit, westLosses: parseInt(e.target.value, 10) })}
+                            />
+                        </div>
+                        <div>
+                            <label>Conference: </label>
+                            <select
+                                value={teamToEdit.conference || ''}
+                                onChange={e => setTeamToEdit({ ...teamToEdit, conference: e.target.value })}
+                            >
+                                <option value="">Select Conference</option>
+                                <option value="E">Eastern</option>
+                                <option value="W">Western</option>
+                            </select>
+                        </div>
+                        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Save Changes</button>
                     </form>
                 </Modal>
             )}
-
-            {showDeleteModal && (
-                <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
-                    <div>
-                        <p className="text-lg text-grey-600 font-semibold my-2">Are you sure you want to delete this team?</p>
-                        <button onClick={handleDeleteTeam} className="bg-red-700 text-white mr-2 font-bold">Yes</button>
-                        <button onClick={() => setShowDeleteModal(false)} className="bg-blue-800 text-white font-bold">No</button>
-                    </div>
-                </Modal>
-            )}
-            {error && <p className="text-red-500">{error}</p>}
         </div>
     );
 };
-
+ 
 export default TeamStandings;
