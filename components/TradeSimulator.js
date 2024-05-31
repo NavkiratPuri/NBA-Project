@@ -1,75 +1,40 @@
 import React, { useState, useEffect } from 'react';
-
-// Components for UI elements
-import PlayerSelector from '../components/PlayerSelector';
+import { calculatePlayerValue } from '@/utils/calculateValue'; // import player value logic
 
 
-const TradeSimulator = () => {
-    const [players, setPlayers] = useState([]);
-    const [player1, setPlayer1] = useState(null);
-    const [player2, setPlayer2] = useState(null);
-    const [tradeResult, setTradeResult] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-
-    // Fetch all players from the server
-    useEffect(() => {
-        setIsLoading(true);
-        fetch('/api/player')
-            .then(res => res.json())
-            .then(data => {
-                setPlayers(data);
-                setIsLoading(false);
-            })
-            .catch(err => {
-                console.error('Error fetching players:', err);
-                setError('Failed to load players.');
-                setIsLoading(false);
-            });
-    }, []);
-
-    // Handle trade simulation
-    const handleTrade = async () => {
-        if (!player1 || !player2) {
-            setTradeResult('Please select both players to simulate the trade.');
-            return;
-        }
-        setIsLoading(true);
-        try {
-            const res = await fetch('/api/trade', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ player1Id: player1.id, player2Id: player2.id })
-            });
-            const result = await res.json();
-            setTradeResult(result.message);
-            setIsLoading(false);
-        } catch (error) {
-            console.error('Error processing trade:', error);
-            setTradeResult('Failed to process the trade.');
-            setIsLoading(false);
-        }
-    };
-
-    return (
-        <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-grow p-8 pb-20">
-                <h1 className="text-center mb-6">Trade Simulator</h1>
-                {error && <p className="text-red-500 text-center">{error}</p>}
-                <div className="flex justify-around">
-                    <PlayerSelector players={players} onSelectPlayer={setPlayer1} label="Player 1" />
-                    <PlayerSelector players={players} onSelectPlayer={setPlayer2} label="Player 2" />
+// function to compare two players
+const TradeSimulator = ({ player1, player2}) => {
+    return(
+        <div className="compare">
+            {player1 && player2 && 
+            (
+                <div>
+                    <div className="compare2">
+                        <div>
+                            <h3>{player1.Player}</h3>
+                            <p>Position: {player1.Pos}</p>
+                            <p>Team: {player1.Tm}</p>
+                            <p>Points Per Game: {player1.PTS}</p>
+                            <p>Assists Per Game: {player1.AST}</p>
+                            <p>Blocks Per Game: {player1.BLK}</p>
+                            <p>Steals Per Game: {player1.STL}</p>
+                            <p>Rebounds Per Game: {(player1.TRB)}</p>
+                            <p>Value: {calculatePlayerValue(player1)}</p>
+                        </div>
+                        <div>
+                            <h3>{player2.Player}</h3>
+                            <p>Position: {player2.Pos}</p>
+                            <p>Team: {player2.Tm}</p>
+                            <p>Points Per Game: {player2.PTS}</p>
+                            <p>Assists Per Game: {player2.AST}</p>
+                            <p>Blocks Per Game: {player2.BLK}</p>
+                            <p>Steals Per Game: {player2.STL}</p>
+                            <p>Rebounds Per Game: {(player2.TRB)}</p>
+                            <p>Value: {calculatePlayerValue(player2)}</p>
+                        </div>
+                    </div>
                 </div>
-                <button onClick={handleTrade} className="mt-4 bg-blue-500 text-white p-2" disabled={isLoading}>
-                    Simulate Trade
-                </button>
-                {tradeResult && <p className="mt-4 text-center">{tradeResult}</p>}
-                {isLoading && <p className="text-center">Processing trade...</p>}
-            </main>
-            <Footer />
+            )}
         </div>
     );
 };
