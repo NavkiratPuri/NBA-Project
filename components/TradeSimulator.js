@@ -3,34 +3,21 @@ import { calculatePlayerValue } from '@/utils/calculateValue'; // import player 
 
 
 // function to compare two players
-const TradeSimulator = ({ player1, player2}) => {
+const TradeSimulator = ({ player}) => {
     return(
         <div className="compare">
-            {player1 && player2 && 
+            {player && 
             (
                 <div>
                     <div className="compare2">
                         <div>
-                            <h3>{player1.Player}</h3>
-                            <p>Position: {player1.Pos}</p>
-                            <p>Team: {player1.Tm}</p>
-                            <p>Points Per Game: {player1.PTS}</p>
-                            <p>Assists Per Game: {player1.AST}</p>
-                            <p>Blocks Per Game: {player1.BLK}</p>
-                            <p>Steals Per Game: {player1.STL}</p>
-                            <p>Rebounds Per Game: {(player1.TRB)}</p>
-                            <p>Value: {calculatePlayerValue(player1)}</p>
-                        </div>
-                        <div>
-                            <h3>{player2.Player}</h3>
-                            <p>Position: {player2.Pos}</p>
-                            <p>Team: {player2.Tm}</p>
-                            <p>Points Per Game: {player2.PTS}</p>
-                            <p>Assists Per Game: {player2.AST}</p>
-                            <p>Blocks Per Game: {player2.BLK}</p>
-                            <p>Steals Per Game: {player2.STL}</p>
-                            <p>Rebounds Per Game: {(player2.TRB)}</p>
-                            <p>Value: {calculatePlayerValue(player2)}</p>
+                            <p>Team: {player.Tm}</p>
+                            <p>Points Per Game: {player.PTS}</p>
+                            <p>Assists Per Game: {player.AST}</p>
+                            <p>Blocks Per Game: {player.BLK}</p>
+                            <p>Steals Per Game: {player.STL}</p>
+                            <p>Rebounds Per Game: {(player.TRB)}</p>
+                            <p>Value: {calculatePlayerValue(player)}</p>
                         </div>
                     </div>
                 </div>

@@ -50,13 +50,18 @@ const Trade = () => {
                     players={players}
                      onSelectPlayer = {(player) => handleSelectPlayer (player, 'player1')}
                      label="Player 1" />
+                     {selectedPlayers.player1 && (
+                        <TradeSimulator player={selectedPlayers.player1} />
+                     )}
 
                     <PlayerSelector 
                     players={players} 
                     onSelectPlayer= {(player) => handleSelectPlayer (player, 'player2')} 
                     label="Player 2" />
 
-                    <TradeSimulator player1={selectedPlayers.player1} player2={selectedPlayers.player2}></TradeSimulator>
+                    {selectedPlayers.player2 && (
+                        <TradeSimulator player={selectedPlayers.player2}></TradeSimulator>
+                    )}
 
                 </div>
 
