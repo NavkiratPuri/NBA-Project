@@ -1,19 +1,37 @@
-"use client"
 import React, { useState, useEffect } from "react";
 
 const LeadersList = () => {
     const [players, setPlayers] = useState([]);
-    const [category, setCategory] = useState("MP");
+    const [category, setCategory] = useState("PTS");
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch('/api/player', { cache: "no-cache" });
+                const res = await fetch('https://stats.nba.com/stats/leagueLeaders?LeagueID=00&PerMode=PerGame&Scope=S&Season=2023-24&SeasonType=Regular%20Season&StatCategory=PTS', { 
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Origin': 'https://stats.nba.com'
+                    },
+                    cache: "no-cache"
+                });
                 if (!res.ok) {
                     throw new Error("Failed to fetch data");
                 }
                 const data = await res.json();
-                setPlayers(data);
+                const playersData = data.resultSet.rowSet.map(player => {
+                    return {
+                        name: player[2],
+                        MPG: player[6],
+                        PPG: player[24],
+                        RPG: player[18],
+                        APG: player[19],
+                        SPG: player[20],
+                        BPG: player[21],
+                    };
+                });
+                setPlayers(playersData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -22,11 +40,10 @@ const LeadersList = () => {
         fetchData();
     }, []);
 
-    // Sort players by category
     const sortPlayersByCategory = (category) => {
         return players.sort((a, b) => b[category] - a[category]).slice(0, 10);
     };
-    // Render top players
+
     const renderTopPlayers = (category) => {
         const topPlayers = sortPlayersByCategory(category);
         return (
@@ -35,14 +52,13 @@ const LeadersList = () => {
                 <ul className="list-none pl-5">
                     {topPlayers.map((player, index) => (
                         <li key={index} className="py-1">
-                            {player.Player} - {player[category]}
+                            {player.name} - {player[category]}
                         </li>
                     ))}
                 </ul>
             </div>
         );
     };
-
 
     return (
         <div className="container mx-auto px-4">
@@ -54,30 +70,12 @@ const LeadersList = () => {
                     className="form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     onChange={(e) => setCategory(e.target.value)}
                 >
-                    <option value="MP">Minutes Per Game (MPG)</option>
-                    <option value="PTS">Points Per Game (PPG)</option>
-                    <option value="TRB">Rebounds Per Game (RPG)</option>
-                    <option value="AST">Assists Per Game (APG)</option>
-                    <option value="STL">Steals Per Game (SPG)</option>
-                    <option value="BLK">Blocks Per Game (BPG)</option>
-                    <option value="FG">Field Goals Made (FGM)</option>
-                    <option value="FGA">Field Goals Attempted (FGA)</option>
-                    <option value="FGPercent">Field Goal Percentage (FG%)</option>
-                    <option value="threeP">Three-Point Field Goals Made (3PM)</option>
-                    <option value="threePA">Three-Point Field Goals Attempted (3PA)</option>
-                    <option value="threePPercent">Three-Point Field Goal Percentage (3P%)</option>
-                    <option value="twoP">Two-Point Field Goals Made (2PM)</option>
-                    <option value="twoPA">Two-Point Field Goals Attempted (2PA)</option>
-                    <option value="twoPPercent">Two-Point Field Goal Percentage (2P%)</option>
-                    <option value="eFGPercent">Effective Field Goal Percentage (eFG%)</option>
-                    <option value="FT">Free Throws Made (FTM)</option>
-                    <option value="FTA">Free Throws Attempted (FTA)</option>
-                    <option value="FTPercent">Free Throw Percentage (FT%)</option>
-                    <option value="ORB">Offensive Rebounds (ORB)</option>
-                    <option value="DRB">Defensive Rebounds (DRB)</option>
-                    <option value="TOV">Turnovers (TOV)</option>
-                    <option value="PF">Personal Fouls (PF)</option>
-
+                    <option value="MPG">MPG</option>
+                    <option value="PPG">PPG</option>
+                    <option value="RPG">RPG</option>
+                    <option value="APG">APG</option>
+                    <option value="SPG">SPG</option>
+                    <option value="BPG">BPG</option>
                 </select>
             </div>
             {renderTopPlayers(category)}
