@@ -23,6 +23,8 @@ const fetchPlayer = async () => {
 const RandomCategory = () => {
     const [players, setPlayers] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [comparisonResult, setComparisonResult] = useState("");
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
 
     const categories = [
         { value: "MP", label: "Minutes Per Game (MPG)" },
@@ -59,6 +61,40 @@ const RandomCategory = () => {
         if (playerData && playerData.length >= 2) {
             const shuffledPlayers = shuffle(playerData).slice(0, 2);
             setPlayers(shuffledPlayers);
+            setComparisonResult("");
+            setSelectedPlayer(null);
+        }
+    };
+
+    const game = (player1, player2) => {
+        if (!selectedCategory) {
+            setComparisonResult("Please select a category.");
+            return;
+        }
+    
+        const statPlayer1 = player1[selectedCategory.value];
+        const statPlayer2 = player2[selectedCategory.value];
+    
+        let higherPlayer;
+        if (statPlayer1 > statPlayer2) {
+            higherPlayer = player1.Player;
+        } else if (statPlayer1 < statPlayer2) {
+            higherPlayer = player2.Player;
+        } else {
+            // If stats are equal
+            setComparisonResult("Stats are equal.");
+            return;
+        }
+    
+        setComparisonResult(`${higherPlayer} has a higher ${selectedCategory.label}.`);
+    };
+    
+
+    const handlePlayerButtonClick = (playerIndex) => {
+        setSelectedPlayer(playerIndex);
+        setComparisonResult("");
+        if (players.length > 0 && selectedCategory) {
+            game(players[selectedPlayer], players[playerIndex]);
         }
     };
 
@@ -77,12 +113,20 @@ const RandomCategory = () => {
                     <div className="mt-4 flex">
                         {players.map((player, index) => (
                             <div key={index} className="w-1/2 p-4 border rounded shadow">
-                                <p><strong>Name:</strong> {player.Player}</p>
-                                <p><strong>Team:</strong> {player.Tm}</p>
-                                <p><strong>Position:</strong> {player.Pos}</p>
-                                <p><strong>{selectedCategory.label}:</strong> {player[selectedCategory.value]}</p>
+                                <button 
+                                    onClick={() => handlePlayerButtonClick(index)} 
+                                    className={`w-full py-2 px-4 rounded ${selectedPlayer === index ? 'bg-green-500 text-white' : ''}`}
+                                >
+                                    <p><strong>Name:</strong> {player.Player}</p>
+                                    <p><strong>Team:</strong> {player.Tm}</p>
+                                    <p><strong>Position:</strong> {player.Pos}</p>
+                                    <p><strong>{selectedCategory.label}:</strong> {player[selectedCategory.value]}</p>
+                                </button>
                             </div>
                         ))}
+                    </div>
+                    <div className="mt-4">
+                        <p>{comparisonResult}</p>
                     </div>
                 </div>
             )}
