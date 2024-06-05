@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { calculatePlayerValue } from '@/utils/calculateValue'; // import player value logic
 
 
-// component to display selected players stats
-// if player object is provided renders player stats
-// and calls calculatePlayerValue to display players calculated value
 const TradeSimulator = ({ player, valueColor }) => {
     return (
         <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md">
