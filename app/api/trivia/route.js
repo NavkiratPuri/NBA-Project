@@ -51,3 +51,4 @@ export const GET = async () => {
 export const FETCH = async () => {
     return await GET();
 }
+

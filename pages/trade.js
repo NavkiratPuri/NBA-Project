@@ -4,7 +4,7 @@ import TradeSimulator from '@/components/TradeSimulator';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import '../app/globals.css';
-import playerData from '../utils/playerData'; 
+import playerData from '../utils/playerData';
 import { calculatePlayerValue } from '@/utils/calculateValue';
 
 
@@ -72,7 +72,7 @@ const Trade = () => {
                         {selectedPlayers.player1 && (
                             <TradeSimulator player={selectedPlayers.player1}
                                 valueColor={playerRedGreen(selectedPlayers.player1, selectedPlayers.player2)}
-                             />
+                            />
                         )}
                     </div>
 
@@ -84,7 +84,7 @@ const Trade = () => {
                         />
                         {selectedPlayers.player2 && (
                             <TradeSimulator player={selectedPlayers.player2}
-                            valueColor={playerRedGreen(selectedPlayers.player2, selectedPlayers.player1)} />
+                                valueColor={playerRedGreen(selectedPlayers.player2, selectedPlayers.player1)} />
                         )}
                     </div>
 
