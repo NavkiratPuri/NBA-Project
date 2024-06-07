@@ -64,6 +64,8 @@ model team {
   westWins   Int?
   westLosses Int?
   conference String?
+
+  
 }
 
 model trivia {
@@ -75,3 +77,40 @@ model trivia {
   optionD       String?
   correctAnswer String?
 }
+
+//new models for auth and custom profile testing
+
+model AuthUser {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  email          String   @unique
+  hashedPassword String
+  favPlayerId    String   @db.ObjectId
+  favTeamId      String   @db.ObjectId
+  isAdmin        Boolean  @default(false)
+  
+//  favPlayer      Player   @relation(fields: [favPlayerId], references: [id])
+//  favTeam        Team     @relation(fields: [favTeamId], references: [id])
+}
+
+
+
+// model Player {
+//   id     String @id @default(auto()) @map("_id") @db.ObjectId
+//   Player String
+//   Pos    String
+//   Tm     String @db.ObjectId
+
+//   team   Team   @relation(fields: [Tm], references: [id])
+//   users  AuthUser[]
+// }
+
+// model Team {
+//   id     String  @id @default(auto()) @map("_id") @db.ObjectId
+//   team   String
+//   wins   Int
+//   losses Int
+
+//   players Player[]
+//   users   AuthUser[]
+// }
