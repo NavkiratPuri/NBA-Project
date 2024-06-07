@@ -1,6 +1,6 @@
 import client from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 
 
 // URL: http://localhost:3000/api/dbuser
@@ -17,7 +17,7 @@ export const POST = async (req) => {
     try {
         const body = await req.json();
         const { email, password } = body;
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcryptjs.hash(password, 10);
         console.log(email, hashedPassword); 
         
         

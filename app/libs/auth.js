@@ -1,7 +1,7 @@
 import GoogleProvider from 'next-auth/providers/google'; // import google provider for authconfig
 import CredentialsProvider from 'next-auth/providers/credentials'; 
 import prisma from './prismadb';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 
 // authConfig object to configure the authentication providers, used in the NextAuth function
 const authConfig = {
@@ -21,6 +21,7 @@ const authConfig = {
         },
       },
       async authorize(credentials) {
+        //for debugging
         console.log('Authorization attempt with credentials:', credentials);
 
         // Fetch user from database based on provided credentials
@@ -33,7 +34,7 @@ const authConfig = {
 
         console.log('User found in database:', dbUser);
 
-        const passwordMatch = await bcrypt.compare(credentials.password, dbUser.password);
+        const passwordMatch = await bcryptjs.compare(credentials.password, dbUser.password);
 
         if (dbUser && passwordMatch) {
           console.log('User authorized successfully:', dbUser);
