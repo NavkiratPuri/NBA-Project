@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import RandomCategory from './RandomCategory';
 
-const HiLo = () => {
+const GameStarter = () => {
     const [gameStarted, setGameStarted] = useState(false);
     const [gameEnded, setGameEnded] = useState(false);
 
@@ -35,17 +35,18 @@ const HiLo = () => {
                     Start Game
                 </button>
             ) : gameEnded ? (
-                <div className="text-center">
+                
+                    <div className="text-center">
                     <h2 className="text-2xl mb-4">Game Over</h2>
                     <button 
                         onClick={handlePlayAgain} 
-                        className="bg-green-500 text-white font-bold py-2 px-4 rounded m-2"
+                        className="bg-green-500 text-white font-bold py-2 px-4 rounded mr-4"
                     >
                         Play Again
                     </button>
                     <button 
                         onClick={handleReturnToStart} 
-                        className="bg-red-500 text-white font-bold py-2 px-4 rounded m-2"
+                        className="bg-gray-500 text-white font-bold py-2 px-4 rounded"
                     >
                         Return to Start
                     </button>
@@ -57,4 +58,4 @@ const HiLo = () => {
     );
 };
 
-export default HiLo;
+export default GameStarter;
