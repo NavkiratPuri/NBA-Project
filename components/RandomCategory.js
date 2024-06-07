@@ -17,8 +17,10 @@ const fetchPlayer = async () => {
         return response.data;
     } catch (error) {
         console.error('Error fetching player:', error);
+        throw error;
     }
 };
+
 
 const RandomCategory = ({ onGameEnd }) => {
     const [players, setPlayers] = useState([]);
@@ -58,14 +60,7 @@ const RandomCategory = ({ onGameEnd }) => {
     ];
 
     useEffect(() => {
-        const initializeGame = async () => {
-            const playerData = await fetchPlayer();
-            if (playerData && playerData.length >= 2) {
-                startNewTurn(playerData);
-            }
-        };
-
-        initializeGame();
+        startNewTurn()
     }, []);
 
     const startNewTurn = async () => {
@@ -111,29 +106,42 @@ const RandomCategory = ({ onGameEnd }) => {
     const handlePlayerButtonClick = (playerIndex) => {
         setSelectedPlayer(playerIndex);
         setComparisonResult("");
+    
         if (players.length > 0 && selectedCategory) {
             const otherPlayerIndex = playerIndex === 0 ? 1 : 0;
-            const correctPlayer = players[playerIndex][selectedCategory.value] >= players[otherPlayerIndex][selectedCategory.value];
+            const player1Stat = players[playerIndex][selectedCategory.value];
+            const player2Stat = players[otherPlayerIndex][selectedCategory.value];
 
-            if (correctPlayer) {
+            comparePlayers(players[playerIndex], players[otherPlayerIndex]);
+            
+            // Check if the stats are equal
+            if (player1Stat === player2Stat) {
+                // User gets a point
                 setPoints(points + 1);
                 setCorrectPlayerIndex(playerIndex);
             } else {
-                setLives(lives - 1);
-                setCorrectPlayerIndex(otherPlayerIndex);
-            }
-
-            comparePlayers(players[playerIndex], players[otherPlayerIndex]);
-
-            if (lives - 1 === 0) {
-                setGameStatus("ended");
-            } else {
-                setTimeout(() => {
-                    startNewTurn();
-                }, 5000); // 5-second delay before starting a new turn
+                // Check if the selected player's stat is higher than the other player's stat
+                const correctPlayer = player1Stat > player2Stat;
+    
+                if (correctPlayer) {
+                    setPoints(points + 1);
+                    setCorrectPlayerIndex(playerIndex);
+                } else {
+                    setLives(lives - 1);
+                    setCorrectPlayerIndex(otherPlayerIndex);
+                }  
+    
+                if (lives - 1 === 0) {
+                    setGameStatus("ended");
+                } else {
+                    setTimeout(() => {
+                        startNewTurn();
+                    }, 2000); // 2-second delay before starting a new turn
+                }
             }
         }
     };
+    
 
     return (
         <div className="p-4">
