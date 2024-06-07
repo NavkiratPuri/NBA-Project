@@ -85,10 +85,10 @@ model AuthUser {
   name           String
   email          String   @unique
   hashedPassword String
-  favPlayerId    String   @db.ObjectId
-  favTeamId      String   @db.ObjectId
+  favPlayerId    String   
+  favTeamId      String   
   isAdmin        Boolean  @default(false)
-  
+
 //  favPlayer      Player   @relation(fields: [favPlayerId], references: [id])
 //  favTeam        Team     @relation(fields: [favTeamId], references: [id])
 }
