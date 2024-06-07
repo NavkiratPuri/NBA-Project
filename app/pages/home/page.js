@@ -1,9 +1,26 @@
 import Header from "../../components/header";
 //import '../app/globals.css';
 import Footer from "@/app/components/footer";
+import { getServerSession } from "next-auth";
+import { authConfig } from "../../libs/auth";
 
 // Home Page after log in
-const Home = () => {
+const Home = async () => {
+
+  const session = await getServerSession(authConfig);
+
+  // if (!session || session.status !== 'authenticated') {
+  //   if (typeof window !== 'undefined') {
+
+  //     // Client-side redirect?
+  //     window.location.href = '/';
+  //   } else {
+
+  //     // Server-side redirect?
+  //     return null;
+  //   }
+  // }
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -12,6 +29,7 @@ const Home = () => {
           <h1 className="text-3xl font-bold text-center my-8">Welcome to NBA Player App</h1>
           <p className="text-xl text-gray-700 text-center">Your job is to update the player database. You can Delete, Update, and Add new players to the NBA player app for the 2023 - 2024 NBA season.</p>
         </div>
+        <p>{JSON.stringify(session)}</p>
       </main>
       <Footer />
     </div>
