@@ -26,6 +26,8 @@ const RandomCategory = () => {
     const [comparisonResult, setComparisonResult] = useState("");
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [displayCategory, setDisplayCategory] = useState("");
+    const [lives, setLives] = useState(3);
+    const [points, setPoints] = useState(0);
 
     const categories = [
         { value: "MP", label: "Minutes Per Game (MPG)" },
@@ -93,6 +95,20 @@ const RandomCategory = () => {
     const handlePlayerButtonClick = (playerIndex) => {
         setSelectedPlayer(playerIndex);
         setComparisonResult("");
+        if (players.length > 0 && selectedCategory) {
+            const otherPlayerIndex = playerIndex === 0 ? 1 : 0;
+            const correctPlayer = players[playerIndex][selectedCategory.value] > players[otherPlayerIndex][selectedCategory.value];
+
+            if (correctPlayer) {
+                setPoints(points + 1);
+            } else {
+                setLives(lives - 1);
+            }
+
+            if (correctPlayer) {
+                comparePlayers(players[playerIndex], players[otherPlayerIndex]);
+            }
+        }
     };
 
     useEffect(() => {
@@ -111,19 +127,32 @@ const RandomCategory = () => {
                 Get Random Players
             </button>
 
-            <div className="mt-4">
+            <div className="mt-4 text-center">
                 <h2>Who has a higher {displayCategory}?</h2>
+            </div>
+
+            <div className="mt-4 text-center">
+                <p className="text-2xl font-bold mb-2">Lives: {lives}</p>
+                <p className="text-2xl font-bold mb-2">Points: {points}</p>
             </div>
 
             {players.length > 0 && selectedCategory && (
                 <div className="mt-4">
-                    <h3 className="text-xl font-semibold mb-2">Random Player Data:</h3>
-                    <div className="mt-4 flex">
+                    <h3 className="text-xl font-semibold mb-2 text-center">Random Player Data:</h3>
+                    <div className="mt-4 flex justify-center">
                         {players.map((player, index) => (
-                            <div key={index} className="w-1/2 p-4 border rounded shadow">
+                            <div key={index} className="w-1/3 p-4 border rounded shadow m-2">
                                 <button 
                                     onClick={() => handlePlayerButtonClick(index)} 
-                                    className={`w-full py-2 px-4 rounded ${selectedPlayer === index ? 'bg-green-500 text-white' : ''}`}
+                                    className={`w-full py-2 px-4 rounded ${
+                                        selectedPlayer === index
+                                            ? 'bg-green-500 text-white'
+                                            : selectedPlayer !== null && selectedPlayer !== index && (
+                                                players[selectedPlayer][selectedCategory.value] < players[index][selectedCategory.value]
+                                                    ? 'bg-red-500 text-white'
+                                                    : ''
+                                            )
+                                    }`}
                                 >
                                     <p><strong>Name:</strong> {player.Player}</p>
                                     <p><strong>Team:</strong> {player.Tm}</p>
@@ -133,7 +162,7 @@ const RandomCategory = () => {
                             </div>
                         ))}
                     </div>
-                    <div className="mt-4">
+                    <div className="mt-4 text-center">
                         <p>{comparisonResult}</p>
                     </div>
                 </div>
