@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { calculatePlayerValue } from '@/utils/calculateValue'; // import player value logic
+import { calculatePlayerValue } from '@/app/utils/calculateValue'; // import player value logic
 
 
 const TradeSimulator = ({ player, valueColor }) => {

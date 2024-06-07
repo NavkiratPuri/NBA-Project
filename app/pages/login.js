@@ -1,7 +1,10 @@
+'use client';
+
+
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import '../app/globals.css';
+import { useRouter } from 'next/navigation';
+//import '../app/globals.css';
 
 // Login Page sent to index for running on initital visit
 

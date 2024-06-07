@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 // Header component to display the navigation bar
 const Header = () => {
-    const router = useRouter();
+    const pathname = usePathname();
 
     const navItems = [
         { label: "Home", href: "/home" },
@@ -27,7 +27,7 @@ const Header = () => {
                 </div>
                 <ul className="flex justify-center gap-10">
                     {navItems.map((link, index) => (
-                        <li key={index} className={`font-medium text-lg ${router.pathname === link.href ? "text-yellow-500" : "text-orange-300 hover:text-white"}`}>
+                        <li key={index} className={`font-medium text-lg ${pathname === link.href ? "text-yellow-500" : "text-orange-300 hover:text-white"}`}>
                             <Link href={link.href}>{link.label}</Link>
                         </li>
                     ))}
