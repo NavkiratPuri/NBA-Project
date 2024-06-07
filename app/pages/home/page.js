@@ -3,6 +3,7 @@ import Header from "../../components/header";
 import Footer from "@/app/components/footer";
 import { getServerSession } from "next-auth";
 import { authConfig } from "../../libs/auth";
+import User from "../../components/user";
 
 // Home Page after log in
 const Home = async () => {
@@ -30,6 +31,7 @@ const Home = async () => {
           <p className="text-xl text-gray-700 text-center">Your job is to update the player database. You can Delete, Update, and Add new players to the NBA player app for the 2023 - 2024 NBA season.</p>
         </div>
         <p>{JSON.stringify(session)}</p>
+        <User />
       </main>
       <Footer />
     </div>
