@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Utility function to shuffle an array
@@ -25,6 +25,7 @@ const RandomCategory = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [comparisonResult, setComparisonResult] = useState("");
     const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const [displayCategory, setDisplayCategory] = useState("");
 
     const categories = [
         { value: "MP", label: "Minutes Per Game (MPG)" },
@@ -53,50 +54,53 @@ const RandomCategory = () => {
     ];
 
     const handleButtonClick = async () => {
+        setSelectedPlayer(null);
         const shuffledCategories = shuffle([...categories]);
         const randomCategory = shuffledCategories[0];
         setSelectedCategory(randomCategory);
+        setDisplayCategory(randomCategory.label);
 
         const playerData = await fetchPlayer();
         if (playerData && playerData.length >= 2) {
             const shuffledPlayers = shuffle(playerData).slice(0, 2);
             setPlayers(shuffledPlayers);
             setComparisonResult("");
-            setSelectedPlayer(null);
         }
     };
 
-    const game = (player1, player2) => {
+    const comparePlayers = (player1, player2) => {
         if (!selectedCategory) {
             setComparisonResult("Please select a category.");
             return;
         }
-    
+
         const statPlayer1 = player1[selectedCategory.value];
         const statPlayer2 = player2[selectedCategory.value];
-    
+
         let higherPlayer;
         if (statPlayer1 > statPlayer2) {
             higherPlayer = player1.Player;
         } else if (statPlayer1 < statPlayer2) {
             higherPlayer = player2.Player;
         } else {
-            // If stats are equal
             setComparisonResult("Stats are equal.");
             return;
         }
-    
+
         setComparisonResult(`${higherPlayer} has a higher ${selectedCategory.label}.`);
     };
-    
 
     const handlePlayerButtonClick = (playerIndex) => {
         setSelectedPlayer(playerIndex);
         setComparisonResult("");
-        if (players.length > 0 && selectedCategory) {
-            game(players[selectedPlayer], players[playerIndex]);
-        }
     };
+
+    useEffect(() => {
+        if (selectedPlayer !== null && players.length > 0 && selectedCategory) {
+            const otherPlayerIndex = selectedPlayer === 0 ? 1 : 0;
+            comparePlayers(players[selectedPlayer], players[otherPlayerIndex]);
+        }
+    }, [selectedPlayer, players, selectedCategory]);
 
     return (
         <div className="p-4">
@@ -106,6 +110,10 @@ const RandomCategory = () => {
             >
                 Get Random Players
             </button>
+
+            <div className="mt-4">
+                <h2>Who has a higher {displayCategory}?</h2>
+            </div>
 
             {players.length > 0 && selectedCategory && (
                 <div className="mt-4">
