@@ -130,7 +130,7 @@ const RandomCategory = ({ onGameEnd }) => {
             } else {
                 setTimeout(() => {
                     startNewTurn();
-                }, 2000); // 2-second delay before starting a new turn
+                }, 5000); // 5-second delay before starting a new turn
             }
         }
     };
