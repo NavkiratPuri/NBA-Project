@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-// Utility function to shuffle an array
-const shuffle = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-};
+import { shuffle } from '@/utils/shuffle';
 
 // Fetch player data from the API
 const fetchPlayer = async () => {
@@ -161,10 +153,10 @@ const RandomCategory = ({ onGameEnd }) => {
                             <h3 className="text-xl font-semibold mb-2 text-center">Random Player Data:</h3>
                             <div className="mt-4 flex justify-center">
                                 {players.map((player, index) => (
-                                    <div key={index} className="w-1/3 p-4 border rounded shadow m-2">
+                                    <div key={index} className="w-half h-full inset-0 p-4 border rounded shadow m-2 hover:bg-blue-500 flex items-center justify-center">
                                     <button 
                                         onClick={() => handlePlayerButtonClick(index)} 
-                                        className={`w-full py-2 px-4 rounded ${
+                                        className={`w-full py-2 px-50% rounded ${
                                             selectedPlayer !== null && index === selectedPlayer
                                                 ? (index === correctPlayerIndex ? 'bg-green-500' : 'bg-red-500')
                                                 : selectedPlayer !== null && index === correctPlayerIndex

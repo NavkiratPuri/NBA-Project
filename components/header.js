@@ -12,7 +12,7 @@ const Header = () => {
         { label: "Trade simulator", href: "/trade" },
         { label: "Standings", href: "/teamStandings" },
         { label: "Trivia", href: "/trivia" },
-        { label: "High Low Game", href: "/hilo" },
+        { label: "High-Low Game", href: "/hilo" },
         { label: "Logout", href: "/logout" },
 
 
