@@ -30,8 +30,10 @@ const Home = async () => {
           <h1 className="text-3xl font-bold text-center my-8">Welcome to NBA Player App</h1>
           <p className="text-xl text-gray-700 text-center">Your job is to update the player database. You can Delete, Update, and Add new players to the NBA player app for the 2023 - 2024 NBA season.</p>
         </div>
-        <p>Hi {session?.user?.name}</p>
-        <p>{JSON.stringify(session)}</p>
+        <div className="container m-20 px-4 text-center">
+          <p >Hi {session?.user?.name}</p>
+        </div>
+        <p>debug: {JSON.stringify(session)}</p>
         <User />
       </main>
       <Footer />
