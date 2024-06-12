@@ -27,7 +27,7 @@ export default function LoginPage() {
       });
 
       if (!result.error) {
-        router.push('/pages/home');
+        router.push('/home');
       } else {
         if (result.error.includes("incorrect password")) {
           setError("The email or password you entered is incorrect. Please try again.");
