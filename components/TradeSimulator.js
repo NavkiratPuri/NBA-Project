@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { calculatePlayerValue } from '@/utils/calculateValue'; // import player value logic
 
-
+// trade component
 const TradeSimulator = ({ player, valueColor }) => {
     return (
         <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md">
