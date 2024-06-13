@@ -14,13 +14,28 @@ const Home = async () => {
   //   if (typeof window !== 'undefined') {
 
   //     // Client-side redirect?
-  //     window.location.href = '/';
+  //     window.location.href = '/newregister';
   //   } else {
 
   //     // Server-side redirect?
   //     return null;
   //   }
   // }
+
+  // if (!session || session.status !== 'authenticated') {
+  //   return {
+  //     redirect: {
+  //       destination: '/newregister',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+    let debugSesh;
+    if (!session || session.status !== 'authenticated') {
+       debugSesh = "Session exists and is authenticated";
+    }else{
+       debugSesh = "Session does not exist or is not authenticated";
+    }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -34,6 +49,7 @@ const Home = async () => {
           <p >Hi {session?.user?.name}</p>
         </div>
         <p>debug: {JSON.stringify(session)}</p>
+        <p>debug: {debugSesh}</p>
         <User />
       </main>
       <Footer />

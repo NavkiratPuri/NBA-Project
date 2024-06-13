@@ -1,13 +1,21 @@
+'use client'
+
 import '../app/globals.css';
 import LoginPage from './(site)/login';
+import { useRouter } from 'next/navigation';
 
 // login page loaded on initial visit
-const index = () => {
+const Index = () => {
+
+  const router = useRouter();
+
+  router.push('/newregister')
+
   return (
     <div>
-      <LoginPage/>
+      {/*<LoginPage/>*/}
     </div>
   );
 };
 
-export default index;
+export default Index;

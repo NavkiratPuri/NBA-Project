@@ -2,19 +2,26 @@
 
 import { useState } from "react"
 import axios from "axios"
+import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 
 
 
 
 export default function Register() {
 
-    const [data, setData] = useState({name: '', email: '', password: ''})   
+    const [data, setData] = useState({name: '', email: '', password: ''})
+    
+    const session= useSession()
+    const router = useRouter()
+
 
     const registerUser = async (e) => {
         e.preventDefault()
         axios.post('/api/newregister', data)
         .then(()=>{alert('User has been registered')
           console.log('user has been registered', data)
+          router.push('/newlogin')
         })
         .catch(()=>alert('Something went wrong') )
     }
@@ -103,6 +110,7 @@ export default function Register() {
                   </button>
                 </div>
               </form>
+              <button onClick={()=> router.push('/newlogin')} >Press here for the Login Page</button>
     
               
             </div>

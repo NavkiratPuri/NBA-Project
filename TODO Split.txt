@@ -13,3 +13,4 @@ Mobile
 Friends list / social components
 stat projections
 
+file structure: 
