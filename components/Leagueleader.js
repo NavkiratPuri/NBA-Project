@@ -31,7 +31,7 @@ const LeadersList = () => {
         const topPlayers = sortPlayersByCategory(category);
         return (
             <div className="mt-5">
-                <h2 className="text-xl font-semibold text-gray-800">Top 5 Players in {category}</h2>
+                <h2 className="text-xl font-semibold text-gray-800">Top 10 Players in {category}</h2>
                 <ul className="list-none pl-5">
                     {topPlayers.map((player, index) => (
                         <li key={index} className="py-1">
