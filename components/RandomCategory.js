@@ -135,7 +135,7 @@ const RandomCategory = ({ onGameEnd }) => {
     };
 
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-screen flex-grow">
           <div className="relative flex-grow">
             {gameStatus === "ongoing" ? (
               <>
@@ -178,13 +178,15 @@ const RandomCategory = ({ onGameEnd }) => {
                
               </>
             ) : (
-              <div className="text-center">
-                <h2>Game Over!</h2>
-                <p>Your final score: {points}</p>
-                <button onClick={onGameEnd} className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4">
-                  Next
-                </button>
-              </div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center">
+                    <div className="bg-gray-500 bg-opacity-50 border rounded shadow p-4">
+                        <h2 className="text-3xl">Game Over!</h2>
+                        <p className="text-2xl">Your final score: {points}</p>
+                        <button onClick={onGameEnd} className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4">
+                        Next
+                        </button>
+                    </div>
+                </div>
             )}
           </div>
         </div>
