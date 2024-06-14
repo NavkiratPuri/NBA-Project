@@ -133,53 +133,50 @@ const RandomCategory = ({ onGameEnd }) => {
             }
         }
     };
-    
-    const headerHeight = 60;
-    const footerHeight = 40;
-    
-    // Calculate the height of the content area
-    const contentHeight = `calc(100vh - ${headerHeight + footerHeight}px)`;
 
     return (
         <div className="flex flex-col h-screen">
     
-          <div className="relative flex-grow p-4">
+          <div className="relative flex-grow">
             {gameStatus === "ongoing" ? (
               <>
-                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                  <h2 className="text-3xl">Who has a higher {displayCategory}?</h2>
-                  <p className="text-2xl font-bold">Lives: {lives}</p>
-                  <p className="text-2xl font-bold">Points: {points}</p>
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 text-center">
+                    <div className="bg-gray-500 bg-opacity-50 border rounded shadow p-4">
+                        <h2 className="text-2xl">Who has a higher {displayCategory}?</h2>
+                        <p className="text-xl font-bold">Lives: {lives}</p>
+                        <p className="text-xl font-bold">Points: {points}</p>
+                        <div className="mt-4 text-center">
+                        <p>{comparisonResult}</p>
+                        </div>
+                    </div>
                 </div>
     
                 {players.length > 0 && selectedCategory && (
                   <div className="flex w-full h-full">
                     {players.slice(0, 2).map((player, index) => (
-                      <div key={index} className="w-1/2 p-4 border rounded shadow m-2 hover:bg-blue-500 flex items-center justify-center">
+                      <div key={index} className="w-1/2 flex items-center justify-center">
                         <button 
                           onClick={() => handlePlayerButtonClick(index)} 
-                          className={`w-full h-full py-2 px-4 rounded ${
+                          className={`w-full h-full py-2 px-4 rounded bg-gray-200 hover:bg-blue-400 ${
                             selectedPlayer !== null && index === selectedPlayer
-                              ? (index === correctPlayerIndex ? 'bg-green-500' : 'bg-red-500')
+                              ? (index === correctPlayerIndex ? 'bg-green-500 hover:bg-green-500' : 'bg-red-500 hover:bg-red-500')
                               : selectedPlayer !== null && index === correctPlayerIndex
-                                ? 'bg-green-500'
+                                ? 'bg-green-500 hover:bg-green-500'
                                 : ''
                           } text-black`}
                           disabled={selectedPlayer !== null}
                         >
-                          <p><strong>Name:</strong> {player.Player}</p>
-                          <p><strong>Team:</strong> {player.Tm}</p>
-                          <p><strong>Position:</strong> {player.Pos}</p>
-                          <p><strong>{selectedCategory.label}:</strong> {player[selectedCategory.value]}</p>
+                          <p className="text-xl"><strong>Name:</strong> {player.Player}</p>
+                          <p className="text-xl"><strong>Team:</strong> {player.Tm}</p>
+                          <p className="text-xl"><strong>Position:</strong> {player.Pos}</p>
+                          {/* <p className="text-xl font-bold"><strong>{selectedCategory.label}:</strong> {player[selectedCategory.value]}</p> */}
                         </button>
                       </div>
                     ))}
                   </div>
                 )}
     
-                <div className="mt-4 text-center">
-                  <p>{comparisonResult}</p>
-                </div>
+               
               </>
             ) : (
               <div className="text-center">
