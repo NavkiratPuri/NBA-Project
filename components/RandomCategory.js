@@ -144,9 +144,10 @@ const RandomCategory = ({ onGameEnd }) => {
               <>
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 text-center">
                     <div className="bg-gray-500 bg-opacity-50 border rounded shadow p-4">
-                        <h2 className="text-2xl">Who has a higher {displayCategory}?</h2>
-                        <p className="text-xl font-bold">Lives: {lives}</p>
-                        <p className="text-xl font-bold">Points: {points}</p>
+                        <h2 className="text-xl">Who has a higher </h2>
+                        <h2 className="text-xl">{displayCategory}?</h2>
+                        <p className="text-l font-bold">Lives: {lives}</p>
+                        <p className="text-l font-bold">Points: {points}</p>
                         <div className="mt-4 text-center">
                         <p>{comparisonResult}</p>
                         </div>
@@ -181,7 +182,7 @@ const RandomCategory = ({ onGameEnd }) => {
                
               </>
             ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center">
+                <div className="h-screen inset-0 flex flex-col items-center justify-center z-10 text-center">
                     <div className="bg-gray-500 bg-opacity-50 border rounded shadow p-4">
                         <h2 className="text-3xl">Game Over!</h2>
                         <p className="text-2xl">Your final score: {points}</p>
