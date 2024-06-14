@@ -3,8 +3,9 @@ import React from 'react';
 // Footer component
 const Footer = () => {
     return (
-        <footer className="absoulte bg-orange-800 text-white">
-            <div className="container mx-auto py-4 px-4 text-center">
+        <footer className="bg-orange-800 text-white">
+        {/* <footer className="fixed bottom-0 w-full bg-orange-800 text-white"> */}
+            <div className="container mx-auto px-4 py-5 text-center">
                 <p className="text-sm">
                     © {new Date().getFullYear()} NBA Player App. All rights reserved.
                 </p>

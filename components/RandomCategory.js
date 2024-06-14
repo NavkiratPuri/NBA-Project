@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { shuffle } from '@/utils/shuffle';
+import Header from '../components/header';
+import Footer from '../components/footer';
 
 // Fetch player data from the API
 const fetchPlayer = async () => {
@@ -135,8 +137,9 @@ const RandomCategory = ({ onGameEnd }) => {
     };
 
     return (
-        <div className="flex flex-col h-screen flex-grow">
+        <div className="flex flex-col flex-grow">
           <div className="relative flex-grow">
+            {/* <Header/> */}
             {gameStatus === "ongoing" ? (
               <>
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 text-center">
@@ -151,20 +154,20 @@ const RandomCategory = ({ onGameEnd }) => {
                 </div>
     
                 {players.length > 0 && selectedCategory && (
-                  <div className="flex w-full h-full">
+                  <div className="flex">
                     {players.slice(0, 2).map((player, index) => (
                       <div key={index} className="w-1/2 flex items-center justify-center">
                         <button 
-                          onClick={() => handlePlayerButtonClick(index)} 
-                          className={`w-full h-full py-2 px-4 rounded bg-gray-200 hover:bg-blue-400 ${
+                          onClick={() => handlePlayerButtonClick(index)}
+                          className={`relative w-full h-screen py-2 px-4 rounded bg-gray-200 hover:bg-blue-400  ${
                             selectedPlayer !== null && index === selectedPlayer
                               ? (index === correctPlayerIndex ? 'bg-green-500 hover:bg-green-500' : 'bg-red-500 hover:bg-red-500')
                               : selectedPlayer !== null && index === correctPlayerIndex
                                 ? 'bg-green-500 hover:bg-green-500'
                                 : ''
                           } text-black`}
-                          disabled={selectedPlayer !== null}
-                        >
+                          disabled={selectedPlayer !== null} 
+                        > 
                           <p className="text-xl"><strong>Name:</strong> {player.Player}</p>
                           <p className="text-xl"><strong>Team:</strong> {player.Tm}</p>
                           <p className="text-xl"><strong>Position:</strong> {player.Pos}</p>
@@ -188,7 +191,8 @@ const RandomCategory = ({ onGameEnd }) => {
                     </div>
                 </div>
             )}
-          </div>
+            
+          </div>   
         </div>
       );
     };

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import RandomCategory from './RandomCategory';
+import Header from '../components/header';
+import Footer from '../components/footer';
 
 const GameStarter = () => {
     const [gameStarted, setGameStarted] = useState(false);
@@ -26,10 +28,10 @@ const GameStarter = () => {
     };
 
     return (
-        <div >
-            <main className="flex-grow">
+        <div>
+            {/* <Header/> */}
             {!gameStarted && !gameEnded ? (
-                <div className="flex flex-col items-center justify-center min-h-screen">
+                <div className="flex flex-col items-center justify-center h-screen">
                     <button 
                         onClick={handleStartGame} 
                         className="text-3xl bg-gray-500 text-white font-bold py-4 px-5 rounded hover:bg-opacity-70"
@@ -59,7 +61,6 @@ const GameStarter = () => {
             ) : (
                 <RandomCategory onGameEnd={handleGameEnd} />
             )}
-            </main>
         </div>
         
     );
