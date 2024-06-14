@@ -134,62 +134,66 @@ const RandomCategory = ({ onGameEnd }) => {
         }
     };
     
+    const headerHeight = 60;
+    const footerHeight = 40;
+    
+    // Calculate the height of the content area
+    const contentHeight = `calc(100vh - ${headerHeight + footerHeight}px)`;
 
     return (
-        <div className="p-4">
+        <div className="flex flex-col h-screen">
+    
+          <div className="relative flex-grow p-4">
             {gameStatus === "ongoing" ? (
-                <>
-                    <div className="mt-4 text-center">
-                        <h2>Who has a higher {displayCategory}?</h2>
-                    </div>
-
-                    <div className="mt-4 text-center">
-                        <p className="text-2xl font-bold mb-2">Lives: {lives}</p>
-                        <p className="text-2xl font-bold mb-2">Points: {points}</p>
-                    </div>
-
-                    {players.length > 0 && selectedCategory && (
-                        <div className="mt-4">
-                            <h3 className="text-xl font-semibold mb-2 text-center">Random Player Data:</h3>
-                            <div className="mt-4 flex justify-center">
-                                {players.map((player, index) => (
-                                    <div key={index} className="w-half h-full inset-0 p-4 border rounded shadow m-2 hover:bg-blue-500 flex items-center justify-center">
-                                    <button 
-                                        onClick={() => handlePlayerButtonClick(index)} 
-                                        className={`w-full py-2 px-50% rounded ${
-                                            selectedPlayer !== null && index === selectedPlayer
-                                                ? (index === correctPlayerIndex ? 'bg-green-500' : 'bg-red-500')
-                                                : selectedPlayer !== null && index === correctPlayerIndex
-                                                    ? 'bg-green-500'
-                                                    : ''
-                                        } text-black`}
-                                        disabled={selectedPlayer !== null}
-                                    >
-                                        <p><strong>Name:</strong> {player.Player}</p>
-                                        <p><strong>Team:</strong> {player.Tm}</p>
-                                        <p><strong>Position:</strong> {player.Pos}</p>
-                                        <p><strong>{selectedCategory.label}:</strong> {player[selectedCategory.value]}</p>
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="mt-4 text-center">
-                            <p>{comparisonResult}</p>
-                        </div>
-                    </div>
+              <>
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                  <h2 className="text-3xl">Who has a higher {displayCategory}?</h2>
+                  <p className="text-2xl font-bold">Lives: {lives}</p>
+                  <p className="text-2xl font-bold">Points: {points}</p>
+                </div>
+    
+                {players.length > 0 && selectedCategory && (
+                  <div className="flex w-full h-full">
+                    {players.slice(0, 2).map((player, index) => (
+                      <div key={index} className="w-1/2 p-4 border rounded shadow m-2 hover:bg-blue-500 flex items-center justify-center">
+                        <button 
+                          onClick={() => handlePlayerButtonClick(index)} 
+                          className={`w-full h-full py-2 px-4 rounded ${
+                            selectedPlayer !== null && index === selectedPlayer
+                              ? (index === correctPlayerIndex ? 'bg-green-500' : 'bg-red-500')
+                              : selectedPlayer !== null && index === correctPlayerIndex
+                                ? 'bg-green-500'
+                                : ''
+                          } text-black`}
+                          disabled={selectedPlayer !== null}
+                        >
+                          <p><strong>Name:</strong> {player.Player}</p>
+                          <p><strong>Team:</strong> {player.Tm}</p>
+                          <p><strong>Position:</strong> {player.Pos}</p>
+                          <p><strong>{selectedCategory.label}:</strong> {player[selectedCategory.value]}</p>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 )}
-            </>
-        ) : (
-            <div className="text-center">
+    
+                <div className="mt-4 text-center">
+                  <p>{comparisonResult}</p>
+                </div>
+              </>
+            ) : (
+              <div className="text-center">
                 <h2>Game Over!</h2>
                 <p>Your final score: {points}</p>
                 <button onClick={onGameEnd} className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4">
-                    Next
+                  Next
                 </button>
-            </div>
-        )}
-    </div>
-);
-};
+              </div>
+            )}
+          </div>
+
+        </div>
+      );
+    };
 
 export default RandomCategory;
