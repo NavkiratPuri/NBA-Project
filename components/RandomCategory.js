@@ -136,7 +136,6 @@ const RandomCategory = ({ onGameEnd }) => {
 
     return (
         <div className="flex flex-col h-screen">
-    
           <div className="relative flex-grow">
             {gameStatus === "ongoing" ? (
               <>
@@ -188,7 +187,6 @@ const RandomCategory = ({ onGameEnd }) => {
               </div>
             )}
           </div>
-
         </div>
       );
     };
