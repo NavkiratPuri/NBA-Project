@@ -38,9 +38,9 @@ const Trade = () => {
     // does this by getting the player value of both players
     // then uses if else statement to apply approriate color
     const playerRedGreen = (player, otherPlayer) => {
-        if (player == null || otherPlayer == null) return 'text-gray-700';
-        const playerValue = calculatePlayerValue(player);
-        const otherPlayerValue = calculatePlayerValue(otherPlayer);
+        if (player == null || otherPlayer == null) return 'text-gray-500';
+        const playerValue = calculatePlayerValue(player).totalValue;
+        const otherPlayerValue = calculatePlayerValue(otherPlayer).totalValue;
 
         if (playerValue > otherPlayerValue) {
             return 'text-green-500'
