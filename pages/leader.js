@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import LeadersList from '../components/Leagueleader';
 import Header from '../components/header';

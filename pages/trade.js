@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import PlayerSelector from '../components/PlayerSelector';
 import TradeSimulator from '@/components/TradeSimulator';

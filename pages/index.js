@@ -1,3 +1,4 @@
+"use client";
 import '../app/globals.css';
 import LoginPage from './login';
 
