@@ -52,7 +52,7 @@ const PlayerSelector = ({ players, onSelectPlayer, label }) => {
         if(dropdown.current && !dropdown.current.contains(e.target)){
             setFilteredPlayers([]);
         }
-        if (event.key === 'Enter' && filteredPlayers.length > 0) {
+        if (e.key === 'Enter' && filteredPlayers.length > 0) {
             selectPlayer(filteredPlayers[0]);
         }
     };
