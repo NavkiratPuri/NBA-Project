@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
-import TeamStandings from "../components/Teamstandings";
-import Header from '../components/header';
+import TeamStandings from "../../components/Teamstandings";
+import Header from '../../components/header';
 import '../app/globals.css';
 
 const Teams = () => {
