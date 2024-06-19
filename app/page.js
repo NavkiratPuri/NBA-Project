@@ -12,6 +12,11 @@ export default function LoginPage() {
   const [error, setError] = useState(null);
   const router = useRouter();
 
+
+  //debug
+  console.log("LoginPage");
+  console.log('render check');
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
