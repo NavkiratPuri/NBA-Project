@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React from 'react';
 import HiLo from '../components/HiLo';
 import Header from '../components/header';

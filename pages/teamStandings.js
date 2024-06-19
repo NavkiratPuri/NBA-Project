@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React from 'react';
 import TeamStandings from "../components/Teamstandings";
 import Header from '../components/header';
