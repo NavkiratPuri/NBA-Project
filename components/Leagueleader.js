@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 
 const LeadersList = () => {
@@ -34,19 +34,19 @@ const LeadersList = () => {
             <div className="mt-5">
                 <h2 className="text-xl font-semibold text-gray-800 mb-4">Top 10 Players in {category}</h2>
                 <table className="min-w-full bg-white border border-gray-300">
-                    <thead>
-                        <tr className="bg-gray-100">
-                            <th className="py-2 px-4 border-b text-left">Rank</th>
-                            <th className="py-2 px-4 border-b text-left">Player</th>
-                            <th className="py-2 px-4 border-b text-left">{category}</th>
+                    <thead className="bg-blue-900 text-white">
+                        <tr className="text-left">
+                            <th className="py-2 px-4 border-b">Rank</th>
+                            <th className="py-2 px-4 border-b">Player</th>
+                            <th className="py-2 px-4 border-b">{category}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {topPlayers.map((player, index) => (
                             <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
-                                <td className="py-2 px-4 border-b text-left">{index + 1}</td>
-                                <td className="py-2 px-4 border-b text-left">{player.Player}</td>
-                                <td className="py-2 px-4 border-b text-left">{player[category]}</td>
+                                <td className="py-2 px-4 border-b">{index + 1}</td>
+                                <td className="py-2 px-4 border-b text-blue-500">{player.Player}</td>
+                                <td className="py-2 px-4 border-b">{player[category]}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -57,7 +57,7 @@ const LeadersList = () => {
 
     return (
         <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold text-center text-gray-800 mt-4 mb-4">League Leaders</h1>
+            <h1 className="text-3xl font-bold text-center text-blue-900 mt-4 mb-4">League Leaders</h1>
             <div className="max-w-md mx-auto">
                 <label htmlFor="category" className="block text-gray-700 font-medium mb-2">Select Category:</label>
                 <select
