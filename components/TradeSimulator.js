@@ -1,6 +1,7 @@
 import React from 'react';
 import { calculatePlayerValue } from '@/utils/calculateValue'; // import player value logic
 
+
 // trade component
 const TradeSimulator = ({ player, valueColor }) => {
     const {
@@ -14,43 +15,121 @@ const TradeSimulator = ({ player, valueColor }) => {
         efgValue,
         gpValue,
         gsValue,
-        orValue,
-        drValue,
+        rpgValue,
         pfValue,
         mpValue,
         ageValue,
     } = calculatePlayerValue(player);
+
     return (
         <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md">
-            {player &&
-                (
-                    <div className="space-y-2">
+            {player && (
+
+                <div className="">
+
+                    <div className="flex space-x-5">
+                        <img
+                            src={player.image} 
+                            className="w-24 h-24"
+                        />
                         <div>
-                            <p>Team: {player.Tm}</p>
-                            <p>Postion: {player.Pos}</p>
-                            <p>Age: {player.Age} Value: {ageValue}</p>
-                            <p>Points Per Game: {player.PTS} Value: {ppgValue}</p>
-                            <p>Assists Per Game: {player.AST} Value: {apgValue}</p>
-                            <p>Blocks Per Game: {player.BLK} Value: {bpgValue}</p>
-                            <p>Steals Per Game: {player.STL} Value: {spgValue}</p>
-                            <p>Rebounds Per Game: {(player.TRB)} Value: </p>
-                            <p>Turnover Per Game: {(player.TOV)} Value: {toValue}</p>
-                            <p>3PT%: {player.threePPercent}</p>
-                            <p>FG%: {player.FGPercent}</p>
-                            <p>FT% {player.FTPercent} Value: {ftValue}</p>
-                            <p>Games Played: {player.G} Value: {gpValue}</p>
-                            <p>Games Started: {player.GS} Value: {gsValue}</p>
-                            <p>Personal Fouls Per Game: {player.PF} Value: {pfValue}</p>
-                            <p>Minutes Per Game: {player.MP} Value: {mpValue}</p>
-                            
-                            <p className={`text-2xl font-bold ${valueColor}`}>Value: {totalValue}</p>
+                            <p className="font-semibold text-xl">{player.Player}</p>
+                            <p className="font-bold">{player.Tm}</p>
+                            <p className="font-bold">{player.Pos}</p>
                         </div>
+                    
+                        <img
+                            src={player.image} 
+                            className="w-14 h-14 rounded-full"
+                        />
                     </div>
-                )}
+
+                    <div className="mt-4">
+                        <div className="grid grid-cols-2 gap-1">
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Age: {player.Age}</p>
+                                <p className="text-blue-600 font-bold">Value: {ageValue}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">FG%: {player.FGPercent.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Points Per Game: {player.PTS}</p>
+                                <p className="text-blue-600 font-bold">Value: {ppgValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">3PT%: {player.threePPercent.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Assists Per Game: {player.AST}</p>
+                                <p className="text-blue-600 font-bold">Value: {apgValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">EFG%: {player.eFGPercent}</p>
+                                <p className="text-blue-600 font-bold">Value: {efgValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Rebounds Per Game: {player.TRB}</p>
+                                <p className="text-blue-600 font-bold">Value: {rpgValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">FT%: {player.FTPercent}</p>
+                                <p className="text-blue-600 font-bold">Value: {ftValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Steals Per Game: {player.STL}</p>
+                                <p className="text-blue-600 font-bold">Value: {spgValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Games Played: {player.G}</p>
+                                <p className="text-blue-600 font-bold">Value: {gpValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Blocks Per Game: {player.BLK}</p>
+                                <p className="text-blue-600 font-bold">Value: {bpgValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Games Started: {player.GS}</p>
+                                <p className="text-blue-600 font-bold">Value: {gsValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Turnover Per Game: {player.TOV}</p>
+                                <p className="text-blue-600 font-bold">Value: {toValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Fouls Per Game: {player.PF}</p>
+                                <p className="text-blue-600 font-bold">Value: {pfValue.toFixed(2)}</p>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Minutes Per Game: {player.MP}</p>
+                                <p className="text-blue-600 font-bold">Value: {mpValue.toFixed(2)}</p>
+                            </div>
+                        </div>
+
+                        
+                        <p className={`mt-4 text-2xl font-bold ${valueColor}`}>Total Value: {totalValue}</p>
+                    
+                    </div>
+
+                </div>
+            )}
         </div>
     );
 };
 
 export default TradeSimulator;
-
-
