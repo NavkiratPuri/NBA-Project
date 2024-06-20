@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import PlayerList from '../../components/Playerlist';
-import Addplayer from '../../components/Addplayer';
-import Header from '../../components/header';
-import '../app/globals.css';
-import Footer from '../../components/footer';
+import PlayerList from '@/components/Playerlist';
+import Addplayer from '@/components/Addplayer';
+import Header from '@/components/header';
+//import '../app/globals.css';
+import Footer from '@/components/footer';
 
 // Modify Player Page
 const Add = () => {

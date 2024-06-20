@@ -1,11 +1,11 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import PlayerSelector from '../../components/PlayerSelector';
+import PlayerSelector from '@/components/PlayerSelector';
 import TradeSimulator from '@/components/TradeSimulator';
-import Header from '../../components/header';
-import Footer from '../../components/footer';
-import '../app/globals.css';
-import playerData from '../../utils/playerData';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
+//import '../app/globals.css';
+import playerData from '@/utils/playerData';
 import { calculatePlayerValue } from '@/utils/calculateValue';
 
 
