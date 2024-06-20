@@ -25,19 +25,21 @@ export function calculatePlayerValue(player) {
     //const fgValue = player.FGPercent * 10; // fg percentage
     const ftValue = player.FTPercent * 10 // ft percentage
     const efgValue = player.eFGPercent * 20; //effective fg
-    const gpValue = player.G; // games played
-    const gsValue = player.GS * 1.5; // games started
+    const gpValue = player.G * 0.1; // games played
+    const gsValue = player.GS * 0.2; // games started
     const orValue = player.ORB * 1.5; // offensive rebounds per game
     const drValue = player.DRB; // defensive rebounds per game
-    const pfValue = player.PF * - 1; // personal fouls
+    const pfValue = player.PF * - 0.3; // personal fouls
     const mpValue = player.MP * 0.5; // minutes per game
     const ageValue = calculateAgeValue(player.Age); // age value
+
+    const rpgValue = orValue + drValue;
     
 
     
 
     const totalValue = ppgValue + apgValue + /*rpgValue +*/ bpgValue + spgValue + toValue + /*tpValue + fgValue 
-    +*/ gpValue + gsValue + orValue + drValue + pfValue + ftValue + efgValue + mpValue + ageValue;
+    +*/ gpValue + gsValue + rpgValue + pfValue + ftValue + efgValue + mpValue + ageValue;
     return {
         totalValue: parseFloat(totalValue.toFixed(2)),
         ppgValue,
@@ -53,7 +55,8 @@ export function calculatePlayerValue(player) {
         drValue,
         pfValue,
         mpValue,
-        ageValue
+        ageValue,
+        rpgValue
 
     };
     
