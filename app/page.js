@@ -9,11 +9,13 @@ const Index = () => {
 
   const router = useRouter();
 
-  router.push('/newregister')
+  router.push('/newlogin')
 
   return (
     <div>
       {/*<LoginPage/>*/}
+      <p>Redirecting...</p>
+      <p>If you are not redirected, click <a href="/newlogin">here</a></p>
     </div>
   );
 };

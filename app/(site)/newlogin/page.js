@@ -27,7 +27,7 @@ export default function Login() {
         signIn('credentials', { ...data, redirect: false})
         .then((callback)=>{
             if (callback?.error) {
-                alert('User not found')
+                alert(callback.error)
             }
 
             if(callback?.ok && !callback?.error) {

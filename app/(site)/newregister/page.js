@@ -3,7 +3,7 @@
 import { useState } from "react"
 import axios from "axios"
 import { useRouter } from "next/navigation"
-import { useSession } from "next-auth/react"
+
 
 
 
@@ -12,7 +12,7 @@ export default function Register() {
 
     const [data, setData] = useState({name: '', email: '', password: ''})
     
-    const session= useSession()
+    
     const router = useRouter()
 
 
