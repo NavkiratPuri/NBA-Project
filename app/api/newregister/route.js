@@ -12,7 +12,7 @@ export async function POST(request) {
     
     }
 
-    const exist = await prisma.AuthUser.findUnique({
+    const exist = await prisma.User.findUnique({
         where: {
             email
         }
@@ -24,7 +24,7 @@ export async function POST(request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const AuthUser = await prisma.AuthUser.create({
+    const User = await prisma.User.create({
         data: {
             name,
             email,
@@ -32,7 +32,7 @@ export async function POST(request) {
         }
     });
 
-    return NextResponse.json(AuthUser);
+    return NextResponse.json(User);
     
 
 }

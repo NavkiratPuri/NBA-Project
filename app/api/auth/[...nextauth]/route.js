@@ -48,7 +48,7 @@ export const authOptions = {
 
 
                 // check to see if user exists
-                const AuthUser = await prisma.AuthUser.findUnique({
+                const User = await prisma.User.findUnique({
                     where: {
                         email: credentials.email
                     }
@@ -56,13 +56,13 @@ export const authOptions = {
 
                 // if user does not exist, throw error
 
-                if (!AuthUser || !AuthUser?.hashedPassword) {
+                if (!User || !User?.hashedPassword) {
                     throw new Error('User not found');
                 }
 
                 // check to see if password is correct
 
-                const passwordMatch = await bcrypt.compare(credentials.password, AuthUser.hashedPassword);
+                const passwordMatch = await bcrypt.compare(credentials.password, User.hashedPassword);
 
                 // if password is incorrect, throw error
 
@@ -70,7 +70,7 @@ export const authOptions = {
                     throw new Error('Password incorrect');
                 }
 
-                return AuthUser;
+                return User;
 
             }
         })
