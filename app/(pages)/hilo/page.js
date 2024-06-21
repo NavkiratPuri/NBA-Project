@@ -1,8 +1,8 @@
 'use client'
 import React from 'react';
-import HiLo from '../../components/HiLo';
-import Header from '../../components/header';
-import Footer from '../../components/footer';
+import HiLo from '@/components/HiLo';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 
 const hilo = () => {
   return (

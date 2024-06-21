@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const AddPlayer = () => {
     const router = useRouter();

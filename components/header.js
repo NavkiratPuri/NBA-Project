@@ -10,7 +10,7 @@ const Header = () => {
         { label: "Modify", href: "/edit" },
         { label: "League Leaders", href: "/leader" },
         { label: "Trade simulator", href: "/trade" },
-        { label: "Standings", href: "/teamStandings" },
+        { label: "Standings", href: "/teamstandings" },
         { label: "Trivia", href: "/trivia" },
         { label: "High-Low Game", href: "/hilo" },
         { label: "Logout", href: "/logout" },

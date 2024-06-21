@@ -1,7 +1,7 @@
 'use client'
-import '../app/globals.css';
+//import '../app/globals.css';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // sign up page for new users
 export default function SignUp() {
