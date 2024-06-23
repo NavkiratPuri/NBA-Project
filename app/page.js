@@ -12,10 +12,10 @@ export default function Login() {
 
     const session= useSession()
     const router = useRouter()
-
+ 
     useEffect(() => {
         if (session?.status ==='authenticated') {
-            router.push('/newhome')
+            router.push('/home')
         }
     })
 
