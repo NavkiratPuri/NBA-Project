@@ -1,106 +1,119 @@
 'use client'
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-//import '../app/globals.css';
 
-// Login Page sent to index for running on initital visit
-
-export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-  const router = useRouter();
+import { useState, useEffect } from "react"
+import {signIn, useSession } from 'next-auth/react'
+import { useRouter } from "next/navigation"
 
 
-  //debug
-  console.log("LoginPage");
-  console.log('render check');
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
+export default function Login() {
 
-    try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      });
+    const [data, setData] = useState({email: '', password: ''})
 
-      if (!result.error) {
-        router.push('/home');
-      } else {
-        if (result.error.includes("incorrect password")) {
-          setError("The email or password you entered is incorrect. Please try again.");
-        } else {
-          setError("The email or password you entered is incorrect. Please try again.");
+    const session= useSession()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (session?.status ==='authenticated') {
+            router.push('/newhome')
         }
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      setError('An unexpected error occurred');
+    })
+
+
+
+
+    const loginUser = async (e) => {
+        e.preventDefault()
+        signIn('credentials', { ...data, redirect: false})
+        .then((callback)=>{
+            if (callback?.error) {
+                alert(callback.error)
+            }
+
+            if(callback?.ok && !callback?.error) {
+                alert('User has been logged in')
+            }
+
+        })
     }
-  };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your NBA Player App account</h2>
+    
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <input type="hidden" name="remember" defaultValue="true" />
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">Email address</label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+
+    return (
+        <>
+          <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+              
+              <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                Sign in to your account
+              </h2>
             </div>
-            <div className="pt-4">
-              <label htmlFor="password" className="sr-only">Password</label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+    
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+              <form className="space-y-6" onSubmit={loginUser}>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                    Email address
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={data.email}
+                      onChange={e=> setData({...data, email: e.target.value})}
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+    
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                      Password
+                    </label>
+                    <div className="text-sm">
+                      <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                        Forgot password?
+                      </a>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="current-password"
+                      required
+                      value={data.password}
+                      onChange={e=> setData({...data, password: e.target.value})}
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+    
+                <div>
+                  <button
+                    type="submit"
+                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Sign in
+                  </button>
+                </div>
+              </form>
+  
+              <h1>Sign into Github below</h1>
+              <button onClick={()=>signIn('github')} className="bg-black text-white w-full">Sign in with Github</button>
+  
+              <h1>Sign into Google below</h1>
+              <button onClick={()=>signIn('google')} className="bg-black text-white w-full">Sign in with Google</button>
+    
+              
             </div>
           </div>
-
-          {error && <p className="text-red-500 text-center">{error}</p>}
-
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Sign in
-            </button>
-          </div>
-        </form>
-
-        <button
-          onClick={() => window.location.href = '/signup'}
-          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          Sign Up
-        </button>
-      </div>
-    </div>
-  );
-};
+        </>
+      )
+    }
