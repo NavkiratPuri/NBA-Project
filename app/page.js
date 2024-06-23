@@ -112,7 +112,7 @@ export default function Login() {
               <button onClick={()=>signIn('google')} className="bg-black text-white w-full">Sign in with Google</button>
 
               <h1>Sign up for new account here</h1>
-              <button onClick={()=>router.push('/newregister')} className="bg-black text-white w-full">Sign in with Google</button>
+              <button onClick={()=>router.push('/newregister')} className="bg-black text-white w-full">Sign up for new account</button>
     
               
             </div>
