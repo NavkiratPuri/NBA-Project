@@ -15,7 +15,6 @@ const fetchPlayer = async () => {
     }
 };
 
-
 const RandomCategory = ({ onGameEnd }) => {
     const [players, setPlayers] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -26,6 +25,10 @@ const RandomCategory = ({ onGameEnd }) => {
     const [points, setPoints] = useState(0);
     const [correctPlayerIndex, setCorrectPlayerIndex] = useState(null);
     const [gameStatus, setGameStatus] = useState("ongoing");
+
+    // New state variables to store player names
+    const [player1Name, setPlayer1Name] = useState("");
+    const [player2Name, setPlayer2Name] = useState("");
 
     const categories = [
         { value: "MP", label: "Minutes Per Game (MPG)" },
@@ -70,6 +73,10 @@ const RandomCategory = ({ onGameEnd }) => {
             const shuffledPlayers = shuffle(playerData).slice(0, 2);
             setPlayers(shuffledPlayers);
             setComparisonResult("");
+            
+            // Update player names
+            setPlayer1Name(shuffledPlayers[0].Player);
+            setPlayer2Name(shuffledPlayers[1].Player);
         }
     };
 
@@ -109,7 +116,7 @@ const RandomCategory = ({ onGameEnd }) => {
             comparePlayers(players[playerIndex], players[otherPlayerIndex]);
             
             // Check if the stats are equal
-            if (player1Stat === player2Stat) {
+            if (comparisonResult === "Stats are equal.") {
                 // User gets a point
                 setPoints(points + 1);
                 setCorrectPlayerIndex(playerIndex);
@@ -136,6 +143,12 @@ const RandomCategory = ({ onGameEnd }) => {
         }
     };
 
+    const images = () =>{
+        // Use the player names here
+        console.log("Player 1: ", player1Name);
+        console.log("Player 2: ", player2Name);
+    }
+
     return (
         <div className="flex flex-col flex-grow">
           <div className="relative flex-grow">
@@ -150,6 +163,7 @@ const RandomCategory = ({ onGameEnd }) => {
                         <p className="text-l font-bold">Points: {points}</p>
                         <div className="mt-4 text-center">
                         <p>{comparisonResult}</p>
+                        {images()}
                         </div>
                     </div>
                 </div>

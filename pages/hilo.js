@@ -13,6 +13,7 @@ const hilo = () => {
       </main>
       <Footer />
     </div>
+    
   );
 };
 

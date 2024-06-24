@@ -13,8 +13,11 @@
   },
   "dependencies": {
     "@prisma/client": "^5.12.1",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^16.0.0",
     "add": "^2.0.6",
     "axios": "^1.6.8",
+    "axios-mock-adapter": "^1.22.0",
     "bcrypt": "^5.1.1",
     "css": "^3.0.0",
     "delay": "^6.0.0",
