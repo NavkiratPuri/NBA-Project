@@ -1,7 +1,9 @@
+'use client'
 import { useState, useEffect, useCallback } from 'react';
 import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import '../app/globals.css';
+import { useRouter } from 'next/navigation';
+//import route from '@/app/api/auth/[...nextauth]/route';
+//import '../app/globals.css';
 
 export default function LogoutPage() {
   const [confirmLogout, setConfirmLogout] = useState(false);
@@ -28,6 +30,7 @@ export default function LogoutPage() {
 
   const handleCancelLogout = () => {
     setConfirmLogout(false);
+    router.back();
   };
 
   return (

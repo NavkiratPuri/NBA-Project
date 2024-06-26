@@ -13,11 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model dbuser {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  email    String @unique
-  password String @unique
-}
+// model dbuser {
+//   id       String @id @default(auto()) @map("_id") @db.ObjectId
+//   email    String @unique
+//   password String @unique
+// }
 
 model player {
   id            String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -64,6 +64,8 @@ model team {
   westWins   Int?
   westLosses Int?
   conference String?
+
+  
 }
 
 model trivia {
@@ -75,3 +77,67 @@ model trivia {
   optionD       String?
   correctAnswer String?
 }
+
+//new models for auth and custom profile testing
+
+model User {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  image          String?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  favPlayerId    String?   
+  favTeamId      String?   
+  isAdmin        Boolean  @default(false)
+
+  accounts Account[]
+
+//  favPlayer      Player   @relation(fields: [favPlayerId], references: [id])
+//  favTeam        Team     @relation(fields: [favTeamId], references: [id])
+}
+
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+
+// model Player {
+//   id     String @id @default(auto()) @map("_id") @db.ObjectId
+//   Player String
+//   Pos    String
+//   Tm     String @db.ObjectId
+
+//   team   Team   @relation(fields: [Tm], references: [id])
+//   users  AuthUser[]
+// }
+
+// model Team {
+//   id     String  @id @default(auto()) @map("_id") @db.ObjectId
+//   team   String
+//   wins   Int
+//   losses Int
+
+//   players Player[]
+//   users   AuthUser[]
+// }
