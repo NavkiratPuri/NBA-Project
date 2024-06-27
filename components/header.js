@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // Header component to display the navigation bar
 const Header = () => {
@@ -10,8 +10,9 @@ const Header = () => {
         { label: "Modify", href: "/edit" },
         { label: "League Leaders", href: "/leader" },
         { label: "Trade simulator", href: "/trade" },
-        { label: "Standings", href: "/teamStandings" },
+        { label: "Standings", href: "/teamstandings" },
         { label: "Trivia", href: "/trivia" },
+        { label: "High-Low Game", href: "/hilo" },
         { label: "Logout", href: "/logout" },
 
 
