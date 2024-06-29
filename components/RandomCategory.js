@@ -143,10 +143,15 @@ const RandomCategory = ({ onGameEnd }) => {
         }
     };
 
+<<<<<<< Updated upstream
     const images = () =>{
         // Use the player names here
         console.log("Player 1: ", player1Name);
         console.log("Player 2: ", player2Name);
+=======
+    const handleHintButtonClick = (playerIndex) =>{
+        return "hint shown"
+>>>>>>> Stashed changes
     }
 
     return (
@@ -162,6 +167,7 @@ const RandomCategory = ({ onGameEnd }) => {
                         <p className="text-l font-bold">Lives: {lives}</p>
                         <p className="text-l font-bold">Points: {points}</p>
                         <div className="mt-4 text-center">
+                        <button onClick={() => handleHintButtonClick(index)} className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4">Hint</button>
                         <p>{comparisonResult}</p>
                         {images()}
                         </div>
