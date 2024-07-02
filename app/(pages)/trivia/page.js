@@ -1,7 +1,8 @@
+'use client'
 import React from 'react';
-import Trivia from "../components/Trivia";
-import Header from '../components/header';
-import '../app/globals.css';
+import Trivia from "@/components/Trivia";
+import Header from '@/components/header';
+//import '../app/globals.css';
 
 const TriviaPage = () => {
     return (
