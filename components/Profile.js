@@ -43,7 +43,10 @@ const Profile = () => {
         <h1>Profile</h1>
         <p>Name: {profile.name}</p>
         <p>Email: {profile.email}</p>
-        {/* Add more*/}
+        <p>Favorite Player: {profile.favPlayerId}</p>
+        <p>Favorite Team: {profile.favTeamId}</p>
+        <p>Admin Status: {profile.isAdmin}</p>
+        
     </div>
   );
 };
