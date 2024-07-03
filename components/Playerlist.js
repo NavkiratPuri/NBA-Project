@@ -98,35 +98,15 @@ const PlayerList = () => {
                 <table className="w-full table-auto">
                     <thead>
                         <tr className="text-center">
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('Rk')}>Rank</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('Player')}>Player</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('Pos')}>Position</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('Tm')}>Team</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('G')}>Games Played</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('GS')}>Games Started</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('MP')}>Minutes Played</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('FG')}>Field Goals</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('FGA')}>Field Goal Attempts</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('FGPercent')}>Field Goal Percentage</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('threeP')}>Three-Point Field Goals</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('threePA')}>Three-Point Field Goal Attempts</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('threePPercent')}>Three-Point Field Goal Percentage</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('twoP')}>Two-Point Field Goals</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('twoPA')}>Two-Point Field Goal Attempts</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('twoPPercent')}>Two-Point Field Goal Percentage</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('eFGPercent')}>Effective Field Goal Percentage</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('FT')}>Free Throws</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('FTA')}>Free Throw Attempts</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('FTPercent')}>Free Throw Percentage</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('ORB')}>Offensive Rebounds</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('DRB')}>Defensive Rebounds</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('TRB')}>Total Rebounds</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('AST')}>Assists</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('STL')}>Steals</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('BLK')}>Blocks</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('TOV')}>Turnovers</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('PF')}>Personal Fouls</th>
-                            <th className="px-4 py-2 cursor-pointer" onClick={() => handleSort('PTS')}>Points</th>
+                            {['Rk', 'Player', 'Pos', 'Tm', 'G', 'GS', 'MP', 'FG', 'FGA', 'FGPercent', 'threeP', 'threePA', 'threePPercent', 'twoP', 'twoPA', 'twoPPercent', 'eFGPercent', 'FT', 'FTA', 'FTPercent', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS'].map((key) => (
+                                <th
+                                    key={key}
+                                    className={`px-4 py-2 cursor-pointer ${sortConfig.key === key ? 'bg-gray-200 text-gray-800' : ''}`}
+                                    onClick={() => handleSort(key)}
+                                >
+                                    {key}
+                                </th>
+                            ))}
                             <th className="px-4 py-2">Actions</th>
                         </tr>
                     </thead>
