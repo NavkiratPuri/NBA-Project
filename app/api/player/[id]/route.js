@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 //app/api/player/[id]/route.js
 
-// url: http://localhost:3000/api/post/
+// url: http://localhost:3000/api/player/[id]
 
 // get function handles GET requests to return posts (used for search) 
 export const GET = async (request, { params }) => {
