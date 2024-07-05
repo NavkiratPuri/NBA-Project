@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 
 
 const FavDisplay = ({ player }) => {
+
+    
+
     return (
         <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md">
                         {player &&
