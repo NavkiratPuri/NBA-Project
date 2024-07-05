@@ -9,6 +9,7 @@ import playerData from '@/utils/playerData';
 import { calculatePlayerValue } from '@/utils/calculateValue';
 import axios from 'axios';
 import FavDisplay from './FavDisplay';
+import fetchPlayer from '@/utils/fetchPlayer';
 
 
 const Favs = ({email, playerId, teamId}) => {
@@ -18,6 +19,23 @@ const Favs = ({email, playerId, teamId}) => {
     const [favPlayer, setFavPlayer] = useState(null);
     const [favPlayerId, setFavplayerId] = useState(playerId);
     
+    useEffect(() => {
+
+        
+        const getFavPlayerData = async () => {
+            try {
+                const data = await fetchPlayer(playerId);
+                setFavPlayer(data);
+            } catch (err) {
+                setError(err.message);
+            }
+        };
+
+        if (playerId) {
+        getFavPlayerData();
+        console.log('playerId:', playerId);
+    }
+    }, [playerId]);
 
 
     useEffect(() => {
@@ -78,7 +96,7 @@ const Favs = ({email, playerId, teamId}) => {
                             label="Favorite Player"
                         />
 
-            
+            <p>debug favPlayer: {favPlayer?.name}</p>
              <FavDisplay player={favPlayer}/>
                       
             
