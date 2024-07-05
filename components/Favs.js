@@ -8,12 +8,15 @@ import Footer from '@/components/footer';
 import playerData from '@/utils/playerData';
 import { calculatePlayerValue } from '@/utils/calculateValue';
 import axios from 'axios';
+import FavDisplay from './FavDisplay';
 
 
 const Favs = ({email, playerId, teamId}) => {
     
     const [players, setPlayers] = useState([]);
     const [selectedPlayers, setSelectedPlayers] = useState([null]);
+    const [favPlayer, setFavPlayer] = useState(null);
+    const [favPlayerId, setFavplayerId] = useState(null);
     
 
 
@@ -28,12 +31,19 @@ const Favs = ({email, playerId, teamId}) => {
         };
         fetchPlayers();
     }, []);
+
+    useEffect(() => {
+        console.log('Updated favPlayerId:', favPlayerId);
+      }, [favPlayerId]);
     
     const handleSelectPlayer = (player, slot) => {
         setSelectedPlayers(prevState => ({
             ...prevState,
             [slot]: player
         }));
+        setFavPlayer(player);
+        setFavplayerId(player.playerId);
+        console.log('selected player:', favPlayerId);
     };
 
 
@@ -44,13 +54,21 @@ const Favs = ({email, playerId, teamId}) => {
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
+
             <p>debug email: {email}</p>
             <p>debug favplayerId: {playerId}</p>
+            <p>debug favteamId: {teamId}</p>
+            <p>debug favPlayerid realtime: {favPlayerId}</p>
+
             <PlayerSelector
                             players={players}
                             onSelectPlayer={(player) => handleSelectPlayer(player, 'player1')}
                             label="Favorite Player"
                         />
+
+            
+             <FavDisplay player={favPlayer}/>
+                      
             
         </div>
     );
