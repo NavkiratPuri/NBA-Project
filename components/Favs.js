@@ -16,7 +16,7 @@ const Favs = ({email, playerId, teamId}) => {
     const [players, setPlayers] = useState([]);
     const [selectedPlayers, setSelectedPlayers] = useState([null]);
     const [favPlayer, setFavPlayer] = useState(null);
-    const [favPlayerId, setFavplayerId] = useState(null);
+    const [favPlayerId, setFavplayerId] = useState(playerId);
     
 
 
