@@ -39,14 +39,30 @@ const Favs = ({email, playerId, teamId}) => {
     const handleSelectPlayer = (player) => {
         setFavPlayer(player);
         setFavplayerId(player.id);
+        updateFavPlayer(player.id);
         
     };
 
+    const updateFavPlayer = async (playerId) => {
+        try {
+            const response = await axios.patch('/api/user', {
+                favPlayerId: playerId
+            });
+            console.log('response:', response);
+        }
+        catch (error) {
+            console.error('Error updating favPlayer:', error);
+        }
+    }
 
+    // useEffect(() => {
+    //     if (favPlayerId) {
+    //         updateFavPlayer(favPlayerId);
+    //     }
+    // }
+    // , [favPlayerId]);
 
-
-
-
+    
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6">

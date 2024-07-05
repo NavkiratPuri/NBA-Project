@@ -36,3 +36,37 @@ export const GET = async (req) => {
 export const FETCH = async () => {
   return await GET();
 };
+
+export const PATCH = async (req) => {
+
+  try {
+    const session = await getServerSession({ req, options: authOptions });
+
+    if (!session) {
+      return new Response(JSON.stringify({ message: "Not authenticated" }), { status: 401 });
+    }
+
+    const user = await client.user.findUnique({
+      where: { email: session.user.email },
+    });
+
+    if (!user) {
+      return new Response(JSON.stringify({ message: "User not found" }), { status: 404 });
+    }
+
+    const body = await req.json();
+
+    const updatedUser = await client.user.update({
+      where: { email: session.user.email },
+      data: {
+        favPlayerId: body.favPlayerId,
+      },
+    });
+
+    return new Response(JSON.stringify(updatedUser), { status: 200 });
+  } catch (error) {
+    // Log any errors for debugging
+    console.error("Error in PATCH handler:", error);
+    return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
+  }
+}
