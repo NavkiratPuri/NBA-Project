@@ -36,14 +36,10 @@ const Favs = ({email, playerId, teamId}) => {
         console.log('Updated favPlayerId:', favPlayerId);
       }, [favPlayerId]);
     
-    const handleSelectPlayer = (player, slot) => {
-        setSelectedPlayers(prevState => ({
-            ...prevState,
-            [slot]: player
-        }));
+    const handleSelectPlayer = (player) => {
         setFavPlayer(player);
-        setFavplayerId(player.playerId);
-        console.log('selected player:', favPlayerId);
+        setFavplayerId(player.id);
+        
     };
 
 
@@ -62,7 +58,7 @@ const Favs = ({email, playerId, teamId}) => {
 
             <PlayerSelector
                             players={players}
-                            onSelectPlayer={(player) => handleSelectPlayer(player, 'player1')}
+                            onSelectPlayer={(player) => handleSelectPlayer(player)}
                             label="Favorite Player"
                         />
 
