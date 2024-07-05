@@ -2,6 +2,7 @@
 import client from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 
+//app/api/player/[id]/route.js
 
 // url: http://localhost:3000/api/post/
 
