@@ -84,11 +84,11 @@ const Favs = ({email, playerId, teamId}) => {
 
              <FavDisplay player={favPlayer}/>
                       
-            <h2 className="text-2xl font-semibold mt-4">Change Your Favorite Player:</h2>
+            <h2 className="text-2xl font-semibold mt-4">Edit Favorite Player:</h2>
             <PlayerSelector
                             players={players}
                             onSelectPlayer={(player) => handleSelectPlayer(player)}
-                            label="Favorite Player"
+                            label="Change Favorite Player:"
                         />
 
 
