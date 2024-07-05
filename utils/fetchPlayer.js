@@ -1,12 +1,16 @@
+import axios from 'axios';
 
-export const fetchPlayer = async (id) => {
-    const response = await fetch(`/api/player/${id}`);
-    const data = await response.json();
 
-    if (!response.ok) {
-        throw new Error(data.message || 'Failed to fetch player data');
+// function to fetch data from mongodb
+const fetchPlayer = async (id) => {
+    try{
+        const response = await axios.get('api/player/${id}');
+        if (response.data) {
+            return response.data;
+        }
+    }catch (error){
+        console.error('error fetching player data', error);
     }
-
-    return data;
 };
 
+export default fetchPlayer;
