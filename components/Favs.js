@@ -79,17 +79,19 @@ const Favs = ({email, playerId, teamId}) => {
             <p>debug favteamId: {teamId}</p>
             <p>debug favPlayerid realtime: {favPlayerId}</p> */}
 
+            
+            {/* <p>debug favPlayer: {favPlayer?.name}</p> */}
+
+             <FavDisplay player={favPlayer}/>
+                      
+            <h2 className="text-2xl font-semibold mt-4">Change Your Favorite Player:</h2>
             <PlayerSelector
                             players={players}
                             onSelectPlayer={(player) => handleSelectPlayer(player)}
                             label="Favorite Player"
                         />
 
-            {/* <p>debug favPlayer: {favPlayer?.name}</p> */}
-            
-             <FavDisplay player={favPlayer}/>
-                      
-            
+
         </div>
     );
 };
