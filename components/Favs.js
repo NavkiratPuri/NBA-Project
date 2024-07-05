@@ -25,6 +25,7 @@ const Favs = ({email, playerId, teamId}) => {
         const getFavPlayerData = async () => {
             try {
                 const data = await fetchPlayer(playerId);
+                console.log('data:', data);
                 setFavPlayer(data);
             } catch (err) {
                 setError(err.message);

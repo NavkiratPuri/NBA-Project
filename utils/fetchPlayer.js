@@ -4,7 +4,7 @@ import axios from 'axios';
 // function to fetch data from mongodb
 const fetchPlayer = async (id) => {
     try{
-        const response = await axios.get('api/player/${id}');
+        const response = await axios.get(`api/player/${id}`);
         if (response.data) {
             return response.data;
         }
