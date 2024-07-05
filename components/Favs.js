@@ -1,12 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import PlayerSelector from '@/components/PlayerSelector';
-import TradeSimulator from '@/components/TradeSimulator';
-import Header from '@/components/header';
-import Footer from '@/components/footer';
-//import '../app/globals.css';
 import playerData from '@/utils/playerData';
-import { calculatePlayerValue } from '@/utils/calculateValue';
 import axios from 'axios';
 import FavDisplay from './FavDisplay';
 import fetchPlayer from '@/utils/fetchPlayer';
@@ -74,22 +69,15 @@ const Favs = ({email, playerId, teamId}) => {
         }
     }
 
-    // useEffect(() => {
-    //     if (favPlayerId) {
-    //         updateFavPlayer(favPlayerId);
-    //     }
-    // }
-    // , [favPlayerId]);
 
-    
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
 
-            <p>debug email: {email}</p>
+            {/* <p>debug email: {email}</p>
             <p>debug favplayerId: {playerId}</p>
             <p>debug favteamId: {teamId}</p>
-            <p>debug favPlayerid realtime: {favPlayerId}</p>
+            <p>debug favPlayerid realtime: {favPlayerId}</p> */}
 
             <PlayerSelector
                             players={players}
@@ -97,7 +85,8 @@ const Favs = ({email, playerId, teamId}) => {
                             label="Favorite Player"
                         />
 
-            <p>debug favPlayer: {favPlayer?.name}</p>
+            {/* <p>debug favPlayer: {favPlayer?.name}</p> */}
+            
              <FavDisplay player={favPlayer}/>
                       
             
