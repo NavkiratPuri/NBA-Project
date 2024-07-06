@@ -9,6 +9,7 @@ const PlayerList = () => {
     const [inputValue, setInputValue] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredPlayers, setFilteredPlayers] = useState([]);
+    const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
 
     useEffect(() => {
         fetchPlayers();
@@ -57,6 +58,29 @@ const PlayerList = () => {
         setFilteredPlayers(newFilteredPlayers);
     };
 
+    const handleSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+
+        const sortedPlayers = [...filteredPlayers].sort((a, b) => {
+            const aValue = isNaN(a[key]) ? a[key] : parseFloat(a[key]);
+            const bValue = isNaN(b[key]) ? b[key] : parseFloat(b[key]);
+
+            if (aValue < bValue) {
+                return direction === 'ascending' ? -1 : 1;
+            }
+            if (aValue > bValue) {
+                return direction === 'ascending' ? 1 : -1;
+            }
+            return 0;
+        });
+
+        setFilteredPlayers(sortedPlayers);
+    };
+
     return (
         <div className="container mx-auto">
             <input
@@ -74,35 +98,15 @@ const PlayerList = () => {
                 <table className="w-full table-auto">
                     <thead>
                         <tr className="text-center">
-                            <th className="px-4 py-2">Rank</th>
-                            <th className="px-4 py-2">Player</th>
-                            <th className="px-4 py-2">Position</th>
-                            <th className="px-4 py-2">Team</th>
-                            <th className="px-4 py-2">Games Played</th>
-                            <th className="px-4 py-2">Games Started</th>
-                            <th className="px-4 py-2">Minutes Played</th>
-                            <th className="px-4 py-2">Field Goals</th>
-                            <th className="px-4 py-2">Field Goal Attempts</th>
-                            <th className="px-4 py-2">Field Goal Percentage</th>
-                            <th className="px-4 py-2">Three-Point Field Goals</th>
-                            <th className="px-4 py-2">Three-Point Field Goal Attempts</th>
-                            <th className="px-4 py-2">Three-Point Field Goal Percentage</th>
-                            <th className="px-4 py-2">Two-Point Field Goals</th>
-                            <th className="px-4 py-2">Two-Point Field Goal Attempts</th>
-                            <th className="px-4 py-2">Two-Point Field Goal Percentage</th>
-                            <th className="px-4 py-2">Effective Field Goal Percentage</th>
-                            <th className="px-4 py-2">Free Throws</th>
-                            <th className="px-4 py-2">Free Throw Attempts</th>
-                            <th className="px-4 py-2">Free Throw Percentage</th>
-                            <th className="px-4 py-2">Offensive Rebounds</th>
-                            <th className="px-4 py-2">Defensive Rebounds</th>
-                            <th className="px-4 py-2">Total Rebounds</th>
-                            <th className="px-4 py-2">Assists</th>
-                            <th className="px-4 py-2">Steals</th>
-                            <th className="px-4 py-2">Blocks</th>
-                            <th className="px-4 py-2">Turnovers</th>
-                            <th className="px-4 py-2">Personal Fouls</th>
-                            <th className="px-4 py-2">Points</th>
+                            {['Rk', 'Player', 'Pos', 'Tm', 'G', 'GS', 'MP', 'FG', 'FGA', 'FGPercent', 'threeP', 'threePA', 'threePPercent', 'twoP', 'twoPA', 'twoPPercent', 'eFGPercent', 'FT', 'FTA', 'FTPercent', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS'].map((key) => (
+                                <th
+                                    key={key}
+                                    className={`px-4 py-2 cursor-pointer ${sortConfig.key === key ? 'bg-gray-200 text-gray-800' : ''}`}
+                                    onClick={() => handleSort(key)}
+                                >
+                                    {key}
+                                </th>
+                            ))}
                             <th className="px-4 py-2">Actions</th>
                         </tr>
                     </thead>
