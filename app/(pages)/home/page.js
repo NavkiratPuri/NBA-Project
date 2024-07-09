@@ -7,6 +7,8 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import Profile from "@/components/Profile";
+
 
 
 // Home Page after log in
@@ -30,10 +32,16 @@ const Home = () => {
       <Header />
       <main className="flex-grow">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold text-center my-8">Welcome to NBA Player App</h1>
-          <p className="text-xl text-gray-700 text-center">Your job is to update the player database. You can Delete, Update, and Add new players to the NBA player app for the 2023 - 2024 NBA season.</p>
+          <h1 className="text-3xl font-bold text-center my-8">Hi {session?.user?.name} welcome to NBA Player App</h1>
+         
         </div>
-        <p>Hi {session?.user?.name}</p>
+        
+
+        <div>
+
+          <Profile/>
+
+        </div>
       </main>
       <Footer />
     </div>
