@@ -17,7 +17,7 @@ const fetchPlayer = async () => {
     }
 };
 
-const RandomCategory = ({ onGameEnd }) => {
+const HiLo = ({ onGameEnd }) => {
     const [players, setPlayers] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [comparisonResult, setComparisonResult] = useState("");
@@ -71,26 +71,65 @@ const RandomCategory = ({ onGameEnd }) => {
         comparePlayersAndUpdate(playerIndex);
     };
 
+    const comparePlayers = (player1, player2) => {
+        if (!selectedCategory) {
+            setComparisonResult("Please select a category.");
+            return;
+        }
+    
+        const statPlayer1 = player1[selectedCategory.value];
+        const statPlayer2 = player2[selectedCategory.value];
+        
+        // //Testing Equals
+        // const statPlayer1 = 2;
+        // const statPlayer2 = 2;
+    
+        let higherPlayer;
+        if (statPlayer1 === statPlayer2) {
+            setComparisonResult(`Both players have the same ${selectedCategory.label} of ${statPlayer1}.`);
+            // Gain a point when stats are equal
+            setPoints(points + 1);
+            setCorrectPlayerIndex(player1.Player === player1Name ? 0 : 1);
+        } else if (statPlayer1 > statPlayer2) {
+            higherPlayer = player1.Player;
+            setCorrectPlayerIndex(0);
+            setComparisonResult(`${player1.Player} has a higher ${selectedCategory.label} with ${statPlayer1}.`);
+        } else {
+            higherPlayer = player2.Player;
+            setCorrectPlayerIndex(1);
+            setComparisonResult(`${player2.Player} has a higher ${selectedCategory.label} with ${statPlayer2}.`);
+        }
+    };
+    
     const comparePlayersAndUpdate = (playerIndex) => {
         if (players.length > 0 && selectedCategory) {
             const otherPlayerIndex = playerIndex === 0 ? 1 : 0;
             const player1Stat = players[playerIndex][selectedCategory.value];
             const player2Stat = players[otherPlayerIndex][selectedCategory.value];
-
+            
+            // //Testing Equals
+            // const player1Stat = 2;
+            // const player2Stat = 2;
+    
             comparePlayers(players[playerIndex], players[otherPlayerIndex]);
-
-            if (comparisonResult === "Stats are equal.") {
-                setPoints(points + 1);
-                setCorrectPlayerIndex(playerIndex);
+    
+            if (comparisonResult.startsWith("Both players have the same")) {
+                // Handle the equal stats case here
+                // No additional update needed, as points are already updated in comparePlayers
+                // You can still call startNewTurn() to proceed to the next turn
+                setTimeout(() => {
+                    startNewTurn();
+                }, 2000); // 2-second delay before starting a new turn
             } else {
+                // Update lives and points based on the comparison result
                 updateLivesAndPoints(player1Stat, player2Stat, playerIndex, otherPlayerIndex);
             }
         }
     };
-
+    
     const updateLivesAndPoints = (player1Stat, player2Stat, playerIndex, otherPlayerIndex) => {
-        const correctPlayer = player1Stat > player2Stat;
-
+        const correctPlayer = player1Stat >= player2Stat;
+    
         if (correctPlayer) {
             setPoints(points + 1);
             setCorrectPlayerIndex(playerIndex);
@@ -98,7 +137,7 @@ const RandomCategory = ({ onGameEnd }) => {
             setLives(lives - 1);
             setCorrectPlayerIndex(otherPlayerIndex);
         }
-
+    
         if (lives - 1 === 0) {
             setGameStatus("ended");
         } else {
@@ -107,30 +146,8 @@ const RandomCategory = ({ onGameEnd }) => {
             }, 2000); // 2-second delay before starting a new turn
         }
     };
-
-    const comparePlayers = (player1, player2) => {
-        if (!selectedCategory) {
-            setComparisonResult("Please select a category.");
-            return;
-        }
-
-        const statPlayer1 = player1[selectedCategory.value];
-        const statPlayer2 = player2[selectedCategory.value];
-
-        let higherPlayer;
-        if (statPlayer1 > statPlayer2) {
-            higherPlayer = player1.Player;
-            setCorrectPlayerIndex(0);
-        } else if (statPlayer1 < statPlayer2) {
-            higherPlayer = player2.Player;
-            setCorrectPlayerIndex(1);
-        } else {
-            setComparisonResult("Stats are equal.");
-            return;
-        }
-
-        setComparisonResult(`${higherPlayer} has a higher ${selectedCategory.label}.`);
-    };
+    
+    
 
     const handleHintButtonClick = (playerIndex) => {
         if (hintUsed || players.length === 0 || !selectedCategory) return;
@@ -171,6 +188,7 @@ const RandomCategory = ({ onGameEnd }) => {
                                         correctPlayerIndex={correctPlayerIndex}
                                         hintUsed={hintUsed}
                                         hint={hint}
+                                        selectedCategory={selectedCategory} // Pass selectedCategory to PlayerCard
                                         handlePlayerButtonClick={handlePlayerButtonClick}
                                         handleHintButtonClick={handleHintButtonClick}
                                     />
@@ -189,4 +207,4 @@ const RandomCategory = ({ onGameEnd }) => {
     );
 };
 
-export default RandomCategory;
+export default HiLo;
