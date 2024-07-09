@@ -41,6 +41,13 @@ const RandomCategory = ({ onGameEnd }) => {
         setCorrectPlayerIndex(null);
         setHint(null);
         setHintUsed(false); // Reset hintUsed state
+
+        // Reset lives and points for a new game
+        if (gameStatus === 'ended') {
+            setLives(3);
+            setPoints(0);
+        }
+
         const shuffledCategories = shuffle([...categories]);
         const randomCategory = shuffledCategories[0];
         setSelectedCategory(randomCategory);
@@ -135,6 +142,11 @@ const RandomCategory = ({ onGameEnd }) => {
         setHintUsed(true);
     };
 
+    const handleRestart = () => {
+        setGameStatus("ongoing");
+        startNewTurn();
+    };
+
     return (
         <div className="flex flex-col flex-grow">
             <div className="relative flex-grow">
@@ -169,7 +181,7 @@ const RandomCategory = ({ onGameEnd }) => {
                 ) : (
                     <GameOver
                         points={points}
-                        startNewTurn={startNewTurn}
+                        onRestart={handleRestart}
                     />
                 )}
             </div>
