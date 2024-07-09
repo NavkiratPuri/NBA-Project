@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import HiLo from '@/components/HiLo';
+import HiLo from '@/components/HiLo Game/Hilo';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 
