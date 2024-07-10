@@ -12,7 +12,7 @@ const FavTeam = ({teamId}) => {
     const [teams, setTeams] = useState([]);
     const [selectedTeam, setSelectedTeam] = useState([null]);
     const [favTeam, setFavTeam] = useState(null);
-    const [favTeamId, setTeamId] = useState(teamId);
+    const [favTeamId, setFavTeamId] = useState(teamId);
     
     useEffect(() => {
 
@@ -52,7 +52,7 @@ const FavTeam = ({teamId}) => {
 
     const handleSelectTeam = (team) => {
         setFavTeam(team);
-        setTeamId(team.id);
+        setFavTeamId(team.id);
         updateFavTeam(team.id);
         
     };
@@ -74,10 +74,10 @@ const FavTeam = ({teamId}) => {
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
 
-            <FavTeamDisplay team={favTeam} />
+            {/* <FavTeamDisplay team={favTeam} /> */}
 
             <h2 className="text-xl font-semibold">Select your favorite team:</h2>
-            <TeamSelector teams={teams} onSelectTeam={handleSelectTeam} selectedTeam={selectedTeam} />
+            <TeamSelector teams={teams} onSelectTeam={handleSelectTeam} label="Change Favorite Team:" />
 
             
 
