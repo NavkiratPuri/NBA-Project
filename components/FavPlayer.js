@@ -30,7 +30,7 @@ const FavPlayer = ({playerId}) => {
         if (playerId) {
         getFavPlayerData();
         console.log('playerId:', playerId);
-    }
+        }
     }, [playerId]);
 
 
