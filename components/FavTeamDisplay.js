@@ -11,7 +11,7 @@ const FavTeamDisplay = ({ team }) => {
             {team &&
                 (
                     <div className="space-y-2">
-                        <h2 className="text-2xl font-semibold">Favorite Player:</h2>
+                        <h2 className="text-2xl font-semibold">Favorite Team:</h2>
                         <div>
                             <h1>{team.team}</h1>
                             <p>Wins: {team.wins}</p>
