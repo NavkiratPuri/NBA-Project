@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 
 
-const FavDisplay = ({ player }) => {
+const FavPlayerDisplay = ({ player }) => {
 
     
 
@@ -29,4 +29,4 @@ const FavDisplay = ({ player }) => {
     );
 };
 
-export default FavDisplay;
+export default FavPlayerDisplay;

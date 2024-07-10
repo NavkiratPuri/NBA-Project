@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import PlayerSelector from '@/components/PlayerSelector';
 import playerData from '@/utils/playerData';
 import axios from 'axios';
-import FavDisplay from './FavDisplay';
+import FavPlayerDisplay from './FavPlayerDisplay';
 import fetchPlayer from '@/utils/fetchPlayer';
 
 
-const Favs = ({email, playerId, teamId}) => {
+const FavPlayer = ({email, playerId, teamId}) => {
     
     const [players, setPlayers] = useState([]);
     const [selectedPlayers, setSelectedPlayers] = useState([null]);
@@ -82,7 +82,7 @@ const Favs = ({email, playerId, teamId}) => {
             
             {/* <p>debug favPlayer: {favPlayer?.name}</p> */}
 
-             <FavDisplay player={favPlayer}/>
+             <FavPlayerDisplay player={favPlayer}/>
                       
             <h2 className="text-2xl font-semibold mt-4">Edit Favorite Player:</h2>
             <PlayerSelector
@@ -96,4 +96,4 @@ const Favs = ({email, playerId, teamId}) => {
     );
 };
 
-export default Favs;
+export default FavPlayer;
