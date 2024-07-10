@@ -24,7 +24,7 @@ const TeamSelector = ({ teams, onSelectTeam, label }) => {
         if (value) {
             setFilteredTeams(
                 teams.filter(team =>{
-                    const fullName = team.Team.toLowerCase();
+                    const fullName = team.team.toLowerCase();
                     const [firstName, lastName] = fullName.split(' ');
                     return fullName.startsWith(value) || firstName.startsWith(value) || lastName.startsWith(value);
                 })
@@ -39,7 +39,7 @@ const TeamSelector = ({ teams, onSelectTeam, label }) => {
     // clears the team list
     // call onSelectTeam and pass the new selected team as arg
     const selectTeam = (team) => {
-        setInputValue(team.Team);
+        setInputValue(team.team);
         setFilteredTeams([]);
         onSelectTeam(team);
     };
@@ -96,7 +96,7 @@ const TeamSelector = ({ teams, onSelectTeam, label }) => {
                         className='p-2 cursor-pointer hover:bg-blue-100'
                         onClick={() => selectTeam(team)}
                     >
-                        {team.Team} - {team.Tm}
+                        {team.team} 
                     </li>
 
                 ))}

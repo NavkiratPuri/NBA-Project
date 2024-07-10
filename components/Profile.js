@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import FavPlayer from "@/components/FavPlayer";
+import FavTeam from "./FavTeam";
 
 const Profile = () => {
   const { data: session, status } = useSession();
@@ -51,6 +52,7 @@ const Profile = () => {
         
 
         <FavPlayer playerId={profile.favPlayerId}/>
+        <FavTeam />
 
 
     </div>
