@@ -50,7 +50,7 @@ const Profile = () => {
         <p>Admin Status: {profile.isAdmin}</p> */}
         
 
-        <FavPlayer email={session.user?.email} playerId={profile.favPlayerId} teamId={profile.favTeamId}/>
+        <FavPlayer playerId={profile.favPlayerId}/>
 
 
     </div>
