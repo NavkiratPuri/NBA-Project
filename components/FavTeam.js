@@ -74,15 +74,12 @@ const FavTeam = ({teamId}) => {
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
 
-            {/* <p>debug email: {email}</p>
-            <p>debug favplayerId: {playerId}</p>
-            <p>debug favteamId: {teamId}</p>
-            <p>debug favPlayerid realtime: {favPlayerId}</p> */}
+            <FavTeamDisplay team={favTeam} />
+
+            <h2 className="text-xl font-semibold">Select your favorite team:</h2>
+            <TeamSelector teams={teams} onSelectTeam={handleSelectTeam} selectedTeam={selectedTeam} />
 
             
-            {/* <p>debug favPlayer: {favPlayer?.name}</p> */}
-
-            <TeamSelector teams={teams} onSelectTeam={(team)=>setSelectedTeam(team)}  label="Change Favorite Player"/>
 
 
         </div>
