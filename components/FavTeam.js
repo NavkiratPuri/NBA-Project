@@ -74,7 +74,7 @@ const FavTeam = ({teamId}) => {
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
 
-            {/* <FavTeamDisplay team={favTeam} /> */}
+            <FavTeamDisplay team={favTeam} />
 
             <h2 className="text-xl font-semibold">Select your favorite team:</h2>
             <TeamSelector teams={teams} onSelectTeam={handleSelectTeam} label="Change Favorite Team:" />
