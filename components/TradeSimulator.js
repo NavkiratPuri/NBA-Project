@@ -39,7 +39,7 @@ const TradeSimulator = ({ player, valueColor }) => {
                         </div>
                     
                         <img
-                            src={player.image} 
+                            src={player.team} 
                             className="w-14 h-14 rounded-full"
                         />
                     </div>
