@@ -2,27 +2,32 @@
 import client from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 
+//app/api/player/[id]/route.js
 
-// url: http://localhost:3000/api/post/
+// url: http://localhost:3000/api/player/[id]
 
 // get function handles GET requests to return posts (used for search) 
 export const GET = async (request, { params }) => {
     try {
         const { id } = params;
-        const player = await client.Player.findUnique({
+        if (!id) {
+            return NextResponse.json({ message: "Player ID is required" }, { status: 400 });
+        }
+        const player = await client.player.findUnique({
             where: {
-                id
+                id: id
             }
         });
         if (!player) {
-            return NextResponse.json({ status: 404 }, { message: "Post not found" })
+            return NextResponse.json({ message: "Player not found" }, { status: 404 });
         }
         return NextResponse.json(player);
     } catch (error) {
-        return NextResponse.json({ status: 500 }, { message: "Error getting post", error })
-
+        console.error(error); // Log the error for debugging purposes
+        return NextResponse.json({ message: "Error getting player", error }, { status: 500 });
     }
 }
+
 
 // Patch function handles PATCH requests to perform updates (used for editing data)
 export const PATCH = async (request, { params }) => {

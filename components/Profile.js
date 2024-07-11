@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import Favs from "@/components/Favs";
 
 const Profile = () => {
   const { data: session, status } = useSession();
@@ -38,16 +39,25 @@ const Profile = () => {
   }
 
   return (
-    <div>
-        <p>Debug: {status}</p>
-        <h1>Profile</h1>
+    <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md text-center">
+        {/* <p>Debug: {status}</p> */}
+        <h1 className="text-2xl font-semibold">
+          Profile</h1>
         <p>Name: {profile.name}</p>
         <p>Email: {profile.email}</p>
-        <p>Favorite Player: {profile.favPlayerId}</p>
+        {/* <p>Favorite Player: {profile.favPlayerId}</p>
         <p>Favorite Team: {profile.favTeamId}</p>
-        <p>Admin Status: {profile.isAdmin}</p>
+        <p>Admin Status: {profile.isAdmin}</p> */}
         
+
+        <Favs email={session.user?.email} playerId={profile.favPlayerId} teamId={profile.favTeamId}/>
+
+
     </div>
+
+  
+
+
   );
 };
 
