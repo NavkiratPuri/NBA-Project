@@ -1,24 +1,32 @@
 import axios from 'axios';
 
-// function to fetch data from mongodb and combine with player images
+// function to fetch data from MongoDB and combine with player images and team logos
 const playerData = async () => {
     try {
         // Fetch player data from MongoDB
-        const playerResponse = await axios.get('api/player');
-        if (playerResponse.data) {
+        const playerD = await axios.get('api/player');
+        if (playerD.data) {
             // Fetch player images
-            const imageResponse = await fetch('/player_images.json');
-            if (!imageResponse.ok) {
-                throw new Error('Failed to fetch player images');
+            const playerI = await fetch('/player_images.json');
+            if (!playerI.ok) {
+                throw new Error('Failed to fetch images');
             }
-            const playerImages = await imageResponse.json();
+            const playerImages = await playerI.json();
 
-            // Combine player data with images
-            const playersWithImages = playerResponse.data.map(player => ({
+            // Fetch team logos
+            const playerTL = await fetch('/team_logos.json');
+            if (!playerTL.ok) {
+                throw new Error('Failed to fetch team logos');
+            }
+            const teamLogos = await playerTL.json();
+
+            // Combine player data with images and team logos
+            const playerDataCombined = playerD.data.map(player => ({
                 ...player,
-                image: playerImages[player.Player] || ''
+                image: playerImages[player.Player] || playerImages.defualt,
+                teamLogo: teamLogos[player.Tm]?.logo || teamLogos.default 
             }));
-            return playersWithImages;
+            return playerDataCombined;
         }
     } catch (error) {
         console.error('Error fetching player data', error);

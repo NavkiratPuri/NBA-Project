@@ -1,0 +1,123 @@
+{
+    "default": "https://b.fssta.com/uploads/application/fs-app/default-headshot.vresize.331.331.medium.0.png",
+    "HOU": {
+        "name": "Houston Rockets",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/houston-rockets-logo.png"
+    },
+    "BOS": {
+        "name": "Boston Celtics",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/boston-celtics-logo.png"
+    },
+    "TOR": {
+        "name": "Toronto Raptors",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/toronto-raptors-logo.png"
+    },
+    "OKC": {
+        "name": "Oklahoma City Thunder",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/oklahoma-city-thunder-logo.png"
+    },
+    "PHX": {
+        "name": "Phoenix Suns",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/phoenix-suns-logo.png"
+    },
+    "DEN": {
+        "name": "Denver Nuggets",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/denver-nuggets-logo.png"
+    },
+    "MIN": {
+        "name": "Minnesota Timberwolves",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/minnesota-timberwolves-logo.png"
+    },
+    "LAL": {
+        "name": "Los Angeles Lakers",
+        "logo": "https://th.bing.com/th/id/OIP.TRdzZX0udR0NWoe15f8xBAAAAA?rs=1&pid=ImgDetMain"
+    },
+    "LAC": {
+        "name": "Los Angeles Clippers",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/los-angelas-clippers-logo.png"
+    },
+    "DAL": {
+        "name": "Dallas Mavericks",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/dallas-mavericks-logo.png"
+    },
+    "NYK": {
+        "name": "New York Knicks",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/new-york-knicks-logo.png"
+    },
+    "MIL": {
+        "name": "Milwaukee Bucks",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/milwaukee-bucks-logo.png"
+    },
+    "NOP": {
+        "name": "New Orleans Pelicans",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/new-orleans-pelicans-logo.png"
+    },
+    "CLE": {
+        "name": "Cleveland Cavaliers",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/cleveland-cavaliers-logo.png"
+    },
+    "IND": {
+        "name": "Indiana Pacers",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/indiana-pacers-logo.png"
+    },
+    "ORL": {
+        "name": "Orlando Magic",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/orlando-magic-logo.png"
+    },
+    "PHI": {
+        "name": "Philadelphia 76ers",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/philaedelphia-76ers-logo.png"
+    },
+    "MIA": {
+        "name": "Miami Heat",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/miami-heat-logo.png"
+    },
+    "GSW": {
+        "name": "Golden State Warriors",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/golden-state-warriors-logo.png"
+    },
+    "SAC": {
+        "name": "Sacramento Kings",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/sacremento-kings-logo.png"
+    },
+    "CHI": {
+        "name": "Chicago Bulls",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/chicago-bulls-logo.png"
+    },
+    "ATL": {
+        "name": "Atlanta Hawks",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/atlanta-hawks-logo.png"
+    },
+    "BKN": {
+        "name": "Brooklyn Nets",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/brooklyn-nets-logo.png"
+    },
+    "UTA": {
+        "name": "Utah Jazz",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/utah-jazz-logo.png"
+    },
+    "MEM": {
+        "name": "Memphis Grizzlies",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/memphis-grizzlies-logo.png"
+    },
+    "SAS": {
+        "name": "San Antonio Spurs",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/san-antonio-spurs-logo.png"
+    },
+    "CHO": {
+        "name": "Charlotte Hornets",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/charlotte-hornets-logo.png"
+    },
+    "POR": {
+        "name": "Portland Trail Blazers",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/portland-trail-blazers-logo.png"
+    },
+    "WAS": {
+        "name": "Washington Wizards",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/washington-wizards-logo.png"
+    },
+    "DET": {
+        "name": "Detroit Pistons",
+        "logo": "https://cdn.freebiesupply.com/images/thumbs/1x/detroit-pistons-logo.png"
+    }
+}
