@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import Favs from "@/components/Favs";
+import FavPlayer from "@/components/FavPlayer";
+import FavTeam from "@/components/FavTeam";
 
 const Profile = () => {
   const { data: session, status } = useSession();
@@ -50,7 +51,8 @@ const Profile = () => {
         <p>Admin Status: {profile.isAdmin}</p> */}
         
 
-        <Favs email={session.user?.email} playerId={profile.favPlayerId} teamId={profile.favTeamId}/>
+        <FavPlayer playerId={profile.favPlayerId}/>
+        <FavTeam teamId={profile.favTeamId}/>
 
 
     </div>
