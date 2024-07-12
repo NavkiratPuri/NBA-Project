@@ -59,10 +59,13 @@ const FavTeam = ({teamId}) => {
 
     const updateFavTeam = async (teamId) => {
         try {
-            const response = await axios.put(`/api/user`, {favTeamId: teamId});
+            const response = await axios.patch('/api/user', {
+                favTeamId: teamId
+            });
             console.log('response:', response);
-        } catch (error) {
-            console.error('Error updating favTeam:', error);
+        }
+        catch (error) {
+            console.error('Error updating favPlayer:', error);
         }
     }
 
