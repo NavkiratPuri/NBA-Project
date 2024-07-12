@@ -8,6 +8,7 @@ const Header = () => {
     const navItems = [
         { label: "Home", href: "/home" },
         { label: "Players", href: "/edit" },
+        { label: "Teams", href: "/teams" },
         { label: "Trade simulator", href: "/trade" },
         { label: "Standings", href: "/teamstandings" },
         { label: "Trivia", href: "/trivia" },
