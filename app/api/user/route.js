@@ -60,6 +60,7 @@ export const PATCH = async (req) => {
       where: { email: session.user.email },
       data: {
         favPlayerId: body.favPlayerId,
+        favTeamId: body.favTeamId,
       },
     });
 

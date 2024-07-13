@@ -7,7 +7,7 @@ import Footer from '@/components/footer';
 //import '../app/globals.css';
 import playerData from '@/utils/playerData';
 import { calculatePlayerValue } from '@/utils/calculateValue';
-import ImageTest from '@/components/ImageTest';
+import { playerImage } from '@/utils/playerImage';
 
 
 const Trade = () => {
@@ -94,17 +94,14 @@ const Trade = () => {
     const teamATotalValue = getTotalValue(teamAPlayers);
     const teamBTotalValue = getTotalValue(teamBPlayers);
 
-   
-
     // render logic
     return (
-
         <div className="flex flex-col min-h-screen bg-gray-100">
-
 
             <Header />
 
             <main className="flex-grow p-8">
+                <h1 className="text-center text-4xl font-bold text-blue-700 mb-6">Trade Simulator</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 

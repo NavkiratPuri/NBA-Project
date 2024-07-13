@@ -1,17 +1,17 @@
 import React, {useState, useEffect, useRef} from 'react';
 
 // component definition
-const PlayerSelector = ({ players, onSelectPlayer, label }) => {
+const TeamSelector = ({ teams, onSelectTeam, label }) => {
     // state variables
     const [inputValue, setInputValue] = useState('');
-    const [filteredPlayers, setFilteredPlayers] = useState([]);
+    const [filteredTeams, setFilteredTeams] = useState([]);
     const dropdown = useRef(null);
     
-    // function to update input value and filter player list
+    // function to update input value and filter team list
     // also makes dropdown reapper when in focus
     // first if-else block checks if value is defined
     // second if-else block filters based on value
-    const filterPlayers = (e) => {
+    const filterTeams = (e) => {
         let value;
     
         if (e) {
@@ -22,38 +22,38 @@ const PlayerSelector = ({ players, onSelectPlayer, label }) => {
         setInputValue(value);
 
         if (value) {
-            setFilteredPlayers(
-                players.filter(player =>{
-                    const fullName = player.Player.toLowerCase();
+            setFilteredTeams(
+                teams.filter(team =>{
+                    const fullName = team.team.toLowerCase();
                     const [firstName, lastName] = fullName.split(' ');
                     return fullName.startsWith(value) || firstName.startsWith(value) || lastName.startsWith(value);
                 })
             );
         } else {
-            setFilteredPlayers([]);
+            setFilteredTeams([]);
         }
     };
     
-    // function to up set input value to the selected player
-    // updates field with selected players name
-    // clears the player list
-    // call onSelectPlayer and pass the new selected player as arg
-    const selectPlayer = (player) => {
-        setInputValue(player.Player);
-        setFilteredPlayers([]);
-        onSelectPlayer(player);
+    // function to up set input value to the selected team
+    // updates field with selected teams name
+    // clears the team list
+    // call onSelectTeam and pass the new selected team as arg
+    const selectTeam = (team) => {
+        setInputValue(team.team);
+        setFilteredTeams([]);
+        onSelectTeam(team);
     };
 
     // function to make dropdown go away if cursor is clicked outside component
-    // and also to select first player in list if enter key pressed
-    // first if block clears players list to hide dropdown 
-    // second if block selects first player in players list when enter key pressed
+    // and also to select first team in list if enter key pressed
+    // first if block clears teams list to hide dropdown 
+    // second if block selects first team in teams list when enter key pressed
     const dropdownF = (e) => {
         if(dropdown.current && !dropdown.current.contains(e.target)){
-            setFilteredPlayers([]);
+            setFilteredTeams([]);
         }
-        if (e.key === 'Enter' && filteredPlayers.length > 0) {
-            selectPlayer(filteredPlayers[0]);
+        if (event.key === 'Enter' && filteredTeams.length > 0) {
+            selectTeam(filteredTeams[0]);
         }
     };
 
@@ -70,33 +70,33 @@ const PlayerSelector = ({ players, onSelectPlayer, label }) => {
 
     //render logic
     return (
-        <div className="player-selector-container mb-4 relative" ref={dropdown}>
+        <div className="team-selector-container mb-4 relative" ref={dropdown}>
 
-            <label htmlFor="player-select" className="block mb-2 font-medium">{label}</label>
+            <label htmlFor="team-select" className="block mb-2 font-medium">{label}</label>
 
             <input 
 
-                id='player-input' 
+                id='team-input' 
                 type='text' 
                 className='w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500'
                 value={inputValue} 
-                onChange={filterPlayers} 
-                placeholder='Enter Player'
-                onFocus={filterPlayers}
+                onChange={filterTeams} 
+                placeholder='Enter Team'
+                onFocus={filterTeams}
                 onKeyDown={dropdownF}/>
 
-            {filteredPlayers.length > 0 && (
+            {filteredTeams.length > 0 && (
 
                 <ul className="absolute bg-white border border-gray-300 rounded w-full max-h-40 overflow-auto">
 
-                {filteredPlayers.map(player => (
+                {filteredTeams.map(team => (
 
                     <li 
-                        key={player.id} 
+                        key={team.id} 
                         className='p-2 cursor-pointer hover:bg-blue-100'
-                        onClick={() => selectPlayer(player)}
+                        onClick={() => selectTeam(team)}
                     >
-                        {player.Player} - {player.Tm}
+                        {team.team} 
                     </li>
 
                 ))}
@@ -109,4 +109,4 @@ const PlayerSelector = ({ players, onSelectPlayer, label }) => {
     };
 
 
-export default PlayerSelector;
+export default TeamSelector;
