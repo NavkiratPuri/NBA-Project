@@ -1,39 +1,64 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 // Header component to display the navigation bar
 const Header = () => {
     const router = useRouter();
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const navItems = [
         { label: "Home", href: "/home" },
         { label: "Players", href: "/edit" },
-        { label: "Trade simulator", href: "/trade" },
+        { label: "Trade Simulator", href: "/trade" },
         { label: "Standings", href: "/teamstandings" },
-        { label: "Trivia", href: "/trivia" },
-        { label: "High-Low Game", href: "/hilo" },
+        { label: "Games", href: "#" },
         { label: "Logout", href: "/logout" },
+    ];
 
-
-
+    const gameItems = [
+        { label: "Trivia", href: "/trivia" },
+        { label: "Hi-Lo", href: "/hilo" },
     ];
 
     return (
-        <>
-            <div className="flex items-center justify-between bg-orange-800 text-white shadow-lg w-full px-4 py-2">
+        <header className="bg-gray-800 text-white shadow-lg py-3">
+            <div className="container mx-auto flex justify-between items-center">
                 <div className="flex items-center space-x-4">
-                    <img src="/NBA logo.jpg" alt="NBA Logo" className="h-12 w-auto" />
-                    <h1 className="text-3xl font-bold text-white">NBA Player App</h1>
+                    <img src="/bpa.webp" alt="NBA Logo" className="h-20 w-auto" />
+                    <h1 className="text-3xl font-bold">NBA Player App</h1>
                 </div>
-                <ul className="flex justify-center gap-10">
-                    {navItems.map((link, index) => (
-                        <li key={index} className={`font-medium text-lg ${router.pathname === link.href ? "text-yellow-500" : "text-orange-300 hover:text-white"}`}>
-                            <Link href={link.href}>{link.label}</Link>
-                        </li>
-                    ))}
-                </ul>
+                <nav className="bg-gray-700 p-2 rounded-lg">
+                    <ul className="flex space-x-4">
+                        {navItems.map((link, index) => (
+                            link.label !== "Games" ? (
+                                <li key={index} className={`px-3 py-2 rounded ${router.pathname === link.href ? "bg-yellow-500 text-gray-800" : "hover:bg-gray-600"}`}>
+                                    <Link href={link.href}>{link.label}</Link>
+                                </li>
+                            ) : (
+                                <li 
+                                    key={index} 
+                                    className="relative px-3 py-2 rounded hover:bg-gray-600 cursor-pointer"
+                                    onMouseEnter={() => setDropdownOpen(true)}
+                                    onMouseLeave={() => setDropdownOpen(false)}
+                                >
+                                    <span>Games</span>
+                                    {dropdownOpen && (
+                                        <ul className="absolute left-0 mt-2 bg-gray-700 rounded-lg shadow-lg w-40">
+                                            {gameItems.map((game, index) => (
+                                                <li key={index} className={`px-4 py-2 ${router.pathname === game.href ? "bg-yellow-500 text-gray-800" : "hover:bg-gray-600"}`}>
+                                                    <Link href={game.href}>{game.label}</Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </li>
+                            )
+                        ))}
+                    </ul>
+                </nav>
             </div>
-        </>
+        </header>
     );
 }
 

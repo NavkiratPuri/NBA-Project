@@ -2,7 +2,7 @@
 import React from 'react';
 
 const ImageTest = () => {
-    const imageUrl = 'https://th.bing.com/th/id/OIP.TRdzZX0udR0NWoe15f8xBAAAAA?rs=1&pid=ImgDetMain';
+    const imageUrl = 'https://cdn.nba.com/teams/legacy/www.nba.com/suns/sites/suns/files/legacy/photos/sunslogo_12.jpg';
 
     return (
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
