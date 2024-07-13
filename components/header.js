@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 // Header component to display the navigation bar
 const Header = () => {
-    const router = useRouter();
+    const pathname = usePathname();
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const navItems = [
@@ -21,6 +21,8 @@ const Header = () => {
         { label: "Hi-Lo", href: "/hilo" },
     ];
 
+    const isGamesActive = gameItems.some(game => game.href === pathname);
+
     return (
         <header className="bg-gray-800 text-white shadow-lg py-3">
             <div className="container mx-auto flex justify-between items-center">
@@ -32,21 +34,21 @@ const Header = () => {
                     <ul className="flex space-x-4">
                         {navItems.map((link, index) => (
                             link.label !== "Games" ? (
-                                <li key={index} className={`px-3 py-2 rounded ${router.pathname === link.href ? "bg-yellow-500 text-gray-800" : "hover:bg-gray-600"}`}>
+                                <li key={index} className={`px-3 py-2 rounded ${pathname === link.href ? "bg-orange-500 text-gray-800" : "hover:bg-gray-600"}`}>
                                     <Link href={link.href}>{link.label}</Link>
                                 </li>
                             ) : (
                                 <li 
                                     key={index} 
-                                    className="relative px-3 py-2 rounded hover:bg-gray-600 cursor-pointer"
+                                    className={`relative px-3 py-2 rounded ${isGamesActive ? "bg-orange-500 text-gray-800" : "hover:bg-gray-600"} cursor-pointer`}
                                     onMouseEnter={() => setDropdownOpen(true)}
                                     onMouseLeave={() => setDropdownOpen(false)}
                                 >
                                     <span>Games</span>
                                     {dropdownOpen && (
                                         <ul className="absolute left-0 mt-2 bg-gray-700 rounded-lg shadow-lg w-40">
-                                            {gameItems.map((game, index) => (
-                                                <li key={index} className={`px-4 py-2 ${router.pathname === game.href ? "bg-yellow-500 text-gray-800" : "hover:bg-gray-600"}`}>
+                                            {gameItems.map((game, gameIndex) => (
+                                                <li key={gameIndex} className={`px-4 py-2 ${pathname === game.href ? "bg-orange-500 text-gray-800" : "hover:bg-gray-600"}`}>
                                                     <Link href={game.href}>{game.label}</Link>
                                                 </li>
                                             ))}
