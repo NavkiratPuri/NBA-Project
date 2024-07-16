@@ -13,6 +13,7 @@ const Header = () => {
         { label: "Trade Simulator", href: "/trade" },
         { label: "Standings", href: "/teamstandings" },
         { label: "Games", href: "#" },
+        { label: "Compare", href: "/compare" },
         { label: "Logout", href: "/logout" },
     ];
 

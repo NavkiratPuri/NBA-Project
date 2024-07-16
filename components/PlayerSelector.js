@@ -19,7 +19,7 @@ const PlayerSelector = ({ players, onSelectPlayer, label }) => {
             setFilteredPlayers(
                 players.filter(player => {
                     const fullName = player.Player.toLowerCase();
-                    const [firstName, lastName] = fullName.split(' ');
+                    const [firstName, lastName] = fullName.split('');
                     return fullName.startsWith(value) || firstName.startsWith(value) || lastName.startsWith(value);
                 })
             );

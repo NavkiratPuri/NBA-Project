@@ -55,14 +55,14 @@ const Trade = () => {
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
             <Header />
-            <main className="flex-grow p-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="bg-white rounded-lg shadow-md p-6">
+            <main className="flex-grow p-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div className="bg-white rounded-lg shadow-md p-2">
                         <PlayerSelector
                             players={players}
                             onSelectPlayer={(player) => handleSelectPlayer(player, 'A')}
                         />
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                             {teamAPlayers.map((player, index) => (
                                 <TradeSimulator
                                     key={index}
@@ -72,12 +72,12 @@ const Trade = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="bg-white rounded-lg shadow-md p-6">
+                    <div className="">
                         <PlayerSelector
                             players={players}
                             onSelectPlayer={(player) => handleSelectPlayer(player, 'B')}
                         />
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                             {teamBPlayers.map((player, index) => (
                                 <TradeSimulator
                                     key={index}
@@ -88,14 +88,14 @@ const Trade = () => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-8">
-                    <div className="flex justify-center items-center gap-8 mt-4">
-                        <div className="bg-white rounded-lg shadow-md p-4 text-center">
+                <div className="flex justify-center">
+                    <div className="flex justify-center items-center gap-8 mt-2">
+                        <div className="bg-white rounded-lg shadow-md p-2 text-center">
                             <p className={`text-2xl font-bold ${teamATotalValue >= teamBTotalValue ? 'text-green-500' : 'text-red-500'}`}>
                                 {teamATotalValue.toFixed(2)}
                             </p>
-                        </div>
-                        <div className="bg-white rounded-lg shadow-md p-4 text-center">
+                        </div><p className='font-bold text-2xl'>VS</p>
+                        <div className="bg-white rounded-lg shadow-md p-2 text-center">
                             <p className={`text-2xl font-bold ${teamBTotalValue >= teamATotalValue ? 'text-green-500' : 'text-red-500'}`}>
                                 {teamBTotalValue.toFixed(2)}
                             </p>

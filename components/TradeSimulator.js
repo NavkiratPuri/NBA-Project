@@ -37,7 +37,7 @@ const TradeSimulator = ({ player, onRemove }) => {
                 <div className="flex items-center mt-2">
                     <img src={player.teamLogo} alt={player.Tm} className="w-10 h-10 rounded-full flex-shrink-0" />
                     <p className={`ml-2 text-sm font-bold text-center`}>
-                        Total Value: {totalValue.toFixed(2)}
+                        Total Value: {totalValue}
                     </p>
                 </div>
             </div>
@@ -46,63 +46,63 @@ const TradeSimulator = ({ player, onRemove }) => {
                     <div className="grid grid-cols-2 gap-1">
                         <div className="flex flex-col">
                             <p className="text-xs">Age: {player.Age}</p>
-                            <p className="text-blue-600 text-xs">{ageValue.toFixed(2)}</p>
+                            <p className="text-blue-600 text-xs">{ageValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">FG%: {player.FGPercent.toFixed(2)}</p>
+                            <p className="text-xs">FG%: {player.FGPercent}</p>
                             <p className="text-blue-600 text-xs"></p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">PPG: {player.PTS.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{ppgValue.toFixed(2)}</p>
+                            <p className="text-xs">PPG: {player.PTS}</p>
+                            <p className="text-blue-600 text-xs">{ppgValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">3PT%: {player.threePPercent.toFixed(2)}</p>
+                            <p className="text-xs">3PT%: {player.threePPercent}</p>
                             <p className="text-blue-600 text-xs"></p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">APG: {player.AST.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{apgValue.toFixed(2)}</p>
+                            <p className="text-xs">APG: {player.AST}</p>
+                            <p className="text-blue-600 text-xs">{apgValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">EFG%: {player.eFGPercent.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{efgValue.toFixed(2)}</p>
+                            <p className="text-xs">EFG%: {player.eFGPercent}</p>
+                            <p className="text-blue-600 text-xs">{efgValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">RPG: {player.TRB.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{rpgValue.toFixed(2)}</p>
+                            <p className="text-xs">RPG: {player.TRB}</p>
+                            <p className="text-blue-600 text-xs">{rpgValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">FT%: {player.FTPercent.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{ftValue.toFixed(2)}</p>
+                            <p className="text-xs">FT%: {player.FTPercent}</p>
+                            <p className="text-blue-600 text-xs">{ftValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">SPG: {player.STL.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{spgValue.toFixed(2)}</p>
+                            <p className="text-xs">SPG: {player.STL}</p>
+                            <p className="text-blue-600 text-xs">{spgValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">GP: {player.G.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{gpValue.toFixed(2)}</p>
+                            <p className="text-xs">GP: {player.G}</p>
+                            <p className="text-blue-600 text-xs">{gpValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">BPG: {player.BLK.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{bpgValue.toFixed(2)}</p>
+                            <p className="text-xs">BPG: {player.BLK}</p>
+                            <p className="text-blue-600 text-xs">{bpgValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">GS: {player.GS.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{gsValue.toFixed(2)}</p>
+                            <p className="text-xs">GS: {player.GS}</p>
+                            <p className="text-blue-600 text-xs">{gsValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">TO: {player.TOV.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{toValue.toFixed(2)}</p>
+                            <p className="text-xs">TO: {player.TOV}</p>
+                            <p className="text-blue-600 text-xs">{toValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">FPG: {player.PF.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{pfValue.toFixed(2)}</p>
+                            <p className="text-xs">FPG: {player.PF}</p>
+                            <p className="text-blue-600 text-xs">{pfValue}</p>
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">MPG: {player.MP.toFixed(2)}</p>
-                            <p className="text-blue-600 text-xs">{mpValue.toFixed(2)}</p>
+                            <p className="text-xs">MPG: {player.MP}</p>
+                            <p className="text-blue-600 text-xs">{mpValue}</p>
                         </div>
                     </div>
                 </div>
