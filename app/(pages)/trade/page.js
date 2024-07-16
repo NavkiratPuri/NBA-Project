@@ -53,17 +53,17 @@ const Trade = () => {
     const teamBTotalValue = getTotalValue(teamBPlayers);
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className='flex flex-col min-h-screen bg-gray-100'>
             <Header />
-            <main className="flex-grow p-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 relative">
-                    <div className="pr-2 border-r-2 border-black">
-                        <h2 className="text-center text-xl font-bold mb-2">Team A</h2>
+            <main className='flex-grow p-3'>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-2 relative'>
+                    <div className='pr-2 border-r-2 border-black'>
+                        <h2 className='text-center text-xl font-bold mb-2'>Team A (Click the cards for stats then click again for values!!!!!)</h2>
                         <PlayerSelector
                             players={players}
                             onSelectPlayer={(player) => handleSelectPlayer(player, 'A')}
                         />
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4'>
                             {teamAPlayers.map((player, index) => (
                                 <PlayerCard
                                     key={index}
@@ -73,13 +73,13 @@ const Trade = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="">
-                        <h2 className="text-center text-xl font-bold mb-2">Team B</h2>
+                    <div className=''>
+                        <h2 className='text-center text-xl font-bold mb-2'>Team B (Click the cards for stats then click again for values!!!!!)</h2>
                         <PlayerSelector
                             players={players}
                             onSelectPlayer={(player) => handleSelectPlayer(player, 'B')}
                         />
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4'>
                             {teamBPlayers.map((player, index) => (
                                 <PlayerCard
                                     key={index}
@@ -90,15 +90,15 @@ const Trade = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-center mt-8">
-                    <div className="flex justify-center items-center gap-8">
-                        <div className="bg-white rounded-lg shadow-md p-4 text-center">
+                <div className='flex justify-center mt-4'>
+                    <div className='flex justify-center items-center gap-8'>
+                        <div className='bg-white rounded-lg shadow-md p-4 text-center'>
                             <p className={`text-2xl font-bold ${teamATotalValue >= teamBTotalValue ? 'text-green-500' : 'text-red-500'}`}>
                                 {teamATotalValue.toFixed(2)}
                             </p>
                         </div>
                         <p className='font-bold text-2xl'>VS</p>
-                        <div className="bg-white rounded-lg shadow-md p-4 text-center">
+                        <div className='bg-white rounded-lg shadow-md p-4 text-center'>
                             <p className={`text-2xl font-bold ${teamBTotalValue >= teamATotalValue ? 'text-green-500' : 'text-red-500'}`}>
                                 {teamBTotalValue.toFixed(2)}
                             </p>

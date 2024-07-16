@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { calculatePlayerValue } from '@/utils/calculateValue';
 
 const PlayerCard = ({ player, onRemove }) => {
-    const [showDetails, setShowDetails] = useState();
-    const [activeTab, setActiveTab] = useState('stats');
+    const [view, setView] = useState(0);
     const {
         totalValue,
         ppgValue,
@@ -32,45 +31,39 @@ const PlayerCard = ({ player, onRemove }) => {
         lastName = nameParts.slice(1, nameParts.length - 1).join(' ');
         lastName += ` ${nameParts[nameParts.length - 1]}`;
     }
-    
+
+    const cardClick = () => {
+        setView((prevView) => (prevView + 1) % 3);
+    };
 
     return (
-        <div className="mt-2 p-2 bg-gray-300  rounded-lg shadow-lg relative z-10 max-w-xs hover:bg-gray-200">
-            <button className="absolute top-2 right-2 text-gray-400 hover:text-white" onClick={onRemove}>x</button>
-            <div onClick={() => setShowDetails(!showDetails)} className="cursor-pointer">
-                <div className="flex items-center space-x-4">
-                    <img src={player.image} alt={player.Player} className="w-16 h-16 rounded-full border-2 border-gray-600" />
-                    <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-s truncate">{firstName}</p>
-                        <p className="font-semibold text-s truncate">{lastName}</p>
-                        <p className="text-gray-500">{player.Tm} - {player.Year}</p>
-                        <p className="text-gray-500">{player.Pos}</p>
+        <div className='mt-2 p-2 bg-gray-300 rounded-lg shadow-lg relative max-w-xs hover:bg-gray-200'>
+            <button className='absolute top-2 right-2 text-gray-400 hover:text-white' onClick={onRemove}>x</button>
+            <div onClick={cardClick} className='cursor-pointer'>
+                {view === 0 && (
+                    <div>
+                        <div className='flex items-center space-x-4'>
+                            <img src={player.image} alt={player.Player} className='w-16 h-16 rounded-full border-2 border-gray-600' />
+                            <div className='flex-1 min-w-0'>
+                                <p className='font-semibold text-s truncate'>{firstName}</p>
+                                <p className='font-semibold text-lg truncate'>{lastName}</p>
+                                <p className='text-gray-500'>{player.Tm} - {player.Year}</p>
+                                <p className='text-gray-500'>{player.Pos}</p>
+                            </div>
+                        </div>
+                        <div className='flex items-center'>
+                            <img src={player.teamLogo} alt={player.Tm} className='w-11 h-11 rounded-full border-1 border-gray-600' />
+                            <p className='ml-3 text-md font-semibold'>Total Value: {totalValue}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="flex items-center">
-                    <img src={player.teamLogo} alt={player.Tm} className="w-12 h-12 rounded-full border-1 border-gray-600" />
-                    <p className="ml-3 text-s font-semibold">Total Value: {totalValue}</p>
-                </div>
-            </div>
-            {showDetails && (
-                <div className="text-sm overflow-y-auto max-h-32">
-                   
-                    <div className="flex justify-evenly">
-                        <button
-                            className={`px-2 py-1 text-xs mt-2 rounded-lg mb-1 ${activeTab === 'stats' ? 'bg-gray-400' : 'bg-gray-200'}`}
-                            onClick={() => setActiveTab('stats')}
-                        >
-                            Stats
-                        </button>
-                        <button
-                            className={`px-2 py-1 mt-2 text-xs rounded-lg mb-1 ${activeTab === 'values' ? 'bg-gray-400' : 'bg-gray-200'}`}
-                            onClick={() => setActiveTab('values')}
-                        >
-                            Values
-                        </button>
-                    </div>
-                    {activeTab === 'stats' && (
-                        <div className="grid grid-cols-2 mt-1 text-xs">
+                )}
+                {view === 1 && (
+                    <div className='text-base'>
+                        <div className=''>
+                            <p className='font-semibold'>{player.Player} - {player.Year}</p>
+                            <p className='font-semibold text-sm'>Stats</p>
+                        </div>
+                        <div className='grid grid-cols-3 text-sm mt-'>
                             <p>Age: {player.Age}</p>
                             <p>FG%: {player.FGPercent}</p>
                             <p>PPG: {player.PTS}</p>
@@ -87,9 +80,15 @@ const PlayerCard = ({ player, onRemove }) => {
                             <p>FPG: {player.PF}</p>
                             <p>MPG: {player.MP}</p>
                         </div>
-                    )}
-                    {activeTab === 'values' && (
-                        <div className="grid grid-cols-2 mt-1 text-xs">
+                    </div>
+                )}
+                {view === 2 && (
+                    <div className='text-sm'>
+                        <div className=''>
+                            <p className='font-semibold'>{player.Player} - {player.Year}</p>
+                            <p className='font-semibold text-sm'>Values</p>
+                        </div>
+                        <div className='grid grid-cols-3 text-sm '>
                             <p>Age: {ageValue}</p>
                             <p>PPG: {ppgValue}</p>
                             <p>APG: {apgValue}</p>
@@ -101,12 +100,14 @@ const PlayerCard = ({ player, onRemove }) => {
                             <p>GP: {gpValue}</p>
                             <p>GS: {gsValue}</p>
                             <p>RPG: {rpgValue}</p>
-                            <p>PF: {pfValue}</p>
-                            <p>MP: {mpValue}</p>
+                            <p>PFG: {pfValue}</p>
+                            <p>MPG: {mpValue}</p>
+                            <p></p>
+                            <p className='text-blue-500 font-bold text-base text-right'>{totalValue}</p>
                         </div>
-                    )}
-                </div>
-            )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
