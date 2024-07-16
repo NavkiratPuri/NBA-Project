@@ -1,7 +1,7 @@
 import client from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 
-// url: http://localhost:3000/api/post
+// url: http://localhost:3000/api/trivia
 
 // function to handle POST requests to create a new player data, returns new player if successful, or an error message if not
 export const POST = async (req) => {
