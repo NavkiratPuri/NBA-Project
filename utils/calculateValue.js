@@ -32,7 +32,8 @@ export function calculatePlayerValue(player) {
 
     const rpgValue = orValue + drValue;
 
-    const totalValue = ppgValue + apgValue + bpgValue + spgValue + toValue + gpValue + gsValue + rpgValue + pfValue + ftValue + efgValue + mpValue + ageValue;
+    const totalValue = ppgValue + apgValue + bpgValue + spgValue + toValue + gpValue + gsValue + rpgValue + pfValue + ftValue + efgValue + mpValue ;
+
 
     return {
         totalValue: parseFloat(totalValue.toFixed(2)),
@@ -49,7 +50,7 @@ export function calculatePlayerValue(player) {
         drValue: parseFloat(drValue.toFixed(2)),
         pfValue: parseFloat(pfValue.toFixed(2)),
         mpValue: parseFloat(mpValue.toFixed(2)),
-        ageValue: parseFloat(ageValue.toFixed(2)),
+        // ageValue: parseFloat(ageValue.toFixed(2)),
         rpgValue: parseFloat(rpgValue.toFixed(2))
     };
 }

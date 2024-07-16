@@ -1,16 +1,10 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-// component definition
 const PlayerSelector = ({ players, onSelectPlayer, label }) => {
-    // state variables
     const [inputValue, setInputValue] = useState('');
     const [filteredPlayers, setFilteredPlayers] = useState([]);
     const dropdown = useRef(null);
-    
-    // function to update input value and filter player list
-    // also makes dropdown reapper when in focus
-    // first if-else block checks if value is defined
-    // second if-else block filters based on value
+
     const filterPlayers = (e) => {
         let value = e.target.value.toLowerCase();
         setInputValue(value);
@@ -19,8 +13,8 @@ const PlayerSelector = ({ players, onSelectPlayer, label }) => {
             setFilteredPlayers(
                 players.filter(player => {
                     const fullName = player.Player.toLowerCase();
-                    const [firstName, lastName] = fullName.split('');
-                    return fullName.startsWith(value) || firstName.startsWith(value) || lastName.startsWith(value);
+                    const [firstName, lastName] = fullName.split(' ').map(name => name.toLowerCase());
+                    return fullName.startsWith(value) || (firstName && firstName.startsWith(value)) || (lastName && lastName.startsWith(value));
                 })
             );
         } else {
@@ -71,7 +65,7 @@ const PlayerSelector = ({ players, onSelectPlayer, label }) => {
                             className="p-2 cursor-pointer hover:bg-blue-100"
                             onClick={() => selectPlayer(player)}
                         >
-                            {player.Player} - {player.Tm}
+                            {player.Player} - {player.Tm} - {player.Year}
                         </li>
                     ))}
                 </ul>

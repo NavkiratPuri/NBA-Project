@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import PlayerSelector from '@/components/PlayerSelector';
-import TradeSimulator from '@/components/TradeSimulator';
+import PlayerCard from '@/components/PlayerCard';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import playerData from '@/utils/playerData';
@@ -57,14 +57,14 @@ const Trade = () => {
             <Header />
             <main className="flex-grow p-3">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <div className="bg-white rounded-lg shadow-md p-2">
+                    <div className="">
                         <PlayerSelector
                             players={players}
                             onSelectPlayer={(player) => handleSelectPlayer(player, 'A')}
                         />
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                             {teamAPlayers.map((player, index) => (
-                                <TradeSimulator
+                                <PlayerCard
                                     key={index}
                                     player={player}
                                     onRemove={() => handleRemovePlayer(index, 'A')}
@@ -79,7 +79,7 @@ const Trade = () => {
                         />
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                             {teamBPlayers.map((player, index) => (
-                                <TradeSimulator
+                                <PlayerCard
                                     key={index}
                                     player={player}
                                     onRemove={() => handleRemovePlayer(index, 'B')}

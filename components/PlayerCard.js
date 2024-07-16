@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { calculatePlayerValue } from '@/utils/calculateValue';
 
-const TradeSimulator = ({ player, onRemove }) => {
+const PlayerCard = ({ player, onRemove }) => {
     const [showDetails, setShowDetails] = useState();
     const {
         totalValue,
@@ -30,7 +30,7 @@ const TradeSimulator = ({ player, onRemove }) => {
                     <img src={player.image} alt={player.Player} className="w-16 h-16 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm">{player.Player}</p>
-                        <p className="font-bold text-sm">{player.Tm}</p>
+                        <p className="font-bold text-sm">{player.Tm} - {player.Year}</p>
                         <p className="font-bold text-sm">{player.Pos}</p>
                     </div>
                 </div>
@@ -111,4 +111,4 @@ const TradeSimulator = ({ player, onRemove }) => {
     );
 };
 
-export default TradeSimulator;
+export default PlayerCard;
