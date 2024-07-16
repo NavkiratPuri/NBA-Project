@@ -36,6 +36,13 @@ const PlayerCard = ({ player, onRemove }) => {
         setView((prevView) => (prevView + 1) % 3);
     };
 
+    const formatDecimal = (number) => {
+        if (isNaN(number)) {
+            return number;
+        }
+        return parseFloat(number).toFixed(2);
+    };
+
     return (
         <div className='mt-2 p-2 bg-gray-300 rounded-lg shadow-lg relative max-w-xs hover:bg-gray-200'>
             <button className='absolute top-2 right-2 text-gray-400 hover:text-white' onClick={onRemove}>x</button>
@@ -65,20 +72,20 @@ const PlayerCard = ({ player, onRemove }) => {
                         </div>
                         <div className='grid grid-cols-3 text-sm mt-'>
                             <p>Age: {player.Age}</p>
-                            <p>FG%: {player.FGPercent}</p>
-                            <p>PPG: {player.PTS}</p>
-                            <p>3PT%: {player.threePPercent}</p>
-                            <p>APG: {player.AST}</p>
-                            <p>EFG%: {player.eFGPercent}</p>
-                            <p>RPG: {player.TRB}</p>
-                            <p>FT%: {player.FTPercent}</p>
-                            <p>SPG: {player.STL}</p>
-                            <p>GP: {player.G}</p>
-                            <p>BPG: {player.BLK}</p>
-                            <p>GS: {player.GS}</p>
-                            <p>TO: {player.TOV}</p>
-                            <p>FPG: {player.PF}</p>
-                            <p>MPG: {player.MP}</p>
+                            <p>FG%: {formatDecimal(player.FGPercent)}</p>
+                            <p>PPG: {formatDecimal(player.PTS)}</p>
+                            <p>3PT%: {formatDecimal(player.threePPercent)}</p>
+                            <p>APG: {formatDecimal(player.AST)}</p>
+                            <p>EFG%: {formatDecimal(player.eFGPercent)}</p>
+                            <p>RPG: {formatDecimal(player.TRB)}</p>
+                            <p>FT%: {formatDecimal(player.FTPercent)}</p>
+                            <p>SPG: {formatDecimal(player.STL)}</p>
+                            <p>GP: {formatDecimal(player.G)}</p>
+                            <p>BPG: {formatDecimal(player.BLK)}</p>
+                            <p>GS: {formatDecimal(player.GS)}</p>
+                            <p>TO: {formatDecimal(player.TOV)}</p>
+                            <p>FPG: {formatDecimal(player.PF)}</p>
+                            <p>MPG: {formatDecimal(player.MP)}</p>
                         </div>
                     </div>
                 )}
