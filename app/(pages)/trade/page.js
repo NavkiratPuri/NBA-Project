@@ -1,19 +1,16 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import PlayerSelector from '@/components/PlayerSelector';
-import TradeSimulator from '@/components/TradeSimulator';
+import PlayerCard from '@/components/PlayerCard';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-//import '../app/globals.css';
 import playerData from '@/utils/playerData';
 import { calculatePlayerValue } from '@/utils/calculateValue';
-import ImageTest from '@/components/ImageTest';
-
 
 const Trade = () => {
     const [players, setPlayers] = useState([]);
-    const [teamAPlayers, setTeamAPlayers] = useState([]); 
-    const [teamBPlayers, setTeamBPlayers] = useState([]); 
+    const [teamAPlayers, setTeamAPlayers] = useState([]);
+    const [teamBPlayers, setTeamBPlayers] = useState([]);
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -27,58 +24,19 @@ const Trade = () => {
         fetchPlayers();
     }, []);
 
-    // function to update the state of selected player
-    // when player is chosen from dropdown menu replaces previous player in slot
-    const handleSelectPlayer = (player, team, index) => {
-        const updatePlayers = (players) => {
-            const updatedPlayers = [...players];
-            updatedPlayers[index] = player;
-            return updatedPlayers;
-        };
-
+    const handleSelectPlayer = (player, team) => {
         if (team === 'A') {
-            setTeamAPlayers(updatePlayers(teamAPlayers));
+            setTeamAPlayers([...teamAPlayers, player]);
         } else if (team === 'B') {
-            setTeamBPlayers(updatePlayers(teamBPlayers));
+            setTeamBPlayers([...teamBPlayers, player]);
         }
     };
 
-    const removeLastPlayer = (team) => {
-        const updatePlayers = (players) => {
-            const updatedPlayers = [...players];
-            updatedPlayers.pop();
-            return updatedPlayers;
-        };
-    
+    const handleRemovePlayer = (index, team) => {
         if (team === 'A') {
-            setTeamAPlayers(updatePlayers(teamAPlayers));
+            setTeamAPlayers(teamAPlayers.filter((_, i) => i !== index));
         } else if (team === 'B') {
-            setTeamBPlayers(updatePlayers(teamBPlayers));
-        }
-    };
-    
-
-    // function to determine the color of players calculated value
-    // does this by getting the player value of both players
-    // then uses if else statement to apply approriate color
-    const playerRedGreen = (player, otherPlayer) => {
-        if (player == null || otherPlayer == null) return 'text-gray-500';
-        const playerValue = calculatePlayerValue(player).totalValue;
-        const otherPlayerValue = calculatePlayerValue(otherPlayer).totalValue;
-
-        if (playerValue > otherPlayerValue) {
-            return 'text-green-500'
-        } else {
-            return 'text-red-500'
-        }
-    };
-
-    // function to add a new player slot
-    const addPlayerSlot = (team) => {
-        if (team === 'A') {
-            setTeamAPlayers([...teamAPlayers, null]);
-        } else if (team === 'B') {
-            setTeamBPlayers([...teamBPlayers, null]);
+            setTeamBPlayers(teamBPlayers.filter((_, i) => i !== index));
         }
     };
 
@@ -94,92 +52,60 @@ const Trade = () => {
     const teamATotalValue = getTotalValue(teamAPlayers);
     const teamBTotalValue = getTotalValue(teamBPlayers);
 
-   
-
-    // render logic
     return (
-
-        <div className="flex flex-col min-h-screen bg-gray-100">
-
-
+        <div className='flex flex-col min-h-screen bg-gray-100'>
             <Header />
-
-            <main className="flex-grow p-8">
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-
-                    {/* team a */}
-                    <div className="bg-white rounded-lg shadow-md p-6 space-x-2">
-
-                        <h2 className="text-2xl font-bold mb-4">Team A</h2>
-
-                        {teamAPlayers.map((player, index) => (
-                            <div key={index} className="mb-4">
-
-                                <PlayerSelector
-                                    players={players}
-                                    onSelectPlayer={(player) => handleSelectPlayer(player, 'A', index)}
-                                    label={`Player ${index + 1}`}
+            <main className='flex-grow p-3'>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-2 relative'>
+                    <div className='pr-2 border-r-2 border-black'>
+                        <h2 className='text-center text-xl font-bold mb-2'>Team A (Click the cards for stats then click again for values!!!!!)</h2>
+                        <PlayerSelector
+                            players={players}
+                            onSelectPlayer={(player) => handleSelectPlayer(player, 'A')}
+                        />
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4'>
+                            {teamAPlayers.map((player, index) => (
+                                <PlayerCard
+                                    key={index}
+                                    player={player}
+                                    onRemove={() => handleRemovePlayer(index, 'A')}
                                 />
-
-                                {player && (
-
-                                    <TradeSimulator
-                                        player={player}
-                                        valueColor="text-blue-500"
-                                    />
-                                )}
-                            </div>
-                        ))}
-                        <button onClick={() => addPlayerSlot('A')} className="mt-4 p-2 bg-blue-500 text-white rounded-md">
-                            Add Player
-                        </button>
-                
-                            <button onClick={() => removeLastPlayer('A')} className="mt-2 p-2 bg-red-500 text-white rounded-md">
-                                Remove Player
-                            </button>
+                            ))}
+                        </div>
                     </div>
-
-                        {/* team b */}
-                    <div className="bg-white rounded-lg shadow-md p-6 space-x-2">
-                        <h2 className="text-2xl font-bold mb-4">Team B</h2>
-                        
-                        {teamBPlayers.map((player, index) => (
-                            <div key={index} className="mb-4">
-                                <PlayerSelector
-                                    players={players}
-                                    onSelectPlayer={(player) => handleSelectPlayer(player, 'B', index)}
-                                    label={`Player ${index + 1}`}
+                    <div className=''>
+                        <h2 className='text-center text-xl font-bold mb-2'>Team B (Click the cards for stats then click again for values!!!!!)</h2>
+                        <PlayerSelector
+                            players={players}
+                            onSelectPlayer={(player) => handleSelectPlayer(player, 'B')}
+                        />
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4'>
+                            {teamBPlayers.map((player, index) => (
+                                <PlayerCard
+                                    key={index}
+                                    player={player}
+                                    onRemove={() => handleRemovePlayer(index, 'B')}
                                 />
-                                {player && (
-                                    <TradeSimulator
-                                        player={player}
-                                        valueColor="text-blue-500"
-                                    />
-                                )}
-                            </div>
-                        ))}
-
-
-                        <button onClick={() => addPlayerSlot('B')} className="mt-4 p-2 bg-blue-500 text-white rounded-md">
-                            Add Player
-                        </button>
-
-                        <button onClick={() => removeLastPlayer('B')} className="mt-2 p-2 bg-red-500 text-white rounded-md">
-                            Remove Player
-                        </button>
-                        
+                            ))}
+                        </div>
                     </div>
                 </div>
-
-                <div className="mt-8">
-                    <h2 className="text-2xl font-bold text-center">Trade Summary</h2>
-                    <p className="text-center text-xl font-bold mt-4">Team A Total Value: <span className={teamATotalValue >= teamBTotalValue ? 'text-green-500' : 'text-red-500'}>{teamATotalValue.toFixed(2)}</span></p>
-                    <p className="text-center text-xl font-bold mt-4">Team B Total Value: <span className={teamBTotalValue >= teamATotalValue ? 'text-green-500' : 'text-red-500'}>{teamBTotalValue.toFixed(2)}</span></p>
+                <div className='flex justify-center mt-4'>
+                    <div className='flex justify-center items-center gap-8'>
+                        <div className='bg-white rounded-lg shadow-md p-4 text-center'>
+                            <p className={`text-2xl font-bold ${teamATotalValue >= teamBTotalValue ? 'text-green-500' : 'text-red-500'}`}>
+                                {teamATotalValue.toFixed(2)}
+                            </p>
+                        </div>
+                        <p className='font-bold text-2xl'>VS</p>
+                        <div className='bg-white rounded-lg shadow-md p-4 text-center'>
+                            <p className={`text-2xl font-bold ${teamBTotalValue >= teamATotalValue ? 'text-green-500' : 'text-red-500'}`}>
+                                {teamBTotalValue.toFixed(2)}
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </main>
-
             <Footer />
         </div>
     );
