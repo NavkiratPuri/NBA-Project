@@ -29,7 +29,7 @@ const PlayerCard = ({
         } text-black`}
         disabled={selectedPlayer !== null}
       >
-        <img src={player.image} className='h-50 w-50 rounded-full mx-auto'></img>
+        <img src={player.image} className='h-20 w-20 rounded-full mx-auto'></img>
         <p className="text-xl"><strong>Name:</strong> {player.Player}</p>
         <p className="text-xl"><strong>Team:</strong> {player.Tm}</p>
         <p className="text-xl"><strong>Position:</strong> {player.Pos}</p>
