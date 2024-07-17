@@ -52,6 +52,7 @@ export const GET = async () => {
     }
 }
 
+
 // fetches players by using the GET function
 export const FETCH = async () => {
     return await GET();

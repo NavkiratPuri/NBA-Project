@@ -10,20 +10,25 @@ export const GET = async (request, { params }) => {
         const { id } = params;
         const team = await client.team.findUnique({
             where: {
-                id
-            }
+                id: parseInt(id)
+            },
         });
         if (!team) {
             return NextResponse.json({ status: 404 }, { message: "teams not found" })
         }
-        return NextResponse.json(team);
+        const players = await client.player.findMany({
+            where: { teamId: parseInt(id) },
+        });
+        return NextResponse.json({ team, players });
+    
+       
     } catch (error) {
-        return NextResponse.json({ status: 500 }, { message: "Error getting team", error })
+        return NextResponse.json({ status: 500 }, { message: "Error getting team details", error })
 
     }
 }
 
-// Patch function handles PATCH requests to perform updates (used for editing data)
+// Patch function handles PATCH requests to perform updates (used for editing data)/ to update a specific team
 export const PATCH = async (request, { params }) => {
     try {
         const body = await request.json();
@@ -40,7 +45,7 @@ export const PATCH = async (request, { params }) => {
         // updates the player in the database
         const updateTeam = await client.team.update({
             where: {
-                id
+                id: parseInt(id)
             },
             data: {
                 Rk,
