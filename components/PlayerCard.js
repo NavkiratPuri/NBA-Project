@@ -70,7 +70,7 @@ const PlayerCard = ({ player, onRemove }) => {
                             <p className='font-semibold'>{player.Player} - {player.Year}</p>
                             <p className='font-semibold text-sm'>Stats</p>
                         </div>
-                        <div className='grid grid-cols-3 text-sm mt-'>
+                        <div className='grid grid-cols-3 text-xs mt-'>
                             <p>Age: {player.Age}</p>
                             <p>FG%: {formatDecimal(player.FGPercent)}</p>
                             <p>PPG: {formatDecimal(player.PTS)}</p>
@@ -95,7 +95,7 @@ const PlayerCard = ({ player, onRemove }) => {
                             <p className='font-semibold'>{player.Player} - {player.Year}</p>
                             <p className='font-semibold text-sm'>Values</p>
                         </div>
-                        <div className='grid grid-cols-3 text-sm '>
+                        <div className='grid grid-cols-3 text-xs '>
                             <p>Age: {ageValue}</p>
                             <p>PPG: {ppgValue}</p>
                             <p>APG: {apgValue}</p>
