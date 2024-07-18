@@ -170,7 +170,13 @@ const HiLo = ({ onGameEnd }) => {
             <div className="relative flex-grow">
                 {gameStatus === "ongoing" ? (
                     <>
-                        
+                        <GameInfo
+                            displayCategory={displayCategory}
+                            lives={lives}
+                            points={points}
+                            comparisonResult={comparisonResult}
+                            hint={hint}
+                        />
 
                         {players.length > 0 && selectedCategory && (
                             <div className="flex">
@@ -190,14 +196,6 @@ const HiLo = ({ onGameEnd }) => {
                                 ))}
                             </div>
                         )}
-
-                        <GameInfo
-                            displayCategory={displayCategory}
-                            lives={lives}
-                            points={points}
-                            comparisonResult={comparisonResult}
-                            hint={hint}
-                        />
                     </>
                 ) : (
                     <GameOver
