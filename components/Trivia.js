@@ -141,8 +141,8 @@ function Trivia() {
                 <>
                     <p className="text-lg">Your score: {score} out of {questions.slice(currentIndex, currentIndex + 5).length}</p>
                     {score <= 1 && <p>Maybe start watching badminton!</p>}
-                    {score === 2 && <p>You're worse than Mid!</p>}
-                    {score === 3 && <p>You're Mid!</p>}
+                    {score === 2 && <p>You&apos;re worse than Mid!</p>}
+                    {score === 3 && <p>You&apos;re Mid!</p>}
                     {score === 4 && <p>Not too Shabby!</p>}
                     {score === 5 && <p>Go touch Grass!</p>}
                     <button className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={handleNextBatch}>Play Next Batch</button>
