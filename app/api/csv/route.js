@@ -4,7 +4,7 @@ import csv from 'csv-parser';
 import { NextResponse } from 'next/server';
 
 export const GET = async () => {
-    const csvFilePath = path.join(process.cwd(), 'public', 'NbaStats.csv');
+    const csvFilePath = path.join(process.cwd(), 'public', 'NBAStats.csv');
     const players = [];
 
     return new Promise((resolve, reject) => {
