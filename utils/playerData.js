@@ -1,11 +1,10 @@
-import axios from 'axios';
+import fetchCSV from './fetchCsv';
 
-// function to fetch data from MongoDB and combine with player images and team logos
 const playerData = async () => {
     try {
-        // Fetch player data from MongoDB
-        const playerD = await axios.get('api/player');
-        if (playerD.data) {
+        // Fetch player data from CSV
+        const playerD = await fetchCSV();
+        if (playerD) {
             // Fetch player images
             const playerI = await fetch('/player_images.json');
             if (!playerI.ok) {
@@ -21,15 +20,15 @@ const playerData = async () => {
             const teamLogos = await playerTL.json();
 
             // Combine player data with images and team logos
-            const playerDataCombined = playerD.data.map(player => ({
+            const playerDataCombined = playerD.map(player => ({
                 ...player,
-                image: playerImages[player.Player] || playerImages.defualt,
-                teamLogo: teamLogos[player.Tm]?.logo || teamLogos.default 
+                image: playerImages[player.Player] || playerImages.default,
+                teamLogo: teamLogos[player.Tm]?.logo || teamLogos.default
             }));
             return playerDataCombined;
         }
     } catch (error) {
-        console.error('Error fetching player data', error);
+        console.error('Error fetching player data:', error);
         throw error;
     }
 };

@@ -8,7 +8,7 @@ const TeamStandings = () => {
     const [showConference, setShowConference] = useState(true);
     const [showEditModal, setShowEditModal] = useState(false);
     const [teamToEdit, setTeamToEdit] = useState({});
-    const [selectedButton, setSelectedButton] = useState(''); // Track selected button
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
 
     useEffect(() => {
         fetchStandings();
@@ -60,10 +60,34 @@ const TeamStandings = () => {
         setShowEditModal(true);
     };
 
-    const getButtonClass = (button) => {
-        return `px-4 py-2 font-semibold rounded-lg shadow-md ${
-            selectedButton === button ? "bg-yellow-500" : "bg-gray-600 hover:bg-gray-700"
-        } text-white`;
+    const handleSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+
+        const sortedStandings = [...filteredStandings].sort((a, b) => {
+            const aValue = isNaN(a[key]) ? a[key] : parseFloat(a[key]);
+            const bValue = isNaN(b[key]) ? b[key] : parseFloat(b[key]);
+
+            if (aValue < bValue) {
+                return direction === 'ascending' ? -1 : 1;
+            }
+            if (aValue > bValue) {
+                return direction === 'ascending' ? 1 : -1;
+            }
+            return 0;
+        });
+
+        setFilteredStandings(sortedStandings);
+    };
+
+    const getSortDirectionIcon = (key) => {
+        if (sortConfig.key === key) {
+            return sortConfig.direction === 'ascending' ? '▲' : '▼';
+        }
+        return '';
     };
 
     return (
@@ -78,16 +102,16 @@ const TeamStandings = () => {
                 <table className="w-full table-auto">
                     <thead className="bg-blue-900 text-white">
                         <tr className="text-center">
-                            <th className="px-4 py-2">Rank</th>
-                            <th className="px-4 py-2">Team</th>
-                            {showConference && <th className="px-4 py-2">Conference</th>}
-                            <th className="px-4 py-2">Wins</th>
-                            <th className="px-4 py-2">Losses</th>
-                            <th className="px-4 py-2">East Wins</th>
-                            <th className="px-4 py-2">East Losses</th>
-                            <th className="px-4 py-2">West Wins</th>
-                            <th className="px-4 py-2">West Losses</th>
-                            <th className="px-4 py-2">Edit</th>
+                            <th onClick={() => handleSort('rk')}>Rank {getSortDirectionIcon('rk')}</th>
+                            <th onClick={() => handleSort('team')}>Team {getSortDirectionIcon('team')}</th>
+                            {showConference && <th onClick={() => handleSort('conference')}>Conference {getSortDirectionIcon('conference')}</th>}
+                            <th onClick={() => handleSort('wins')}>Wins {getSortDirectionIcon('wins')}</th>
+                            <th onClick={() => handleSort('losses')}>Losses {getSortDirectionIcon('losses')}</th>
+                            <th onClick={() => handleSort('eastWins')}>Eastern Conference Wins {getSortDirectionIcon('eastWins')}</th>
+                            <th onClick={() => handleSort('eastLosses')}>Eastern Conference Losses {getSortDirectionIcon('eastLosses')}</th>
+                            <th onClick={() => handleSort('westWins')}>Western Conference Wins {getSortDirectionIcon('westWins')}</th>
+                            <th onClick={() => handleSort('westLosses')}>Western Conference Losses {getSortDirectionIcon('westLosses')}</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
