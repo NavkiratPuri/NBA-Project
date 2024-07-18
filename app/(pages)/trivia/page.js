@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Trivia from "@/components/Trivia";
 import Header from '@/components/header';
-import AddQuestion from "@/components/AddQuestion";
+import AddQuestion from "@/components/Addquestion";
 
 const TriviaPage = () => {
     const [showModal, setShowModal] = useState(false);
