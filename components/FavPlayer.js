@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import PlayerSelector from '@/components/PlayerSelector';
+import FavPlayerSelector from '@/components/FavPlayerSelector';
 import currentPlayers from '@/utils/currentPlayers';
 import axios from 'axios';
 import FavPlayerDisplay from './FavPlayerDisplay';
@@ -85,12 +85,11 @@ const FavPlayer = ({playerId}) => {
              <FavPlayerDisplay player={favPlayer}/>
                       
             <h2 className="text-2xl font-semibold mt-4">Edit Favorite Player:</h2>
-            <PlayerSelector
+            <FavPlayerSelector
                             players={players}
                             onSelectPlayer={(player) => handleSelectPlayer(player)}
                             label="Change Favorite Player:"
                         />
-
 
         </div>
     );
