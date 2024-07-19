@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import PlayerSelector from '@/components/PlayerSelector';
-import playerData from '@/utils/playerData';
+import currentPlayers from '@/utils/currentPlayers';
 import axios from 'axios';
 import FavPlayerDisplay from './FavPlayerDisplay';
 import fetchPlayer from '@/utils/fetchPlayer';
@@ -37,7 +37,7 @@ const FavPlayer = ({playerId}) => {
     useEffect(() => {
         const fetchPlayers = async () => {
             try {
-                const data = await playerData();
+                const data = await currentPlayers();
                 setPlayers(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
