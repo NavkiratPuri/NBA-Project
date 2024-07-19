@@ -10,7 +10,7 @@ import fetchPlayer from '@/utils/fetchPlayer';
 const FavPlayer = ({playerId}) => {
     
     const [players, setPlayers] = useState([]);
-    const [selectedPlayers, setSelectedPlayers] = useState([null]);
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [favPlayer, setFavPlayer] = useState(null);
     const [favPlayerId, setFavplayerId] = useState(playerId);
     
@@ -53,7 +53,7 @@ const FavPlayer = ({playerId}) => {
     const handleSelectPlayer = (player) => {
         setFavPlayer(player);
         setFavplayerId(player.id);
-        updateFavPlayer(player.id);
+        // updateFavPlayer(player.id);
         
     };
 
@@ -67,6 +67,11 @@ const FavPlayer = ({playerId}) => {
         catch (error) {
             console.error('Error updating favPlayer:', error);
         }
+    }
+
+    const handleSave = () => {
+        updateFavPlayer(favPlayerId);
+        alert('Favorite Player Updated');
     }
 
 
@@ -90,6 +95,10 @@ const FavPlayer = ({playerId}) => {
                             onSelectPlayer={(player) => handleSelectPlayer(player)}
                             label="Change Favorite Player:"
                         />
+
+            <button onClick={handleSave} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
+                Save
+            </button>
 
         </div>
     );
