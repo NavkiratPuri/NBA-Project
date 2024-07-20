@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import PlayerSelector from '@/components/PlayerSelector';
-import playerData from '@/utils/playerData';
+import FavPlayerSelector from '@/components/FavPlayerSelector';
+import currentPlayers from '@/utils/currentPlayers';
 import axios from 'axios';
 import FavPlayerDisplay from './FavPlayerDisplay';
 import fetchPlayer from '@/utils/fetchPlayer';
@@ -10,7 +10,7 @@ import fetchPlayer from '@/utils/fetchPlayer';
 const FavPlayer = ({playerId}) => {
     
     const [players, setPlayers] = useState([]);
-    const [selectedPlayers, setSelectedPlayers] = useState([null]);
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [favPlayer, setFavPlayer] = useState(null);
     const [favPlayerId, setFavplayerId] = useState(playerId);
     
@@ -37,7 +37,7 @@ const FavPlayer = ({playerId}) => {
     useEffect(() => {
         const fetchPlayers = async () => {
             try {
-                const data = await playerData();
+                const data = await currentPlayers();
                 setPlayers(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -53,7 +53,7 @@ const FavPlayer = ({playerId}) => {
     const handleSelectPlayer = (player) => {
         setFavPlayer(player);
         setFavplayerId(player.id);
-        updateFavPlayer(player.id);
+        // updateFavPlayer(player.id);
         
     };
 
@@ -67,6 +67,11 @@ const FavPlayer = ({playerId}) => {
         catch (error) {
             console.error('Error updating favPlayer:', error);
         }
+    }
+
+    const handleSave = () => {
+        updateFavPlayer(favPlayerId);
+        alert('Favorite Player Updated');
     }
 
 
@@ -85,12 +90,15 @@ const FavPlayer = ({playerId}) => {
              <FavPlayerDisplay player={favPlayer}/>
                       
             <h2 className="text-2xl font-semibold mt-4">Edit Favorite Player:</h2>
-            <PlayerSelector
+            <FavPlayerSelector
                             players={players}
                             onSelectPlayer={(player) => handleSelectPlayer(player)}
                             label="Change Favorite Player:"
                         />
 
+            <button onClick={handleSave} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
+                Save
+            </button>
 
         </div>
     );
