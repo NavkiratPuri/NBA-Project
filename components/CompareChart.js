@@ -1,35 +1,84 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
+import React, { useRef, useEffect } from "react";
+import { Chart } from "chart.js/auto";
 
-Chart.register(...registerables);
+const CompareChart = ({ chartData, category, statsFilter }) => {
+  const chartRef = useRef(null);
+  const chartInstanceRef = useRef(null);
 
-const CompareChart = ({ chartData }) => {
-  return (
-    <div>
-      {chartData ? (
-        <Line 
-          data={chartData} 
-          options={{
-            scales: {
-              x: {
-                title: {
-                  display: true,
-                  text: 'Age'
-                }
+  useEffect(() => {
+    if (chartInstanceRef.current) {
+      chartInstanceRef.current.data = chartData;
+      chartInstanceRef.current.options.scales.y.title.text = category;
+      chartInstanceRef.current.update();
+    } else if (chartRef.current) {
+      chartInstanceRef.current = new Chart(chartRef.current, {
+        type: "line",
+        data: chartData,
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {},
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Age",
+                font: {
+                  size: 40, // Customize the font size for x-axis title
+                  weight: "bold",
+                  lineHeight: 1,
+                },
               },
-              y: {
-                title: {
-                  display: true,
-                  text: 'Points'
-                }
-              }
-            }
-          }} 
-        />
-      ) : (
-        <p>select two players to compare</p>
-      )}
+              ticks: {
+                font: {
+                  size: 20, // Customize the font size for x-axis labels
+                  weight: "semibold",
+                },
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: category,
+                font: {
+                  size: 40,
+                  weight: "bold",
+                  lineHeight: 2,
+                },
+              },
+              ticks: {
+                font: {
+                  size: 20,
+                },
+              },
+            },
+          },
+          elements: {
+            line: {
+              borderWidth: 8, // Customize the line thickness
+              borderCapStyle: "round",
+            },
+          },
+        },
+      });
+    }
+  }, [chartData, category]);
+
+  return (
+    <div className="">
+      <select
+        id="statHeader"
+        value={category}
+        onChange={statsFilter}
+        className="w-30 h-10 text-xl font-semibold bg-red-200 p-1 rounded-md ml-2 mb-2"
+      >
+        <option value="points">Points</option>
+        <option value="assists">Assists</option>
+        <option value="steals">Steals</option>
+        <option value="blocks">Blocks</option>
+      </select>
+
+      <canvas ref={chartRef} className=" max-h-6/12 mr-5"></canvas>
     </div>
   );
 };
