@@ -14,6 +14,7 @@ const processPlayerData = (data, playerName) => {
     Points: playerData.map((player) => player.PTS),
     Assists: playerData.map((player) => player.AST),
     Blocks: playerData.map((player) => player.BLK),
+    Steals: playerData.map((player) => player.STL),
     Rebounds: playerData.map((player) => player.TRB),
     Turnovers: playerData.map((player) => player.TOV),
     Minutes: playerData.map((player) => player.MP),
@@ -127,7 +128,7 @@ const Compare = () => {
                   alt={player1.Player}
                   className="w-20 h-20 rounded-full border-2 border-gray-600"
                 />
-                <span className="text-7xl text-red-600 ml-2">
+                <span className="text-7xl font-bold text-red-600 ml-2">
                   {player1.Player}
                 </span>
               </div>
@@ -145,7 +146,7 @@ const Compare = () => {
                   alt={player2.Player}
                   className="w-20 h-20 rounded-full border-2 border-gray-600"
                 />
-                <span className="text-7xl text-blue-600 ml-2">
+                <span className="text-7xl font-bold text-blue-600 ml-2">
                   {player2.Player}
                 </span>
               </div>

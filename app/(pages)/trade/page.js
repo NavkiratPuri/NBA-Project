@@ -6,12 +6,14 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import playerData from "@/utils/playerData";
 import { calculatePlayerValue } from "@/utils/calculateValue";
+import TeamTrade from "@/components/teamTrade";
 
 const Trade = () => {
   const [players, setPlayers] = useState([]);
   const [teamAPlayers, setTeamAPlayers] = useState([]);
   const [teamBPlayers, setTeamBPlayers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTeamTrade, setIsTeamTrade] = useState(false);
   const [weights, setWeights] = useState({
     ppg: 1,
     apg: 1.5,
@@ -75,17 +77,13 @@ const Trade = () => {
   };
 
   const saveWeights = () => {
-    console.log("Saving new weights:", tempWeights);
     setWeights(tempWeights);
     setIsModalOpen(false);
   };
 
   useEffect(() => {
-    console.log("Calculating team values with weights:", weights);
     const teamATotal = getTotalValue(teamAPlayers, weights);
     const teamBTotal = getTotalValue(teamBPlayers, weights);
-    console.log("Team A total value:", teamATotal);
-    console.log("Team B total value:", teamBTotal);
     setTeamATotalValue(teamATotal);
     setTeamBTotalValue(teamBTotal);
   }, [weights, teamAPlayers, teamBPlayers]);
@@ -93,10 +91,22 @@ const Trade = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  if (isTeamTrade) {
+    return <TeamTrade />;
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Header />
       <main className="flex-grow p-3">
+        <div className="flex justify-end mb-4">
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded"
+            onClick={() => setIsTeamTrade(true)}
+          >
+            Switch to Team Trade
+          </button>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 relative">
           <div className="pr-2 border-r-2 border-black">
             <h2 className="text-center text-xl font-bold mb-2">

@@ -68,7 +68,9 @@ const PlayerCard = ({ player, onRemove, customClasses, weights }) => {
                 <p className="text-gray-500">
                   {player.Tm} - {player.Year}
                 </p>
-                <p className="text-gray-500">{player.Pos}</p>
+                <p className="text-gray-500">
+                  {player.Pos} - {player.Salary}
+                </p>
               </div>
             </div>
             <div className="flex items-center">
