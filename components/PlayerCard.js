@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { calculatePlayerValue } from '@/utils/calculateValue';
 
-const PlayerCard = ({ player, onRemove }) => {
+const PlayerCard = ({ player, onRemove, customClasses, customClasses1 }) => {
     const [view, setView] = useState(0);
     const {
         totalValue,
@@ -44,7 +44,7 @@ const PlayerCard = ({ player, onRemove }) => {
     };
 
     return (
-        <div className='mt-2 p-2 bg-gray-300 rounded-lg shadow-lg relative max-w-xs hover:bg-gray-200'>
+        <div className={`mt-2 p-2 bg-gray-300 rounded-lg shadow-lg relative max-w-xs hover:bg-gray-200 ${customClasses}`}>
             <button className='absolute top-2 right-2 text-gray-400 hover:text-white' onClick={onRemove}>x</button>
             <div onClick={cardClick} className='cursor-pointer'>
                 {view === 0 && (
