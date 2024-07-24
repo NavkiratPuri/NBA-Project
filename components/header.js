@@ -20,6 +20,7 @@ const Header = () => {
     const gameItems = [
         { label: "Trivia", href: "/trivia" },
         { label: "Hi-Lo", href: "/hilo" },
+        { label: "Leaderboard", href: "/leaderboard" },
     ];
 
     const isGamesActive = gameItems.some(game => game.href === pathname);
