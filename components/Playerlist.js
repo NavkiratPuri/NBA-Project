@@ -81,6 +81,11 @@ const PlayerList = () => {
         setFilteredPlayers(sortedPlayers);
     };
 
+    const getArrow = (key) => {
+        if (sortConfig.key !== key) return '';
+        return sortConfig.direction === 'ascending' ? '↑' : '↓';
+    };
+
     return (
         <div className="container mx-auto">
             <input
@@ -104,7 +109,7 @@ const PlayerList = () => {
                                     className={`px-4 py-2 cursor-pointer ${sortConfig.key === key ? 'bg-gray-200 text-gray-800' : ''}`}
                                     onClick={() => handleSort(key)}
                                 >
-                                    {key}
+                                    {key} {getArrow(key)}
                                 </th>
                             ))}
                             <th className="px-4 py-2">Actions</th>
