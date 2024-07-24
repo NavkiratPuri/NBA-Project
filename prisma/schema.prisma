@@ -92,7 +92,8 @@ model User {
   favPlayerId String?
   favTeamId   String?
   isAdmin     Boolean @default(false)
-  highScore   Int?    @default(0)
+  highScoreHL   Int?    @default(0)
+  highScoreT  Int?    @default(0)
 
   accounts Account[]
 
