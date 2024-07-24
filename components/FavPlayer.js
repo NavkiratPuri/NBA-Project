@@ -4,22 +4,18 @@ import PlayerSelector from '@/components/PlayerSelector';
 import playerData from '@/utils/playerData';
 import axios from 'axios';
 import FavPlayerDisplay from './FavPlayerDisplay';
-import fetchPlayer from '@/utils/fetchPlayer';
+import { fetchPlayers } from '@/utils/fetchPlayers'; // Correct named import
 
-
-const FavPlayer = ({playerId}) => {
-    
+const FavPlayer = ({ playerId }) => {
     const [players, setPlayers] = useState([]);
     const [selectedPlayers, setSelectedPlayers] = useState([null]);
     const [favPlayer, setFavPlayer] = useState(null);
     const [favPlayerId, setFavplayerId] = useState(playerId);
     
     useEffect(() => {
-
-        
         const getFavPlayerData = async () => {
             try {
-                const data = await fetchPlayer(playerId);
+                const data = await fetchPlayers(playerId);
                 console.log('data:', data);
                 setFavPlayer(data);
             } catch (err) {
@@ -32,7 +28,6 @@ const FavPlayer = ({playerId}) => {
             console.log('playerId:', playerId);
         }
     }, [playerId]);
-
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -54,7 +49,6 @@ const FavPlayer = ({playerId}) => {
         setFavPlayer(player);
         setFavplayerId(player.id);
         updateFavPlayer(player.id);
-        
     };
 
     const updateFavPlayer = async (playerId) => {
@@ -63,16 +57,20 @@ const FavPlayer = ({playerId}) => {
                 favPlayerId: playerId
             });
             console.log('response:', response);
-        }
-        catch (error) {
+        } catch (error) {
             console.error('Error updating favPlayer:', error);
         }
     }
 
-
-
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
+             <FavPlayerDisplay player={favPlayer} />
+             <h2 className="text-2xl font-semibold mt-4">Edit Favorite Player:</h2>
+             <PlayerSelector
+                 players={players}
+                 onSelectPlayer={(player) => handleSelectPlayer(player)}
+                 label="Change Favorite Player:"
+             />
 
             {/* <p>debug email: {email}</p>
             <p>debug favplayerId: {playerId}</p>
@@ -90,6 +88,7 @@ const FavPlayer = ({playerId}) => {
                             onSelectPlayer={(player) => handleSelectPlayer(player)}
                             label="Change Favorite Player:"
                         />
+
 
 
         </div>
