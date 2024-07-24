@@ -63,7 +63,8 @@ export const PATCH = async (request, { params }) => {
             BLK,
             TOV,
             PF,
-            PTS } = body;
+            PTS,
+            Year } = body;
         // updates the player in the database
         const updatePlayer = await client.player.update({
             where: { id },
@@ -97,7 +98,8 @@ export const PATCH = async (request, { params }) => {
                 BLK,
                 TOV,
                 PF,
-                PTS
+                PTS,
+                Year
             }
         });
         // if the player is not found, return a 404 status

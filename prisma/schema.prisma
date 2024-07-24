@@ -64,8 +64,6 @@ model team {
   westWins   Int?
   westLosses Int?
   conference String?
-
-  
 }
 
 model trivia {
@@ -81,26 +79,25 @@ model trivia {
 //new models for auth and custom profile testing
 
 model User {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String?
   email          String?   @unique
   emailVerified  DateTime?
   hashedPassword String?
   image          String?
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  favPlayerId    String?   
-  favTeamId      String?   
-  isAdmin        Boolean  @default(false)
+  favPlayerId String?
+  favTeamId   String?
+  isAdmin     Boolean @default(false)
 
   accounts Account[]
 
-//  favPlayer      Player   @relation(fields: [favPlayerId], references: [id])
-//  favTeam        Team     @relation(fields: [favTeamId], references: [id])
+  //  favPlayer      Player   @relation(fields: [favPlayerId], references: [id])
+  //  favTeam        Team     @relation(fields: [favTeamId], references: [id])
 }
-
 
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -121,7 +118,6 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-
 // model Player {
 //   id     String @id @default(auto()) @map("_id") @db.ObjectId
 //   Player String
@@ -141,3 +137,38 @@ model Account {
 //   players Player[]
 //   users   AuthUser[]
 // }
+
+model yearlyplayer {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  Rk            Int?
+  Player        String?
+  Pos           String?
+  Age           Int?
+  Tm            String?
+  G             Int?
+  GS            Int?
+  MP            Float?
+  FG            Float?
+  FGA           Float?
+  FGPercent     Float?
+  threeP        Float?
+  threePA       Float?
+  threePPercent Float?
+  twoP          Float?
+  twoPA         Float?
+  twoPPercent   Float?
+  eFGPercent    Float?
+  FT            Float?
+  FTA           Float?
+  FTPercent     Float?
+  ORB           Float?
+  DRB           Float?
+  TRB           Float?
+  AST           Float?
+  STL           Float?
+  BLK           Float?
+  TOV           Float?
+  PF            Float?
+  PTS           Float?
+  Year          Int?
+}

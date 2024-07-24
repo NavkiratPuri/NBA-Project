@@ -5,12 +5,13 @@ import categories from '@/utils/categories';
 import GameInfo from './GameInfo';
 import PlayerCard from './PlayerCard';
 import GameOver from './GameOver';
+import playerData from '@/utils/playerData';
 
 // Fetch player data from the API
 const fetchPlayer = async () => {
     try {
-        const response = await axios.get('/api/player');
-        return response.data;
+        const data = await playerData();
+        return data;
     } catch (error) {
         console.error('Error fetching player:', error);
         throw error;

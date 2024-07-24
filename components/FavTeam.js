@@ -53,7 +53,7 @@ const FavTeam = ({teamId}) => {
     const handleSelectTeam = (team) => {
         setFavTeam(team);
         setFavTeamId(team.id);
-        updateFavTeam(team.id);
+        // updateFavTeam(team.id);
         
     };
 
@@ -71,7 +71,10 @@ const FavTeam = ({teamId}) => {
 
 
 
-
+    const handleSave = () => {
+        updateFavTeam(favTeamId);
+        alert('Favorite Team Saved!');
+    }
 
 
     return (
@@ -82,7 +85,9 @@ const FavTeam = ({teamId}) => {
             <h2 className="text-xl font-semibold">Select your favorite team:</h2>
             <TeamSelector teams={teams} onSelectTeam={handleSelectTeam} label="Change Favorite Team:" />
 
-            
+            <button onClick={handleSave} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+                Save    
+            </button>
 
 
         </div>
