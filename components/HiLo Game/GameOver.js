@@ -1,26 +1,45 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const GameOver = ({ points, onRestart, user }) => {
+const GameOver = ({ points, onRestart }) => {
   const [isNewHighScore, setIsNewHighScore] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('/api/user');
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     const updateHighScore = async () => {
-      try {
-        if (points > user.highScoreHL) {
-          setIsNewHighScore(true);
-          await axios.patch('/api/updateHighScore', {
-            newHighScore: points,
-            gameType: 'higherLower',
-          });
+      if (user) {
+        try {
+          if (points > (user.highScoreHL || 0)) {  // Handle undefined highScoreHL
+            setIsNewHighScore(true);
+            await axios.patch('/api/updateHighscore', {
+              newHighScore: points,
+              gameType: 'higherLower',
+            });
+          }
+        } catch (error) {
+          console.error("Error updating high score:", error);
         }
-      } catch (error) {
-        console.error("Error updating high score:", error);
       }
     };
 
     updateHighScore();
   }, [points, user]);
+
+//   console.log("User:", user)
 
   return (
     <div className="h-screen inset-0 flex flex-col items-center justify-center z-10 text-center">

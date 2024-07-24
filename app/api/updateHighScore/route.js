@@ -1,55 +1,39 @@
 import { getServerSession } from "next-auth";
-import client from "../../libs/prismadb"; // Adjust the import path as needed
-import { authOptions } from "../auth/[...nextauth]/route"; // Adjust the import path as needed
+import client from "@/app/libs/prismadb"; // Adjust the import path as needed
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // Adjust the import path as needed
 
-export async function PATCH(req) {
-  try {
-    // Authenticate the user
-    const session = await getServerSession({ req, options: authOptions });
-
-    if (!session) {
-      return new Response(JSON.stringify({ message: "Not authenticated" }), { status: 401 });
-    }
-
-    const userEmail = session.user.email;
-    const body = await req.json();
-    const { newHighScore, gameType } = body;
-
-    // Find the user in the database
-    const user = await client.user.findUnique({
-      where: { email: userEmail },
-    });
-
-    if (!user) {
-      return new Response(JSON.stringify({ message: "User not found" }), { status: 404 });
-    }
-
-    let updatedUser;
-    if (gameType === 'higherLower') {
-      if (user.highScoreHL && newHighScore <= user.highScoreHL) {
-        return new Response(JSON.stringify({ message: "New score is not higher" }), { status: 400 });
+export async function PATCH(request) {
+    try {
+      const session = await getServerSession({ req: request, options: authOptions });
+  
+      if (!session) {
+        return new Response(JSON.stringify({ message: "Not authenticated" }), { status: 401 });
       }
-
-      updatedUser = await client.user.update({
-        where: { email: userEmail },
-        data: { highScoreHL: newHighScore },
-      });
-    } else if (gameType === 'trivia') {
-      if (user.highScoreT && newHighScore <= user.highScoreT) {
-        return new Response(JSON.stringify({ message: "New score is not higher" }), { status: 400 });
+  
+      const { newHighScore, gameType } = await request.json();
+  
+      if (!newHighScore || !gameType) {
+        return new Response(JSON.stringify({ message: "Invalid request data" }), { status: 400 });
       }
-
-      updatedUser = await client.user.update({
-        where: { email: userEmail },
-        data: { highScoreT: newHighScore },
+  
+      const user = await client.user.findUnique({
+        where: { email: session.user.email },
       });
-    } else {
-      return new Response(JSON.stringify({ message: "Invalid game type" }), { status: 400 });
+  
+      if (!user) {
+        return new Response(JSON.stringify({ message: "User not found" }), { status: 404 });
+      }
+  
+      const updatedUser = await client.user.update({
+        where: { email: session.user.email },
+        data: {
+          highScoreHL: Math.max(newHighScore, user.highScoreHL || 0),
+        },
+      });
+  
+      return new Response(JSON.stringify(updatedUser), { status: 200 });
+    } catch (error) {
+      console.error("Error updating high score:", error);
+      return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
     }
-
-    return new Response(JSON.stringify(updatedUser), { status: 200 });
-  } catch (error) {
-    console.error("Error updating high score:", error);
-    return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
   }
-}

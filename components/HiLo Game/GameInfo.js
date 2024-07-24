@@ -1,8 +1,8 @@
 import React from 'react';
 
 const GameInfo = ({ displayCategory, lives, points, comparisonResult, hint }) => {
-    console.log("Hint:" + hint)
-    console.log("Comparison Result:" + comparisonResult)
+    // console.log("Hint:" + hint)
+    // console.log("Comparison Result:" + comparisonResult)
 
     return (
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 text-center text-white">
