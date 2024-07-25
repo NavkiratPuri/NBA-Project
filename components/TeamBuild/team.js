@@ -24,6 +24,14 @@ const categorizePlayersByPosition = (players) => {
     return categorized;
 };
 
+const positionLabels = {
+    'C': 'Center',
+    'PF': 'Power Forward',
+    'SF': 'Small Forward',
+    'PG': 'Point Guard',
+    'SG': 'Shooting Guard'
+};
+
 const TeamBuilder = () => {
     const [players, setPlayers] = useState([]);
     const [teams, setTeams] = useState([]);
@@ -177,19 +185,26 @@ const TeamBuilder = () => {
                 <div className="flex flex-col w-1/2 pr-4">
                     <div className="flex flex-col mb-4">
                         {/* Player Selection */}
-                        <div className="mb-4">
+                        <div className="selected-players mb-8 p-4 border-t border-gray-300 flex flex-col mb-8">
+                            <h2 className="text-lg font-bold mb-4">Player Selection</h2>
                             {Object.keys(categorizedPlayers).map(position => (
                                 !usedPositions.includes(position) && (
-                                    <PlayerSelector
-                                        key={position}
-                                        players={filteredPlayersByPosition(position)}
-                                        onSelectPlayer={(player) => handleSelectPlayer(position, player)}
-                                        label={position}
-                                        teams={availableTeams} // Pass available teams here
-                                    />
+                                    <div key={position} className="flex items-center mb-4">
+                                        <div className="w-1/3 font-semibold text-lg">
+                                            {positionLabels[position]}
+                                        </div>
+                                        <div className="w-2/3">
+                                            <PlayerSelector
+                                                players={filteredPlayersByPosition(position)}
+                                                onSelectPlayer={(player) => handleSelectPlayer(position, player)}
+                                                label={position}
+                                                teams={availableTeams} // Pass available teams here
+                                            />
+                                        </div>
+                                    </div>
                                 )
                             ))}
-                        </div>          
+                        </div>
                             
                         {/* Total Value */}
                         <div className="total-value p-4 border-t border-gray-300 flex flex-col items-center">
@@ -202,12 +217,24 @@ const TeamBuilder = () => {
                                 Submit
                             </button>
                         </div>
-
                     </div>
                 </div>
 
                 {/* Right Section: Selected Players and Available Teams */}
-                <div className="w-1/2 flex flex-col">
+                <div className="w-1/2 flex flex-col">                   
+
+                    {/* Available Teams */}
+                    <div className="available-teams p-4 border-t border-gray-300">
+                        <h2 className="text-lg font-bold mb-4">Available Teams</h2>
+                        <ul>
+                            {availableTeams.map((team) => (
+                                <li key={team} className="mb-2 p-2 border border-gray-300 rounded">
+                                    {team}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
                     {/* Selected Players */}
                     <div className="selected-players mb-8 p-4 border-t border-gray-300">
                         <h2 className="text-lg font-bold mb-4">Selected Players</h2>
@@ -215,7 +242,7 @@ const TeamBuilder = () => {
                             player && (
                                 <div key={position} className="mb-2 p-2 border border-gray-300 rounded flex justify-between items-center">
                                     <div>
-                                        <h3 className="text-md font-semibold">{position}</h3>
+                                        <h3 className="text-md font-semibold">{positionLabels[position]}</h3>
                                         <p>{player.Player} - {player.Tm} - {player.Year}</p>
                                     </div>
                                     <button
@@ -229,25 +256,15 @@ const TeamBuilder = () => {
                         ))}
                     </div>
 
-                    {/* Available Teams */}
-                    <div className="available-teams p-4 border-t border-gray-300">
-                        <h2 className="text-lg font-bold mb-4">Available Teams</h2>
-                        <ul>
-                            {availableTeams.map((team) => (
-                                <li key={team} className="mb-2 p-2 border border-gray-300 rounded">
-                                    {team}
-                                </li>
-                            ))}
-                        </ul>
+                    {/* Reset Button */}
+                    <div className="reset-button p-2 border-t border-gray-300">
+                        <button
+                            onClick={handleReset}
+                            className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                        >
+                            Reset
+                        </button>
                     </div>
-                    <div className="p-2 border-t border-gray-300">
-                            <button
-                                onClick={handleReset}
-                                className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-                            >
-                                Reset
-                            </button>
-                        </div>
                 </div>
             </div>
         </div>
