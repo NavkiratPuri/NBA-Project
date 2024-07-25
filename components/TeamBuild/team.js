@@ -1,4 +1,6 @@
+'use client';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Ensure axios is imported
 import PlayerSelector from '@/components/PlayerSelector';
 import fetchCSV from '@/utils/fetchCsv';
 import { calculatePlayerValue } from '@/utils/calculateValue'; // Adjust the import path
@@ -47,6 +49,42 @@ const TeamBuilder = () => {
     const [availableTeams, setAvailableTeams] = useState([]);
     const [usedPositions, setUsedPositions] = useState([]);
     const [totalValue, setTotalValue] = useState(0);
+
+    const [isNewHighScore, setIsNewHighScore] = useState(false);
+    const [user, setUser] = useState(null);
+  
+    useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          const response = await axios.get('/api/user');
+          setUser(response.data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+  
+      fetchUser();
+    }, []);
+  
+    useEffect(() => {
+      const updateHighScore = async () => {
+        if (user) {
+          try {
+            if (totalValue > (user.highScoreT || 0)) {
+              setIsNewHighScore(true);
+              await axios.patch('/api/updateHighscore', {
+                newHighScore: totalValue,
+                gameType: 'teambuilder',
+              });
+            }
+          } catch (error) {
+            console.error("Error updating high score:", error);
+          }
+        }
+      };
+  
+      updateHighScore();
+    }, [totalValue, user]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -102,7 +140,6 @@ const TeamBuilder = () => {
             [position]: player
         }));
 
-        // Remove selected team from available teams
         setAvailableTeams(prevTeams => prevTeams.filter(team => team !== player.Tm));
         setUsedPositions(prevState => [...prevState, position]);
     };
@@ -110,14 +147,11 @@ const TeamBuilder = () => {
     const handleDeselectPlayer = (position) => {
         const player = selectedPlayers[position];
         if (player) {
-            // Re-add the team to the available teams
             setAvailableTeams(prevTeams => [...prevTeams, player.Tm]);
-            // Remove the player from the selected players
             setSelectedPlayers(prevState => ({
                 ...prevState,
                 [position]: null
             }));
-            // Remove position from used positions
             setUsedPositions(prevState => prevState.filter(pos => pos !== position));
         }
     };
@@ -182,7 +216,7 @@ const TeamBuilder = () => {
         <div className="container mx-auto p-4">
             <div className="flex">
                 {/* Left Section: Player Selection and Buttons */}
-                <div className="flex flex-col w-1/2 pr-4">
+                <div className="flex flex-col w-1/2 pr-4 border-r border-gray-300">
                     <div className="flex flex-col mb-4">
                         {/* Player Selection */}
                         <div className="selected-players mb-8 p-4 border-t border-gray-300 flex flex-col mb-8">
@@ -205,10 +239,10 @@ const TeamBuilder = () => {
                                 )
                             ))}
                         </div>
-                            
+                        
                         {/* Total Value */}
                         <div className="total-value p-4 border-t border-gray-300 flex flex-col items-center">
-                            <h2 className="text-lg font-bold mb-4">Total Value</h2>
+                            <h2 className="text-lg font-bold mb-4">Total Score</h2>
                             <p className="text-xl font-semibold mb-4">{totalValue.toFixed(2)}</p>
                             <button
                                 onClick={handleSubmit}
@@ -221,50 +255,50 @@ const TeamBuilder = () => {
                 </div>
 
                 {/* Right Section: Selected Players and Available Teams */}
-                <div className="w-1/2 flex flex-col">                   
-
-                    {/* Available Teams */}
-                    <div className="available-teams p-4 border-t border-gray-300">
-                        <h2 className="text-lg font-bold mb-4">Available Teams</h2>
-                        <ul>
-                            {availableTeams.map((team) => (
-                                <li key={team} className="mb-2 p-2 border border-gray-300 rounded">
-                                    {team}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Selected Players */}
-                    <div className="selected-players mb-8 p-4 border-t border-gray-300">
-                        <h2 className="text-lg font-bold mb-4">Selected Players</h2>
-                        {Object.entries(selectedPlayers).map(([position, player]) => (
-                            player && (
-                                <div key={position} className="mb-2 p-2 border border-gray-300 rounded flex justify-between items-center">
-                                    <div>
-                                        <h3 className="text-md font-semibold">{positionLabels[position]}</h3>
-                                        <p>{player.Player} - {player.Tm} - {player.Year}</p>
+                <div className="w-1/2 flex flex-col pl-4">
+                    <div className="flex flex-col mb-4">
+                        {/* Selected Players */}
+                        <div className="selected-players p-4 border-t border-gray-300 flex flex-col mb-8">
+                            <h2 className="text-lg font-bold mb-4">Selected Players</h2>
+                            {Object.keys(selectedPlayers).map(position => (
+                                selectedPlayers[position] && (
+                                    <div key={position} className="flex items-center mb-4">
+                                        <div className="w-1/3 font-semibold text-lg">
+                                            {positionLabels[position]}
+                                        </div>
+                                        <div className="w-2/3 flex items-center">
+                                            <p className="mr-4">{selectedPlayers[position].Player}</p>
+                                            <button
+                                                onClick={() => handleDeselectPlayer(position)}
+                                                className="p-2 bg-red-500 text-white rounded hover:bg-red-700"
+                                            >
+                                                Deselect
+                                            </button>
+                                        </div>
                                     </div>
-                                    <button
-                                        onClick={() => handleDeselectPlayer(position)}
-                                        className="ml-4 p-2 bg-red-500 text-white rounded hover:bg-red-700"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            )
-                        ))}
+                                )
+                            ))}
+                        </div>
+
+                        {/* Available Teams */}
+                        <div className="available-teams p-4 border-t border-gray-300 flex flex-col">
+                            <h2 className="text-lg font-bold mb-4">Available Teams</h2>
+                            <ul>
+                                {availableTeams.map(team => (
+                                    <li key={team} className="mb-2">
+                                        {team}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
 
-                    {/* Reset Button */}
-                    <div className="reset-button p-2 border-t border-gray-300">
-                        <button
-                            onClick={handleReset}
-                            className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-                        >
-                            Reset
-                        </button>
-                    </div>
+                    <button
+                        onClick={handleReset}
+                        className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                    >
+                        Reset
+                    </button>
                 </div>
             </div>
         </div>

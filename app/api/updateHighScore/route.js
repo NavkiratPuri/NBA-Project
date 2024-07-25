@@ -14,9 +14,19 @@ export async function PATCH(req) {
   try {
     const { newHighScore, gameType } = await req.json();
 
+    // Determine the field to update based on gameType
+    let updateData;
+    if (gameType === 'higherlower') {
+      updateData = { highScoreHL: newHighScore };
+    } else if (gameType === 'teambuilder') {
+      updateData = { highScoreT: newHighScore };
+    } else {
+      return NextResponse.json({ error: 'Invalid game type' }, { status: 400 });
+    }
+
     const updatedUser = await client.user.update({
       where: { email: session.user.email },
-      data: { highScoreHL: newHighScore },
+      data: updateData,
     });
 
     return NextResponse.json(updatedUser);
