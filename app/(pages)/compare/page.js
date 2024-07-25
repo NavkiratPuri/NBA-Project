@@ -5,15 +5,24 @@ import CompareChart from "@/components/CompareChart";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import playerData from "@/utils/playerData";
+import { calculatePlayerValue } from "@/utils/calculateValue";
 
 const processPlayerData = (data, playerName) => {
   const playerData = data.filter((player) => player.Player === playerName);
   return {
     ages: playerData.map((player) => player.Age),
     Points: playerData.map((player) => player.PTS),
-    assists: playerData.map((player) => player.AST),
-    blocks: playerData.map((player) => player.BLK),
-    steals: playerData.map((player) => player.STL),
+    Assists: playerData.map((player) => player.AST),
+    Blocks: playerData.map((player) => player.BLK),
+    Steals: playerData.map((player) => player.STL),
+    Rebounds: playerData.map((player) => player.TRB),
+    Turnovers: playerData.map((player) => player.TOV),
+    Minutes: playerData.map((player) => player.MP),
+    Games: playerData.map((player) => player.GS),
+
+    "Total Value": playerData.map(
+      (player) => calculatePlayerValue(player).totalValue
+    ),
   };
 };
 
@@ -22,7 +31,7 @@ const Compare = () => {
   const [player1, setPlayer1] = useState(null);
   const [player2, setPlayer2] = useState(null);
   const [chartData, setChartData] = useState(null);
-  const [category, setCategory] = useState("Points");
+  const [category, setCategory] = useState("Total Value");
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -119,7 +128,7 @@ const Compare = () => {
                   alt={player1.Player}
                   className="w-20 h-20 rounded-full border-2 border-gray-600"
                 />
-                <span className="text-7xl text-red-600 ml-2">
+                <span className="text-7xl font-bold text-red-600 ml-2">
                   {player1.Player}
                 </span>
               </div>
@@ -137,7 +146,7 @@ const Compare = () => {
                   alt={player2.Player}
                   className="w-20 h-20 rounded-full border-2 border-gray-600"
                 />
-                <span className="text-7xl text-blue-600 ml-2">
+                <span className="text-7xl font-bold text-blue-600 ml-2">
                   {player2.Player}
                 </span>
               </div>

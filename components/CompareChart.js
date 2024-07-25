@@ -72,10 +72,14 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
         onChange={statsFilter}
         className="w-30 h-10 text-xl font-semibold bg-red-200 p-1 rounded-md ml-2 mb-2"
       >
-        <option value="points">Points</option>
-        <option value="assists">Assists</option>
-        <option value="steals">Steals</option>
-        <option value="blocks">Blocks</option>
+        <option value="Total Value">Total Value</option>
+        <option value="Points">Points</option>
+        <option value="Assists">Assists</option>
+        <option value="Steals">Steals</option>
+        <option value="Rebounds">Rebounds</option>
+        <option value="Turnovers">Turnovers</option>
+        <option value="Games">Games</option>
+        <option value="Minutes">Minutes</option>
       </select>
 
       <canvas ref={chartRef} className=" max-h-6/12 mr-5"></canvas>
