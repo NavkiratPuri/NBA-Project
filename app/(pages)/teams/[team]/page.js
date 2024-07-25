@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { fetchPlayerTeam } from "@/utils/fetchPlayerTeam";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import PlayerCard from "@/components/playerCard";
 
 const MyComponent = ({ params }) => {
   const { team } = params;
@@ -27,7 +28,7 @@ const MyComponent = ({ params }) => {
       {players?.map((val, x) => {
         return (
           <div key={x} className="text-center font-bold p-3">
-            {val.Player}
+            <PlayerCard player={val} />
           </div>
         );
       })}
