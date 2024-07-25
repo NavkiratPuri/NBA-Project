@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PlayerSelector from "@/components/PlayerSelector";
-import TeamSelect from "@/components/TeamSelect";
+import TeamSelect from "@/components/teamSelect";
 import PlayerCard from "@/components/PlayerCard";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import playerData from "@/utils/playerData";
 import calculatePlayerValue from "@/utils/calculateValue";
 import Trade from "@/app/(pages)/trade/page";
@@ -157,11 +157,10 @@ const TeamTrade = () => {
           <div className="flex justify-center items-center gap-8">
             <div className="bg-white rounded-lg shadow-md p-4 text-center">
               <p
-                className={`text-2xl font-bold ${
-                  teamATotalValue >= teamBTotalValue
-                    ? "text-green-500"
-                    : "text-red-500"
-                }`}
+                className={`text-2xl font-bold ${teamATotalValue >= teamBTotalValue
+                  ? "text-green-500"
+                  : "text-red-500"
+                  }`}
               >
                 {teamATotalValue.toFixed(2)}
               </p>
@@ -169,11 +168,10 @@ const TeamTrade = () => {
             <p className="font-bold text-2xl">VS</p>
             <div className="bg-white rounded-lg shadow-md p-4 text-center">
               <p
-                className={`text-2xl font-bold ${
-                  teamBTotalValue >= teamATotalValue
-                    ? "text-green-500"
-                    : "text-red-500"
-                }`}
+                className={`text-2xl font-bold ${teamBTotalValue >= teamATotalValue
+                  ? "text-green-500"
+                  : "text-red-500"
+                  }`}
               >
                 {teamBTotalValue.toFixed(2)}
               </p>

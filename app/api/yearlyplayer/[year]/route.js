@@ -14,7 +14,7 @@ export const GET = async (request) => {
             return NextResponse.json({ message: "Year parameter is required and must be a number" }, { status: 400 });
         }
 
-        const players = await client.yearlyplayer.findMany({
+        const players = await client.player.findMany({
             where: {
                 Year: year
             }

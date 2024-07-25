@@ -4,40 +4,41 @@ import React, { useState, useEffect } from "react";
 const LeadersList = () => {
     const [players, setPlayers] = useState([]);
     const [category, setCategory] = useState("MP");
-    const [view, setView] = useState("top"); // New state for toggling view
+    const [year, setYear] = useState(new Date().getFullYear());
+    const [view, setView] = useState("top");
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch('/api/player', { cache: "no-cache" });
+                const apiUrl = `/api/yearlyplayer?year=${year}`;
+                console.log(`Fetching data from: ${apiUrl}`);
+                const res = await fetch(apiUrl, { cache: "no-cache" });
                 if (!res.ok) {
                     throw new Error("Failed to fetch data");
                 }
                 const data = await res.json();
+                console.log(`Fetched player data for year ${year}:`, data);
                 setPlayers(data);
-                console.log('Fetched player data:', data); // Log fetched data
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [year]);
 
-    // Sort players by category and return the top or bottom 10
     const sortPlayersByCategory = (category) => {
         const sortedPlayers = players.sort((a, b) => b[category] - a[category]);
         return view === "top" ? sortedPlayers.slice(0, 10) : sortedPlayers.slice(-10).reverse();
     };
 
-    // Render top or bottom players in a table
     const renderPlayers = (category) => {
         const sortedPlayers = sortPlayersByCategory(category);
-        console.log(`Rendering ${view} 10 players for category ${category}:`, sortedPlayers); // Log sorted players
+        console.log(`Rendering ${view} 10 players for category ${category}:`, sortedPlayers);
         return (
             <div className="mt-5">
                 <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                    {view === "top" ? "Top" : "Bottom"} 10 Players in {category}
+                    {view === "top" ? "Top" : "Bottom"} 10 Players in {category} for {year}
                 </h2>
                 <table className="min-w-full bg-white border border-gray-300">
                     <thead className="bg-blue-900 text-white">
@@ -96,19 +97,27 @@ const LeadersList = () => {
                     <option value="PF">Personal Fouls (PF)</option>
                 </select>
             </div>
+            <div className="max-w-md mx-auto mt-4">
+                <label htmlFor="year" className="block text-gray-700 font-medium mb-2">Select Year:</label>
+                <select
+                    id="year"
+                    className="form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    onChange={(e) => setYear(parseInt(e.target.value))}
+                >
+                    {Array.from({ length: new Date().getFullYear() - 1992 }, (_, i) => 1993 + i).map((year) => (
+                        <option key={year} value={year}>{year}</option>
+                    ))}
+                </select>
+            </div>
             <div className="flex justify-center mt-4 mb-6 space-x-4">
                 <button
-                    className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none ${
-                        view === "top" ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-700"
-                    }`}
+                    className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none ${view === "top" ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-700"}`}
                     onClick={() => setView("top")}
                 >
                     Top 10
                 </button>
                 <button
-                    className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none ${
-                        view === "bottom" ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-700"
-                    }`}
+                    className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none ${view === "bottom" ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-700"}`}
                     onClick={() => setView("bottom")}
                 >
                     Bottom 10
