@@ -72,8 +72,7 @@ const PlayerSelector = ({ players, onSelectPlayer, label, teams }) => {
   }, []);
 
   const uniqueYears = [...new Set(players.map((player) => player.Year))];
-  // Use teams prop to populate team dropdown
-  const uniqueTeams = teams;
+  const uniqueTeams = [...new Set(players.map((player) => player.Tm))]; // Changed to use unique teams from players
 
   return (
     <div className="player-selector-container" ref={dropdown}>

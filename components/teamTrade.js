@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import TeamSelect from "@/components/teamSelect";
+import PlayerSelector from "@/components/PlayerSelector";
+import TeamSelect from "@/components/TeamSelect";
 import PlayerCard from "@/components/PlayerCard";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import playerData from "@/utils/playerData";
 import calculatePlayerValue from "@/utils/calculateValue";
 import Trade from "@/app/(pages)/trade/page";
@@ -35,18 +36,6 @@ const TeamTrade = () => {
       setFilteredPlayersTeamA(filtered);
     } else if (team === "B") {
       setFilteredPlayersTeamB(filtered);
-    }
-  };
-
-  const handleRemovePlayer = (index, team) => {
-    if (team === "A") {
-      setFilteredPlayersTeamA(
-        filteredPlayersTeamA.filter((_, i) => i !== index)
-      );
-    } else if (team === "B") {
-      setFilteredPlayersTeamB(
-        filteredPlayersTeamB.filter((_, i) => i !== index)
-      );
     }
   };
 
@@ -113,12 +102,13 @@ const TeamTrade = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 relative">
           <div className="pr-2 border-r-2 border-black">
             <h2 className="text-center text-xl font-bold mb-2">
-              Team A (Click the cards for stats then click again for
-              values!!!!!)
+              Team A (Click the cards for stats then click again for values!!!!!)
             </h2>
-            <TeamSelect
+            <PlayerSelector
               players={players}
-              onFilterPlayers={(filtered) => handleFilterPlayers(filtered, "A")}
+              onSelectPlayer={(player) => handleFilterPlayers([player], "A")}
+              label="Select Player for Team A"
+              teams={[...new Set(players.map(player => player.Tm))]} // Pass unique teams here
             />
             <DraftPicks
               draftPicks={draftPicksTeamA}
@@ -136,14 +126,15 @@ const TeamTrade = () => {
               ))}
             </div>
           </div>
-          <div className="">
+          <div>
             <h2 className="text-center text-xl font-bold mb-2">
-              Team B (Click the cards for stats then click again for
-              values!!!!!)
+              Team B (Click the cards for stats then click again for values!!!!!)
             </h2>
-            <TeamSelect
+            <PlayerSelector
               players={players}
-              onFilterPlayers={(filtered) => handleFilterPlayers(filtered, "B")}
+              onSelectPlayer={(player) => handleFilterPlayers([player], "B")}
+              label="Select Player for Team B"
+              teams={[...new Set(players.map(player => player.Tm))]} // Pass unique teams here
             />
             <DraftPicks
               draftPicks={draftPicksTeamB}

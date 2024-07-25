@@ -28,12 +28,11 @@ const TeamStandings = () => {
         let filtered = [];
         if (conference === 'E' || conference === 'W') {
             filtered = standings.filter(team => team.conference === conference).sort((a, b) => a.rk - b.rk);
-        } else if (conference === '') {
+        } else {
             filtered = [...standings].sort((a, b) => a.rk - b.rk);
         }
         setFilteredStandings(filtered);
         setShowConference(conference === '');
-        setSelectedButton(conference); // Set the selected button
     };
 
     const handleEditSubmit = async (e) => {
@@ -89,6 +88,12 @@ const TeamStandings = () => {
         }
         return '';
     };
+
+    const getButtonClass = (conference) => (
+        conference === 'E' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg' :
+        conference === 'W' ? 'bg-green-500 text-white px-4 py-2 rounded-lg' :
+        'bg-gray-500 text-white px-4 py-2 rounded-lg'
+    );
 
     return (
         <div className="container mx-auto px-4 py-8">
