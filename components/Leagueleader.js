@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 
 const LeadersList = () => {
     const [players, setPlayers] = useState([]);
-    const [category, setCategory] = useState("MP");
-    const [year, setYear] = useState(new Date().getFullYear());
-    const [view, setView] = useState("top");
+    const [category, setCategory] = useState(""); // Initialize category as an empty string
+    const [year, setYear] = useState(""); // Initialize year as an empty string
 
     useEffect(() => {
+        if (year === "" || category === "") return; // Don't fetch data if year or category is not selected
+
         const fetchData = async () => {
             try {
                 const apiUrl = `/api/yearlyplayer?year=${year}`;
@@ -25,20 +26,24 @@ const LeadersList = () => {
         };
 
         fetchData();
-    }, [year]);
+    }, [year, category]); // Add category as a dependency to refetch data when category changes
 
     const sortPlayersByCategory = (category) => {
         const sortedPlayers = players.sort((a, b) => b[category] - a[category]);
-        return view === "top" ? sortedPlayers.slice(0, 10) : sortedPlayers.slice(-10).reverse();
+        return sortedPlayers.slice(0, 10);
     };
 
     const renderPlayers = (category) => {
+        if (year === "" || category === "") {
+            return <p className="text-gray-600">Please select both a year and a category to view the data.</p>;
+        }
+
         const sortedPlayers = sortPlayersByCategory(category);
-        console.log(`Rendering ${view} 10 players for category ${category}:`, sortedPlayers);
+        console.log(`Rendering top 10 players for category ${category}:`, sortedPlayers);
         return (
             <div className="mt-5">
                 <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                    {view === "top" ? "Top" : "Bottom"} 10 Players in {category} for {year}
+                    Top 10 Players in {category} for {year}
                 </h2>
                 <table className="min-w-full bg-white border border-gray-300">
                     <thead className="bg-blue-900 text-white">
@@ -71,7 +76,9 @@ const LeadersList = () => {
                     id="category"
                     className="form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     onChange={(e) => setCategory(e.target.value)}
+                    value={category}
                 >
+                    <option value="" disabled>Select a category</option>
                     <option value="MP">Minutes Per Game (MP)</option>
                     <option value="PTS">Points Per Game (PTS)</option>
                     <option value="TRB">Rebounds Per Game (TRB)</option>
@@ -103,25 +110,13 @@ const LeadersList = () => {
                     id="year"
                     className="form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                     onChange={(e) => setYear(parseInt(e.target.value))}
+                    value={year}
                 >
+                    <option value="" disabled>Select a year</option>
                     {Array.from({ length: new Date().getFullYear() - 1992 }, (_, i) => 1993 + i).map((year) => (
                         <option key={year} value={year}>{year}</option>
                     ))}
                 </select>
-            </div>
-            <div className="flex justify-center mt-4 mb-6 space-x-4">
-                <button
-                    className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none ${view === "top" ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-700"}`}
-                    onClick={() => setView("top")}
-                >
-                    Top 10
-                </button>
-                <button
-                    className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none ${view === "bottom" ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-700"}`}
-                    onClick={() => setView("bottom")}
-                >
-                    Bottom 10
-                </button>
             </div>
             {renderPlayers(category)}
         </div>
