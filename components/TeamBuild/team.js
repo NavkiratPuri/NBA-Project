@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PlayerSelector from '@/components/PlayerSelector';
 import fetchCSV from '@/utils/fetchCsv';
+import { calculatePlayerValue } from '@/utils/calculateValue'; // Adjust the import path
 
 const getRandomTeams = (players, numTeams = 5) => {
     const teams = [...new Set(players.map(player => player.Tm))];
@@ -37,6 +38,7 @@ const TeamBuilder = () => {
 
     const [availableTeams, setAvailableTeams] = useState([]);
     const [usedPositions, setUsedPositions] = useState([]);
+    const [totalValue, setTotalValue] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -48,6 +50,20 @@ const TeamBuilder = () => {
                     Pos: player.Pos.split('-')[0], // Assuming position is separated by dash
                     Tm: player.Tm,
                     Year: player.Year,
+                    Age: player.Age,
+                    PTS: player.PTS,
+                    AST: player.AST,
+                    BLK: player.BLK,
+                    STL: player.STL,
+                    TOV: player.TOV,
+                    FTPercent: player.FTPercent,
+                    eFGPercent: player.eFGPercent,
+                    G: player.G,
+                    GS: player.GS,
+                    ORB: player.ORB,
+                    DRB: player.DRB,
+                    PF: player.PF,
+                    MP: player.MP
                 }));
 
                 setPlayers(playersData);
@@ -107,6 +123,20 @@ const TeamBuilder = () => {
                 Pos: player.Pos.split('-')[0], // Assuming position is separated by dash
                 Tm: player.Tm,
                 Year: player.Year,
+                Age: player.Age,
+                PTS: player.PTS,
+                AST: player.AST,
+                BLK: player.BLK,
+                STL: player.STL,
+                TOV: player.TOV,
+                FTPercent: player.FTPercent,
+                eFGPercent: player.eFGPercent,
+                G: player.G,
+                GS: player.GS,
+                ORB: player.ORB,
+                DRB: player.DRB,
+                PF: player.PF,
+                MP: player.MP
             }));
 
             setSelectedPlayers({
@@ -118,9 +148,22 @@ const TeamBuilder = () => {
             });
             setUsedPositions([]);
             updateTeamsAndPlayers(playersData);
+            setTotalValue(0); // Reset the total value
         } catch (error) {
             console.error('Error resetting data:', error);
         }
+    };
+
+    const handleSubmit = () => {
+        const values = Object.values(selectedPlayers);
+        const calculatedValues = values.reduce((acc, player) => {
+            if (player) {
+                const playerValue = calculatePlayerValue(player);
+                acc.totalValue += playerValue.totalValue;
+            }
+            return acc;
+        }, { totalValue: 0 });
+        setTotalValue(calculatedValues.totalValue);
     };
 
     const filteredPlayersByPosition = (position) => {
@@ -130,6 +173,7 @@ const TeamBuilder = () => {
     return (
         <div className="container mx-auto p-4">
             <div className="flex space-x-8">
+                {/* Left Section: Player Selection */}
                 <div className="w-1/2">
                     {Object.keys(categorizedPlayers).map(position => (
                         !usedPositions.includes(position) && (
@@ -142,8 +186,12 @@ const TeamBuilder = () => {
                             />
                         )
                     ))}
+                    
                 </div>
+
+                {/* Right Section: Display */}
                 <div className="w-1/2">
+                    {/* Selected Players */}
                     <div className="selected-players mb-8 p-4 border-t border-gray-300">
                         <h2 className="text-lg font-bold mb-4">Selected Players</h2>
                         {Object.entries(selectedPlayers).map(([position, player]) => (
@@ -164,6 +212,7 @@ const TeamBuilder = () => {
                         ))}
                     </div>
 
+                    {/* Available Teams */}
                     <div className="available-teams mb-8 p-4 border-t border-gray-300">
                         <h2 className="text-lg font-bold mb-4">Available Teams</h2>
                         <ul>
@@ -175,13 +224,29 @@ const TeamBuilder = () => {
                         </ul>
                     </div>
 
-                    <div className="reset-button p-4">
+                    {/* Reset Button */}
+                    <div className="reset-button mb-8 p-4">
                         <button
                             onClick={handleReset}
                             className="p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
                         >
                             Reset
                         </button>
+                    </div>
+
+                    {/* Total Value */}
+                    <div className="total-value p-4 border-t border-gray-300">
+                        <h2 className="text-lg font-bold mb-4">Total Value</h2>
+                        <p className="text-xl font-semibold">{totalValue.toFixed(2)}</p>
+
+                        <div className="mt-4">
+                        <button
+                            onClick={handleSubmit}
+                            className="p-2 bg-green-500 text-white rounded hover:bg-green-700"
+                        >
+                            Submit
+                        </button>
+                    </div>
                     </div>
                 </div>
             </div>
