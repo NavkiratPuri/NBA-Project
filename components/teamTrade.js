@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from "react";
 import TeamSelect from "@/components/teamSelect";
 import PlayerCard from "@/components/PlayerCard";
@@ -7,6 +6,7 @@ import Footer from "@/components/footer";
 import playerData from "@/utils/playerData";
 import calculatePlayerValue from "@/utils/calculateValue";
 import Trade from "@/app/(pages)/trade/page";
+import DraftPicks from "@/components/DraftPicks";
 
 const TeamTrade = () => {
   const [players, setPlayers] = useState([]);
@@ -14,7 +14,9 @@ const TeamTrade = () => {
   const [filteredPlayersTeamB, setFilteredPlayersTeamB] = useState([]);
   const [teamATotalValue, setTeamATotalValue] = useState(0);
   const [teamBTotalValue, setTeamBTotalValue] = useState(0);
-  const [isTrade, setIsTrade] = useState(false);
+  const [isTrade, setIsTeamTrade] = useState(false);
+  const [draftPicksTeamA, setDraftPicksTeamA] = useState([]);
+  const [draftPicksTeamB, setDraftPicksTeamB] = useState([]);
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -28,12 +30,12 @@ const TeamTrade = () => {
     fetchPlayers();
   }, []);
 
-  const handleFilterPlayersTeamA = (filtered) => {
-    setFilteredPlayersTeamA(filtered);
-  };
-
-  const handleFilterPlayersTeamB = (filtered) => {
-    setFilteredPlayersTeamB(filtered);
+  const handleFilterPlayers = (filtered, team) => {
+    if (team === "A") {
+      setFilteredPlayersTeamA(filtered);
+    } else if (team === "B") {
+      setFilteredPlayersTeamB(filtered);
+    }
   };
 
   const handleRemovePlayer = (index, team) => {
@@ -48,21 +50,49 @@ const TeamTrade = () => {
     }
   };
 
-  const getTotalValue = (players, weights) => {
-    return players.reduce((total, player) => {
+  const handleAddDraftPick = (team, pick) => {
+    if (team === "A") {
+      setDraftPicksTeamA([...draftPicksTeamA, pick]);
+    } else if (team === "B") {
+      setDraftPicksTeamB([...draftPicksTeamB, pick]);
+    }
+  };
+
+  const handleRemoveDraftPick = (index, team) => {
+    if (team === "A") {
+      setDraftPicksTeamA(draftPicksTeamA.filter((_, i) => i !== index));
+    } else if (team === "B") {
+      setDraftPicksTeamB(draftPicksTeamB.filter((_, i) => i !== index));
+    }
+  };
+
+  const getTotalValue = (players, draftPicks) => {
+    const playerValue = players.reduce((total, player) => {
       if (player) {
-        return total + calculatePlayerValue(player, weights).totalValue;
+        return total + calculatePlayerValue(player).totalValue;
       }
       return total;
     }, 0);
+
+    const draftPickValue = draftPicks.reduce(
+      (total, pick) => total + pick.value,
+      0
+    );
+
+    return playerValue + draftPickValue;
   };
 
   useEffect(() => {
-    const teamATotal = getTotalValue(filteredPlayersTeamA);
-    const teamBTotal = getTotalValue(filteredPlayersTeamB);
+    const teamATotal = getTotalValue(filteredPlayersTeamA, draftPicksTeamA);
+    const teamBTotal = getTotalValue(filteredPlayersTeamB, draftPicksTeamB);
     setTeamATotalValue(teamATotal);
     setTeamBTotalValue(teamBTotal);
-  }, [filteredPlayersTeamA, filteredPlayersTeamB]);
+  }, [
+    filteredPlayersTeamA,
+    filteredPlayersTeamB,
+    draftPicksTeamA,
+    draftPicksTeamB,
+  ]);
 
   if (isTrade) {
     return <Trade />;
@@ -75,7 +105,7 @@ const TeamTrade = () => {
         <div className="flex justify-end mb-4">
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded"
-            onClick={() => setIsTrade(true)}
+            onClick={() => setIsTeamTrade(true)}
           >
             Switch to Trade Sim
           </button>
@@ -88,7 +118,13 @@ const TeamTrade = () => {
             </h2>
             <TeamSelect
               players={players}
-              onFilterPlayers={handleFilterPlayersTeamA}
+              onFilterPlayers={(filtered) => handleFilterPlayers(filtered, "A")}
+            />
+            <DraftPicks
+              draftPicks={draftPicksTeamA}
+              onSelectDraftPick={(pick) => handleAddDraftPick("A", pick)}
+              onRemoveDraftPick={handleRemoveDraftPick}
+              team="A"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
               {filteredPlayersTeamA.map((player, index) => (
@@ -107,7 +143,13 @@ const TeamTrade = () => {
             </h2>
             <TeamSelect
               players={players}
-              onFilterPlayers={handleFilterPlayersTeamB}
+              onFilterPlayers={(filtered) => handleFilterPlayers(filtered, "B")}
+            />
+            <DraftPicks
+              draftPicks={draftPicksTeamB}
+              onSelectDraftPick={(pick) => handleAddDraftPick("B", pick)}
+              onRemoveDraftPick={handleRemoveDraftPick}
+              team="B"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
               {filteredPlayersTeamB.map((player, index) => (
