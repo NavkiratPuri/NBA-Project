@@ -3,14 +3,17 @@ import axios from 'axios';
 
 // function to fetch data from mongodb
 const teamsData = async () => {
-    try{
-        const response = await axios.get('api/team');
-        if (response.data) {
-            return response.data;
+ 
+    const fetchTeamData  = async () => {
+        try {
+            const response = await axios.get('/api/team');
+            setStandings(response.data);
+            setFilteredStandings(response.data);
+        } catch (error) {
+            console.error('Error fetching standings:', error);
         }
-    }catch (error){
-        console.error('error fetching teams data', error);
-    }
+        fetchTeamData();
+    };
 };
 
 export default teamsData;

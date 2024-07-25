@@ -11,11 +11,12 @@ export const GET = async (request, { params }) => {
             }
         });
         if (!trivia) {
-            return NextResponse.json({ message: "Post not found" }, { status: 404 });
+            return NextResponse.json({ status: 404 }, { message: "Post not found" })
         }
         return NextResponse.json(trivia);
     } catch (error) {
-        return NextResponse.json({ message: "Error getting post", error }, { status: 500 });
+        return NextResponse.json({ status: 500 }, { message: "Error getting post", error })
+
     }
 }
 
@@ -24,8 +25,13 @@ export const PATCH = async (request, { params }) => {
     try {
         const body = await request.json();
         const { id } = params;
-        const { question, optionA, optionB, optionC, optionD, correctAnswer } = body;
-
+        const { question,
+            optionA,
+            optionB,
+            optionC,
+            optionD,
+            correctAnswer, } = body;
+        // updates the player in the database
         const updateQuestion = await client.trivia.update({
             where: {
                 id
@@ -39,35 +45,20 @@ export const PATCH = async (request, { params }) => {
                 correctAnswer,
             }
         });
+        // if the player is not found, return a 404 status
         if (!updateQuestion) {
-            return NextResponse.json({ message: "Question not found" }, { status: 404 });
+            return NextResponse.json({ status: 404 }, { message: "Team not found" })
         }
         return NextResponse.json(updateQuestion);
+
     } catch (error) {
-        return NextResponse.json({ message: "Error updating question", error }, { status: 500 });
+        return NextResponse.json({ status: 500 }, { message: "Error updating team", error })
     }
 }
 
-// Function to handle DELETE requests to remove a trivia question
-export const DELETE = async (request, { params }) => {
-    try {
-        const { id } = params;
-
-        const deleteQuestion = await client.trivia.delete({
-            where: {
-                id
-            }
-        });
-        if (!deleteQuestion) {
-            return NextResponse.json({ message: "Question not found" }, { status: 404 });
-        }
-        return NextResponse.json({ message: "Question deleted successfully" });
-    } catch (error) {
-        return NextResponse.json({ message: "Error deleting question", error }, { status: 500 });
-    }
-}
 
 // Fetches questions using the GET function
 export const FETCH = async () => {
     return await GET();
 }
+

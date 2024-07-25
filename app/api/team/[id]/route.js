@@ -1,20 +1,28 @@
-import client from '@/app/libs/prismadb';
-import { NextResponse } from 'next/server';
+// team/[id]/route.js
+import client from "@/app/libs/prismadb";
+import { NextResponse } from "next/server";
 
 export const GET = async (request, { params }) => {
+  const { id } = params;
+
   try {
-    const { id } = params;
     const team = await client.team.findUnique({
-      where: { id: parseInt(id) },
+      where: {
+        id: parseInt(id, 10), // Ensure the id is an integer
+      },
     });
+
     if (!team) {
-      return NextResponse.json({ status: 404 }, { message: 'Team not found' });
+      return NextResponse.json({ message: "Team not found" }, { status: 404 });
     }
+
     const players = await client.player.findMany({
-      where: { teamId: parseInt(id) },
+      where: { Tm: team.name }, // Assuming `Tm` in the player collection corresponds to the team name
     });
+
     return NextResponse.json({ team, players });
   } catch (error) {
-    return NextResponse.json({ status: 500 }, { message: 'Error getting team details', error });
+    console.error('Error fetching team details:', error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 };

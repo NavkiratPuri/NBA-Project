@@ -1,10 +1,9 @@
-"use client";
+"use client"
 import React, { useState, useEffect } from "react";
 
 const LeadersList = () => {
     const [players, setPlayers] = useState([]);
     const [category, setCategory] = useState("MP");
-    const [view, setView] = useState("top"); // New state for toggling view
 
     useEffect(() => {
         const fetchData = async () => {
@@ -15,7 +14,6 @@ const LeadersList = () => {
                 }
                 const data = await res.json();
                 setPlayers(data);
-                console.log('Fetched player data:', data); // Log fetched data
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -24,35 +22,31 @@ const LeadersList = () => {
         fetchData();
     }, []);
 
-    // Sort players by category and return the top or bottom 10
+    // Sort players by category
     const sortPlayersByCategory = (category) => {
-        const sortedPlayers = players.sort((a, b) => b[category] - a[category]);
-        return view === "top" ? sortedPlayers.slice(0, 10) : sortedPlayers.slice(-10).reverse();
+        return players.sort((a, b) => b[category] - a[category]).slice(0, 10);
     };
 
-    // Render top or bottom players in a table
-    const renderPlayers = (category) => {
-        const sortedPlayers = sortPlayersByCategory(category);
-        console.log(`Rendering ${view} 10 players for category ${category}:`, sortedPlayers); // Log sorted players
+    // Render top players in a table
+    const renderTopPlayers = (category) => {
+        const topPlayers = sortPlayersByCategory(category);
         return (
             <div className="mt-5">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                    {view === "top" ? "Top" : "Bottom"} 10 Players in {category}
-                </h2>
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">Top 10 Players in {category}</h2>
                 <table className="min-w-full bg-white border border-gray-300">
-                    <thead className="bg-blue-900 text-white">
-                        <tr className="text-left">
-                            <th className="py-2 px-4 border-b">Rank</th>
-                            <th className="py-2 px-4 border-b">Player</th>
-                            <th className="py-2 px-4 border-b">{category}</th>
+                    <thead>
+                        <tr className="bg-gray-100">
+                            <th className="py-2 px-4 border-b text-left">Rank</th>
+                            <th className="py-2 px-4 border-b text-left">Player</th>
+                            <th className="py-2 px-4 border-b text-left">{category}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedPlayers.map((player, index) => (
+                        {topPlayers.map((player, index) => (
                             <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
-                                <td className="py-2 px-4 border-b">{index + 1}</td>
-                                <td className="py-2 px-4 border-b text-blue-500">{player.Player}</td>
-                                <td className="py-2 px-4 border-b">{player[category]}</td>
+                                <td className="py-2 px-4 border-b text-left">{index + 1}</td>
+                                <td className="py-2 px-4 border-b text-left">{player.Player}</td>
+                                <td className="py-2 px-4 border-b text-left">{player[category]}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -63,7 +57,7 @@ const LeadersList = () => {
 
     return (
         <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold text-center text-blue-900 mt-4 mb-4">League Leaders</h1>
+            <h1 className="text-3xl font-bold text-center text-gray-800 mt-4 mb-4">League Leaders</h1>
             <div className="max-w-md mx-auto">
                 <label htmlFor="category" className="block text-gray-700 font-medium mb-2">Select Category:</label>
                 <select
@@ -96,25 +90,7 @@ const LeadersList = () => {
                     <option value="PF">Personal Fouls (PF)</option>
                 </select>
             </div>
-            <div className="flex justify-center mt-4 mb-6 space-x-4">
-                <button
-                    className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none ${
-                        view === "top" ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-700"
-                    }`}
-                    onClick={() => setView("top")}
-                >
-                    Top 10
-                </button>
-                <button
-                    className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none ${
-                        view === "bottom" ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-700"
-                    }`}
-                    onClick={() => setView("bottom")}
-                >
-                    Bottom 10
-                </button>
-            </div>
-            {renderPlayers(category)}
+            {renderTopPlayers(category)}
         </div>
     );
 };

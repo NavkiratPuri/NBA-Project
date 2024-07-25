@@ -1,4 +1,4 @@
-
+//player/[id]/route.js
 import client from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 
@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 
 // url: http://localhost:3000/api/player/[id]
 
-
+// get function handles GET requests to return posts (used for search) 
 export const GET = async (request, { params }) => {
     try {
         const { id } = params;

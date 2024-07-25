@@ -1,16 +1,17 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import PlayerSelector from '@/components/PlayerSelector';
-import PlayerCard from '@/components/PlayerCard';
+import TradeSimulator from '@/components/TradeSimulator';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+//import '../app/globals.css';
 import playerData from '@/utils/playerData';
 import { calculatePlayerValue } from '@/utils/calculateValue';
 
+
 const Trade = () => {
     const [players, setPlayers] = useState([]);
-    const [teamAPlayers, setTeamAPlayers] = useState([]);
-    const [teamBPlayers, setTeamBPlayers] = useState([]);
+    const [selectedPlayers, setSelectedPlayers] = useState([null]);
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -24,89 +25,76 @@ const Trade = () => {
         fetchPlayers();
     }, []);
 
-    const handleSelectPlayer = (player, team) => {
-        if (team === 'A') {
-            setTeamAPlayers([...teamAPlayers, player]);
-        } else if (team === 'B') {
-            setTeamBPlayers([...teamBPlayers, player]);
+
+    // function to update the state of selected player
+    // when player is chosen from dropdown menu replaces previous player in slot
+    const handleSelectPlayer = (player, slot) => {
+        setSelectedPlayers(prevState => ({
+            ...prevState,
+            [slot]: player
+        }));
+    };
+
+    // function to determine the color of players calculated value
+    // does this by getting the player value of both players
+    // then uses if else statement to apply approriate color
+    const playerRedGreen = (player, otherPlayer) => {
+        if (player == null || otherPlayer == null) return 'text-gray-700';
+        const playerValue = calculatePlayerValue(player);
+        const otherPlayerValue = calculatePlayerValue(otherPlayer);
+
+        if (playerValue > otherPlayerValue) {
+            return 'text-green-500'
+        } else {
+            return 'text-red-500'
         }
     };
 
-    const handleRemovePlayer = (index, team) => {
-        if (team === 'A') {
-            setTeamAPlayers(teamAPlayers.filter((_, i) => i !== index));
-        } else if (team === 'B') {
-            setTeamBPlayers(teamBPlayers.filter((_, i) => i !== index));
-        }
-    };
 
-    const getTotalValue = (players) => {
-        return players.reduce((total, player) => {
-            if (player) {
-                return total + calculatePlayerValue(player).totalValue;
-            }
-            return total;
-        }, 0);
-    };
 
-    const teamATotalValue = getTotalValue(teamAPlayers);
-    const teamBTotalValue = getTotalValue(teamBPlayers);
-
+    // render logic
     return (
-        <div className='flex flex-col min-h-screen bg-gray-100'>
+        <div className="flex flex-col min-h-screen bg-gray-100">
+
             <Header />
-            <main className='flex-grow p-3'>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-2 relative'>
-                    <div className='pr-2 border-r-2 border-black'>
-                        <h2 className='text-center text-xl font-bold mb-2'>Team A (Click the cards for stats then click again for values!!!!!)</h2>
+
+            <main className="flex-grow p-8">
+
+                <h1 className="text-center text-4xl font-bold text-blue-700 mb-6">Trade Simulator</h1>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                    <div className="bg-white rounded-lg shadow-md p-6">
                         <PlayerSelector
                             players={players}
-                            onSelectPlayer={(player) => handleSelectPlayer(player, 'A')}
+                            onSelectPlayer={(player) => handleSelectPlayer(player, 'player1')}
+                            label="Player 1"
                         />
-                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4'>
-                            {teamAPlayers.map((player, index) => (
-                                <PlayerCard
-                                    key={index}
-                                    player={player}
-                                    onRemove={() => handleRemovePlayer(index, 'A')}
-                                />
-                            ))}
-                        </div>
+                        {selectedPlayers.player1 && (
+                            <TradeSimulator player={selectedPlayers.player1}
+                                valueColor={playerRedGreen(selectedPlayers.player1, selectedPlayers.player2)}
+                            />
+                        )}
                     </div>
-                    <div className=''>
-                        <h2 className='text-center text-xl font-bold mb-2'>Team B (Click the cards for stats then click again for values!!!!!)</h2>
+
+                    <div className="bg-white rounded-lg shadow-md p-6">
                         <PlayerSelector
                             players={players}
-                            onSelectPlayer={(player) => handleSelectPlayer(player, 'B')}
+                            onSelectPlayer={(player) => handleSelectPlayer(player, 'player2')}
+                            label="Player 2"
                         />
-                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4'>
-                            {teamBPlayers.map((player, index) => (
-                                <PlayerCard
-                                    key={index}
-                                    player={player}
-                                    onRemove={() => handleRemovePlayer(index, 'B')}
-                                />
-                            ))}
-                        </div>
+                        {selectedPlayers.player2 && (
+                            <TradeSimulator player={selectedPlayers.player2}
+                                valueColor={playerRedGreen(selectedPlayers.player2, selectedPlayers.player1)} />
+                        )}
                     </div>
+
                 </div>
-                <div className='flex justify-center mt-4'>
-                    <div className='flex justify-center items-center gap-8'>
-                        <div className='bg-white rounded-lg shadow-md p-4 text-center'>
-                            <p className={`text-2xl font-bold ${teamATotalValue >= teamBTotalValue ? 'text-green-500' : 'text-red-500'}`}>
-                                {teamATotalValue.toFixed(2)}
-                            </p>
-                        </div>
-                        <p className='font-bold text-2xl'>VS</p>
-                        <div className='bg-white rounded-lg shadow-md p-4 text-center'>
-                            <p className={`text-2xl font-bold ${teamBTotalValue >= teamATotalValue ? 'text-green-500' : 'text-red-500'}`}>
-                                {teamBTotalValue.toFixed(2)}
-                            </p>
-                        </div>
-                    </div>
-                </div>
+
             </main>
+
             <Footer />
+
         </div>
     );
 };

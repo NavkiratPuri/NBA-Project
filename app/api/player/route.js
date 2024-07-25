@@ -1,3 +1,4 @@
+//player/route.js
 import client from "../../libs/prismadb";
 import { NextResponse } from "next/server";
 
