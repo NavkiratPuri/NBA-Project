@@ -172,25 +172,42 @@ const TeamBuilder = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <div className="flex space-x-8">
-                {/* Left Section: Player Selection */}
-                <div className="w-1/2">
-                    {Object.keys(categorizedPlayers).map(position => (
-                        !usedPositions.includes(position) && (
-                            <PlayerSelector
-                                key={position}
-                                players={filteredPlayersByPosition(position)}
-                                onSelectPlayer={(player) => handleSelectPlayer(position, player)}
-                                label={position}
-                                teams={availableTeams} // Pass available teams here
-                            />
-                        )
-                    ))}
-                    
+            <div className="flex">
+                {/* Left Section: Player Selection and Buttons */}
+                <div className="flex flex-col w-1/2 pr-4">
+                    <div className="flex flex-col mb-4">
+                        {/* Player Selection */}
+                        <div className="mb-4">
+                            {Object.keys(categorizedPlayers).map(position => (
+                                !usedPositions.includes(position) && (
+                                    <PlayerSelector
+                                        key={position}
+                                        players={filteredPlayersByPosition(position)}
+                                        onSelectPlayer={(player) => handleSelectPlayer(position, player)}
+                                        label={position}
+                                        teams={availableTeams} // Pass available teams here
+                                    />
+                                )
+                            ))}
+                        </div>          
+                            
+                        {/* Total Value */}
+                        <div className="total-value p-4 border-t border-gray-300 flex flex-col items-center">
+                            <h2 className="text-lg font-bold mb-4">Total Value</h2>
+                            <p className="text-xl font-semibold mb-4">{totalValue.toFixed(2)}</p>
+                            <button
+                                onClick={handleSubmit}
+                                className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-700"
+                            >
+                                Submit
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
 
-                {/* Right Section: Display */}
-                <div className="w-1/2">
+                {/* Right Section: Selected Players and Available Teams */}
+                <div className="w-1/2 flex flex-col">
                     {/* Selected Players */}
                     <div className="selected-players mb-8 p-4 border-t border-gray-300">
                         <h2 className="text-lg font-bold mb-4">Selected Players</h2>
@@ -213,7 +230,7 @@ const TeamBuilder = () => {
                     </div>
 
                     {/* Available Teams */}
-                    <div className="available-teams mb-8 p-4 border-t border-gray-300">
+                    <div className="available-teams p-4 border-t border-gray-300">
                         <h2 className="text-lg font-bold mb-4">Available Teams</h2>
                         <ul>
                             {availableTeams.map((team) => (
@@ -223,31 +240,14 @@ const TeamBuilder = () => {
                             ))}
                         </ul>
                     </div>
-
-                    {/* Reset Button */}
-                    <div className="reset-button mb-8 p-4">
-                        <button
-                            onClick={handleReset}
-                            className="p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-                        >
-                            Reset
-                        </button>
-                    </div>
-
-                    {/* Total Value */}
-                    <div className="total-value p-4 border-t border-gray-300">
-                        <h2 className="text-lg font-bold mb-4">Total Value</h2>
-                        <p className="text-xl font-semibold">{totalValue.toFixed(2)}</p>
-
-                        <div className="mt-4">
-                        <button
-                            onClick={handleSubmit}
-                            className="p-2 bg-green-500 text-white rounded hover:bg-green-700"
-                        >
-                            Submit
-                        </button>
-                    </div>
-                    </div>
+                    <div className="p-2 border-t border-gray-300">
+                            <button
+                                onClick={handleReset}
+                                className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                            >
+                                Reset
+                            </button>
+                        </div>
                 </div>
             </div>
         </div>
