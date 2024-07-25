@@ -51,11 +51,9 @@ const TeamBuilder = () => {
                 }));
 
                 setPlayers(playersData);
-
-                const randomTeams = getRandomTeams(playersData);
-                setTeams(randomTeams);
-
-                const filteredPlayers = filterPlayersByTeams(playersData, randomTeams);
+                const initialTeams = getRandomTeams(playersData);
+                setTeams(initialTeams);
+                const filteredPlayers = filterPlayersByTeams(playersData, initialTeams);
                 setCategorizedPlayers(categorizePlayersByPosition(filteredPlayers));
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -65,6 +63,13 @@ const TeamBuilder = () => {
         fetchData();
     }, []);
 
+    const updateTeamsAndPlayers = (playersData) => {
+        const newTeams = getRandomTeams(playersData);
+        setTeams(newTeams);
+        const filteredPlayers = filterPlayersByTeams(playersData, newTeams);
+        setCategorizedPlayers(categorizePlayersByPosition(filteredPlayers));
+    };
+
     const handleSelectPlayer = (position, player) => {
         setSelectedPlayers(prevState => ({
             ...prevState,
@@ -73,6 +78,32 @@ const TeamBuilder = () => {
 
         setUsedTeams(prevState => [...prevState, player.Tm]);
         setUsedPositions(prevState => [...prevState, position]);
+    };
+
+    const handleReset = async () => {
+        try {
+            const data = await fetchCSV();
+            const playersData = data.map(player => ({
+                id: player.Rk,
+                Player: player.Player,
+                Pos: player.Pos.split('-')[0], // Assuming position is separated by dash
+                Tm: player.Tm,
+                Year: player.Year,
+            }));
+
+            setSelectedPlayers({
+                'C': null,
+                'PF': null,
+                'SF': null,
+                'PG': null,
+                'SG': null
+            });
+            setUsedTeams([]);
+            setUsedPositions([]);
+            updateTeamsAndPlayers(playersData);
+        } catch (error) {
+            console.error('Error resetting data:', error);
+        }
     };
 
     const filteredPlayersByPosition = (position) => {
@@ -116,6 +147,15 @@ const TeamBuilder = () => {
                         )
                     ))}
                 </ul>
+            </div>
+
+            <div className="reset-button mt-8 p-4">
+                <button
+                    onClick={handleReset}
+                    className="p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                >
+                    Reset
+                </button>
             </div>
         </div>
     );
