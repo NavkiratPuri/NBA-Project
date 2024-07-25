@@ -1,4 +1,3 @@
-// app/api/updateHighscore/route.js
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import client from '@/app/libs/prismadb'; // Adjust the import path as needed
