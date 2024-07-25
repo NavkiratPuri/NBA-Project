@@ -104,4 +104,5 @@ const FavPlayer = ({playerId}) => {
     );
 };
 
+
 export default FavPlayer;
