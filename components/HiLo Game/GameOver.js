@@ -39,7 +39,7 @@ const GameOver = ({ points, onRestart }) => {
     updateHighScore();
   }, [points, user]);
 
-//   console.log("User:", user)
+  console.log("User:", user)
 
   return (
     <div className="h-screen inset-0 flex flex-col items-center justify-center z-10 text-center">
