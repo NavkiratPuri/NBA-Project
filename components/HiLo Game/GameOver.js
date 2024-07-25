@@ -25,7 +25,7 @@ const GameOver = ({ points, onRestart }) => {
         try {
           if (points > (user.highScoreHL || 0)) {  // Handle undefined highScoreHL
             setIsNewHighScore(true);
-            await axios.patch('/api/updateHighscore', {
+            await axios.patch('/api/updateHighScore', {
               newHighScore: points,
               gameType: 'higherLower',
             });

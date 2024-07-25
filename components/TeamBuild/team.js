@@ -72,7 +72,7 @@ const TeamBuilder = () => {
           try {
             if (totalValue > (user.highScoreT || 0)) {
               setIsNewHighScore(true);
-              await axios.patch('/api/updateHighscore', {
+              await axios.patch('/api/updateHighScore', {
                 newHighScore: totalValue,
                 gameType: 'teambuilder',
               });
