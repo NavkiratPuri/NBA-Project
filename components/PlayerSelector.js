@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const PlayerSelector = ({ players, onSelectPlayer, label }) => {
+const PlayerSelector = ({ players, onSelectPlayer, label, teams }) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredPlayers, setFilteredPlayers] = useState([]);
   const [selectedYear, setSelectedYear] = useState("");
@@ -72,7 +72,8 @@ const PlayerSelector = ({ players, onSelectPlayer, label }) => {
   }, []);
 
   const uniqueYears = [...new Set(players.map((player) => player.Year))];
-  const uniqueTeams = [...new Set(players.map((player) => player.Tm))];
+  // Use teams prop to populate team dropdown
+  const uniqueTeams = teams;
 
   return (
     <div className="player-selector-container" ref={dropdown}>
@@ -119,7 +120,7 @@ const PlayerSelector = ({ players, onSelectPlayer, label }) => {
               value={inputValue}
               onChange={handleInputChange}
               placeholder="Enter Player"
-              onFocus={filterPlayers}
+              onFocus={() => filterPlayers(inputValue, selectedYear, selectedTeam)}
               onKeyDown={dropdownF}
             />
 

@@ -20,6 +20,7 @@ const Header = () => {
     const gameItems = [
         { label: "Trivia", href: "/trivia" },
         { label: "Hi-Lo", href: "/hilo" },
+        { label: "TeamBuild", href: "/teambuild" },
         { label: "Leaderboard", href: "/leaderboard" },
     ];
 
