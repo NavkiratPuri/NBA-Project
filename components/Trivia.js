@@ -20,12 +20,13 @@ function Trivia() {
         optionD: '',
         correctAnswer: ''
     });
+    const [answersSubmitted, setAnswersSubmitted] = useState(false);
 
     useEffect(() => {
-        fetchRandomTrivia();
+        fetchTrivia();
     }, []);
 
-    const fetchRandomTrivia = async () => {
+    const fetchTrivia = async () => {
         setLoading(true);
         try {
             const response = await axios.get('/api/trivia');
@@ -34,6 +35,7 @@ function Trivia() {
             setCorrectAnswers({});
             setScore(null);
             setCurrentIndex(0);
+            setAnswersSubmitted(false); // Reset the submitted state
         } catch (error) {
             setError(`Failed to load trivia questions: ${error.response ? error.response.data.message : error.message}`);
         } finally {
@@ -60,18 +62,20 @@ function Trivia() {
         });
         setCorrectAnswers(newCorrectAnswers);
         setScore(newScore);
+        setAnswersSubmitted(true); // Set the submitted state
     };
 
     const handleNextBatch = () => {
         let newIndex = currentIndex + 5;
         if (newIndex >= questions.length) {
             newIndex = 0;
-            fetchRandomTrivia();
+            fetchTrivia();
         }
         setCurrentIndex(newIndex);
         setSelectedAnswers({});
         setCorrectAnswers({});
         setScore(null);
+        setAnswersSubmitted(false); // Reset the submitted state
     };
 
     const handleEditQuestion = (question) => {
@@ -82,7 +86,7 @@ function Trivia() {
     const handleDeleteQuestion = async (questionId) => {
         try {
             await axios.delete(`/api/trivia/${questionId}`);
-            fetchRandomTrivia();
+            fetchTrivia();
         } catch (error) {
             setError(`Failed to delete question: ${error.response ? error.response.data.message : error.message}`);
         }
@@ -97,11 +101,15 @@ function Trivia() {
         e.preventDefault();
         try {
             await axios.patch(`/api/trivia/${questionToEdit.id}`, questionToEdit);
-            fetchRandomTrivia();
+            fetchTrivia();
             setShowModal(false);
         } catch (error) {
             console.error('Failed to update question:', error);
         }
+    };
+
+    const allQuestionsAnswered = () => {
+        return questions.slice(currentIndex, currentIndex + 5).every(question => selectedAnswers[question.id]);
     };
 
     if (error) {
@@ -136,7 +144,12 @@ function Trivia() {
                     <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleDeleteQuestion(question.id)}>Delete</button>
                 </div>
             ))}
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleSubmitAnswers}>Submit Answers</button>
+            {!allQuestionsAnswered() && <p className="text-red-500 mb-4">You have to answer all questions before you can submit.</p>}
+            {!answersSubmitted && (
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleSubmitAnswers} disabled={!allQuestionsAnswered()}>
+                    Submit Answers
+                </button>
+            )}
             {score !== null && (
                 <>
                     <p className="text-lg">Your score: {score} out of {questions.slice(currentIndex, currentIndex + 5).length}</p>
