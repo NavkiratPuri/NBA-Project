@@ -66,7 +66,7 @@ function Trivia() {
     };
 
     const handleNextBatch = () => {
-        let newIndex = currentIndex + 5;
+        let newIndex = currentIndex + 10;
         if (newIndex >= questions.length) {
             newIndex = 0;
             fetchTrivia();
@@ -126,7 +126,7 @@ function Trivia() {
 
     return (
         <div className="p-5">
-            {questions.slice(currentIndex, currentIndex + 5).map(question => (
+            {questions.slice(currentIndex, currentIndex + 10).map(question => (
                 <div key={question.id} className="mb-4">
                     <h3 className="text-lg font-bold">{question.question}</h3>
                     <ul className="list-none p-0">
