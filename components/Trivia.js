@@ -22,6 +22,41 @@ function Trivia() {
     });
     const [answersSubmitted, setAnswersSubmitted] = useState(false);
 
+    const [isNewHighScore, setIsNewHighScore] = useState(false);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+    const fetchUser = async () => {
+        try {
+        const response = await axios.get('/api/user');
+        setUser(response.data);
+        } catch (error) {
+        console.error("Error fetching user data:", error);
+        }
+    };
+
+    fetchUser();
+    }, []);
+
+    useEffect(() => {
+    const updateHighScore = async () => {
+        if (user) {
+        try {
+            if (score > (user.highScoreTrivia || 0)) {  // Handle undefined highScoreTrivia
+            setIsNewHighScore(true);
+            await axios.patch('/api/updateHighScore', {
+                newHighScore: score,
+                gameType: 'trivia',
+            });
+            }
+        } catch (error) {
+            console.error("Error updating high score:", error);
+        }
+        }
+    };
+
+    updateHighScore();
+    }, [score, user]);
     useEffect(() => {
         fetchTrivia();
     }, []);

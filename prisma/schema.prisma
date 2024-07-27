@@ -94,6 +94,7 @@ model User {
   isAdmin     Boolean @default(false)
   highScoreHL   Int?    @default(0)
   highScoreT  Int?    @default(0)
+  highScoreTrivia  Int?    @default(0)
 
   accounts Account[]
 

@@ -1,9 +1,8 @@
-'use client';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Ensure axios is imported
+import axios from 'axios';
 import PlayerSelector from '@/components/PlayerSelector';
 import fetchCSV from '@/utils/fetchCsv';
-import { calculatePlayerValue } from '@/utils/calculateValue'; // Adjust the import path
+import { calculatePlayerValue } from '@/utils/calculateValue';
 
 const getRandomTeams = (players, numTeams = 5) => {
     const teams = [...new Set(players.map(player => player.Tm))];
@@ -52,38 +51,38 @@ const TeamBuilder = () => {
 
     const [isNewHighScore, setIsNewHighScore] = useState(false);
     const [user, setUser] = useState(null);
-  
+
     useEffect(() => {
-      const fetchUser = async () => {
-        try {
-          const response = await axios.get('/api/user');
-          setUser(response.data);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      };
-  
-      fetchUser();
-    }, []);
-  
-    useEffect(() => {
-      const updateHighScore = async () => {
-        if (user) {
-          try {
-            if (totalValue > (user.highScoreT || 0)) {
-              setIsNewHighScore(true);
-              await axios.patch('/api/updateHighScore', {
-                newHighScore: totalValue,
-                gameType: 'teambuilder',
-              });
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get('/api/user');
+                setUser(response.data);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
             }
-          } catch (error) {
-            console.error("Error updating high score:", error);
-          }
-        }
-      };
-  
-      updateHighScore();
+        };
+
+        fetchUser();
+    }, []);
+
+    useEffect(() => {
+        const updateHighScore = async () => {
+            if (user) {
+                try {
+                    if (totalValue > (user.highScoreT || 0)) {
+                        setIsNewHighScore(true);
+                        await axios.patch('/api/updateHighScore', {
+                            newHighScore: totalValue,
+                            gameType: 'teambuilder',
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error updating high score:", error);
+                }
+            }
+        };
+
+        updateHighScore();
     }, [totalValue, user]);
 
     useEffect(() => {
@@ -93,7 +92,7 @@ const TeamBuilder = () => {
                 const playersData = data.map(player => ({
                     id: player.Rk,
                     Player: player.Player,
-                    Pos: player.Pos.split('-')[0], // Assuming position is separated by dash
+                    Pos: player.Pos.split('-')[0],
                     Tm: player.Tm,
                     Year: player.Year,
                     Age: player.Age,
@@ -115,7 +114,7 @@ const TeamBuilder = () => {
                 setPlayers(playersData);
                 const initialTeams = getRandomTeams(playersData);
                 setTeams(initialTeams);
-                setAvailableTeams(initialTeams); // Initialize available teams
+                setAvailableTeams(initialTeams);
                 const filteredPlayers = filterPlayersByTeams(playersData, initialTeams);
                 setCategorizedPlayers(categorizePlayersByPosition(filteredPlayers));
             } catch (error) {
@@ -129,7 +128,7 @@ const TeamBuilder = () => {
     const updateTeamsAndPlayers = (playersData) => {
         const newTeams = getRandomTeams(playersData);
         setTeams(newTeams);
-        setAvailableTeams(newTeams); // Update available teams
+        setAvailableTeams(newTeams);
         const filteredPlayers = filterPlayersByTeams(playersData, newTeams);
         setCategorizedPlayers(categorizePlayersByPosition(filteredPlayers));
     };
@@ -162,7 +161,7 @@ const TeamBuilder = () => {
             const playersData = data.map(player => ({
                 id: player.Rk,
                 Player: player.Player,
-                Pos: player.Pos.split('-')[0], // Assuming position is separated by dash
+                Pos: player.Pos.split('-')[0],
                 Tm: player.Tm,
                 Year: player.Year,
                 Age: player.Age,
@@ -190,7 +189,7 @@ const TeamBuilder = () => {
             });
             setUsedPositions([]);
             updateTeamsAndPlayers(playersData);
-            setTotalValue(0); // Reset the total value
+            setTotalValue(0);
         } catch (error) {
             console.error('Error resetting data:', error);
         }
@@ -232,7 +231,7 @@ const TeamBuilder = () => {
                                                 players={filteredPlayersByPosition(position)}
                                                 onSelectPlayer={(player) => handleSelectPlayer(position, player)}
                                                 label={position}
-                                                teams={availableTeams} // Pass available teams here
+                                                teams={availableTeams}
                                             />
                                         </div>
                                     </div>
@@ -266,13 +265,14 @@ const TeamBuilder = () => {
                                         <div className="w-1/3 font-semibold text-lg">
                                             {positionLabels[position]}
                                         </div>
-                                        <div className="w-2/3 flex items-center">
-                                            <p className="mr-4">{selectedPlayers[position].Player}</p>
+                                        <div className="w-2/3 flex justify-between items-center">
+                                            <span>{selectedPlayers[position].Player}</span>
+                                            <span>{selectedPlayers[position].Tm} ({selectedPlayers[position].Year})</span>
                                             <button
                                                 onClick={() => handleDeselectPlayer(position)}
-                                                className="p-2 bg-red-500 text-white rounded hover:bg-red-700"
+                                                className="ml-2 p-1 bg-red-500 text-white rounded hover:bg-red-700"
                                             >
-                                                Deselect
+                                                Remove
                                             </button>
                                         </div>
                                     </div>
@@ -291,14 +291,17 @@ const TeamBuilder = () => {
                                 ))}
                             </ul>
                         </div>
+                        
+                        {/* Reset Button */}
+                        <div className="flex justify-center">
+                            <button
+                                onClick={handleReset}
+                                className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                            >
+                                Reset
+                            </button>
+                        </div>
                     </div>
-
-                    <button
-                        onClick={handleReset}
-                        className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-                    >
-                        Reset
-                    </button>
                 </div>
             </div>
         </div>

@@ -60,8 +60,11 @@ export const PATCH = async (req) => {
     if (gameType === 'higherLower') {
       updateData.highScoreHL = newHighScore;
     } else if (gameType === 'trivia') {
+      updateData.highScoreTrivia = newHighScore;
+    } else if (gameType === 'teambuilder') {
       updateData.highScoreT = newHighScore;
-    } else {
+    }
+      else {
       return new Response(JSON.stringify({ message: "Invalid game type" }), { status: 400 });
     }
 
