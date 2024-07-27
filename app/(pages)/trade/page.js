@@ -6,14 +6,15 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import playerData from "@/utils/playerData";
 import { calculatePlayerValue } from "@/utils/calculateValue";
-import TeamTrade from "@/components/teamTrade";
+
+import DraftPicks from "@/components/DraftPicks";
+import Player from "@/components/Player";
 
 const Trade = () => {
   const [players, setPlayers] = useState([]);
   const [teamAPlayers, setTeamAPlayers] = useState([]);
   const [teamBPlayers, setTeamBPlayers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isTeamTrade, setIsTeamTrade] = useState(false);
   const [weights, setWeights] = useState({
     ppg: 1,
     apg: 1.5,
@@ -34,6 +35,13 @@ const Trade = () => {
   const [teamATotalValue, setTeamATotalValue] = useState(0);
   const [teamBTotalValue, setTeamBTotalValue] = useState(0);
 
+  const [draftPicksTeamA, setDraftPicksTeamA] = useState([]);
+  const [draftPicksTeamB, setDraftPicksTeamB] = useState([]);
+
+  const [teamASalary, setTeamASalary] = useState(0);
+  const [teamBSalary, setTeamBSalary] = useState(0);
+  const SALARY_CAP = 140588000;
+
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
@@ -47,28 +55,64 @@ const Trade = () => {
   }, []);
 
   const handleSelectPlayer = (player, team) => {
+    const salary = parseFloat(player.Salary) || 0;
+
     if (team === "A") {
-      setTeamAPlayers([...teamAPlayers, player]);
+      setTeamAPlayers((prevPlayers) => [...prevPlayers, player]);
+      setTeamASalary((prevSalary) => prevSalary + salary);
     } else if (team === "B") {
-      setTeamBPlayers([...teamBPlayers, player]);
+      setTeamBPlayers((prevPlayers) => [...prevPlayers, player]);
+      setTeamBSalary((prevSalary) => prevSalary + salary);
     }
   };
 
   const handleRemovePlayer = (index, team) => {
     if (team === "A") {
-      setTeamAPlayers(teamAPlayers.filter((_, i) => i !== index));
+      const playerToRemove = teamAPlayers[index];
+      const salary = parseFloat(playerToRemove?.Salary) || 0;
+      setTeamASalary((prevSalary) => prevSalary - salary);
+      setTeamAPlayers((prevPlayers) =>
+        prevPlayers.filter((_, i) => i !== index)
+      );
     } else if (team === "B") {
-      setTeamBPlayers(teamBPlayers.filter((_, i) => i !== index));
+      const playerToRemove = teamBPlayers[index];
+      const salary = parseFloat(playerToRemove?.Salary) || 0;
+      setTeamBSalary((prevSalary) => prevSalary - salary);
+      setTeamBPlayers((prevPlayers) =>
+        prevPlayers.filter((_, i) => i !== index)
+      );
     }
   };
 
-  const getTotalValue = (players, weights) => {
-    return players.reduce((total, player) => {
+  const handleAddDraftPick = (team, pick) => {
+    if (team === "A") {
+      setDraftPicksTeamA([...draftPicksTeamA, pick]);
+    } else if (team === "B") {
+      setDraftPicksTeamB([...draftPicksTeamB, pick]);
+    }
+  };
+
+  const handleRemoveDraftPick = (index, team) => {
+    if (team === "A") {
+      setDraftPicksTeamA(draftPicksTeamA.filter((_, i) => i !== index));
+    } else if (team === "B") {
+      setDraftPicksTeamB(draftPicksTeamB.filter((_, i) => i !== index));
+    }
+  };
+
+  const getTotalValue = (players, weights, draftPicks) => {
+    const playersValue = players.reduce((total, player) => {
       if (player) {
         return total + calculatePlayerValue(player, weights).totalValue;
       }
       return total;
     }, 0);
+
+    const draftPicksValue = draftPicks.reduce((total, pick) => {
+      return total + pick.value;
+    }, 0);
+
+    return playersValue + draftPicksValue;
   };
 
   const handleWeightChange = (e) => {
@@ -82,31 +126,20 @@ const Trade = () => {
   };
 
   useEffect(() => {
-    const teamATotal = getTotalValue(teamAPlayers, weights);
-    const teamBTotal = getTotalValue(teamBPlayers, weights);
+    const teamATotal = getTotalValue(teamAPlayers, weights, draftPicksTeamA);
+    const teamBTotal = getTotalValue(teamBPlayers, weights, draftPicksTeamB);
     setTeamATotalValue(teamATotal);
     setTeamBTotalValue(teamBTotal);
-  }, [weights, teamAPlayers, teamBPlayers]);
+  }, [weights, teamAPlayers, teamBPlayers, draftPicksTeamA, draftPicksTeamB]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  if (isTeamTrade) {
-    return <TeamTrade />;
-  }
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Header />
       <main className="flex-grow p-3">
-        <div className="flex justify-end mb-4">
-          <button
-            className="bg-blue-500 text-white py-2 px-4 rounded"
-            onClick={() => setIsTeamTrade(true)}
-          >
-            Switch to Team Trade
-          </button>
-        </div>
+        <div className="flex justify-end mb-4"></div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 relative">
           <div className="pr-2 border-r-2 border-black">
             <h2 className="text-center text-xl font-bold mb-2">
@@ -116,6 +149,12 @@ const Trade = () => {
             <PlayerSelector
               players={players}
               onSelectPlayer={(player) => handleSelectPlayer(player, "A")}
+            />
+            <DraftPicks
+              draftPicks={draftPicksTeamA}
+              onSelectDraftPick={(pick) => handleAddDraftPick("A", pick)}
+              onRemoveDraftPick={(index) => handleRemoveDraftPick(index, "A")}
+              team="A"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
               {teamAPlayers.map((player, index) => (
@@ -136,6 +175,12 @@ const Trade = () => {
             <PlayerSelector
               players={players}
               onSelectPlayer={(player) => handleSelectPlayer(player, "B")}
+            />
+            <DraftPicks
+              draftPicks={draftPicksTeamB}
+              onSelectDraftPick={(pick) => handleAddDraftPick("B", pick)}
+              onRemoveDraftPick={(index) => handleRemoveDraftPick(index, "B")}
+              team="B"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
               {teamBPlayers.map((player, index) => (
@@ -176,6 +221,28 @@ const Trade = () => {
             </div>
           </div>
         </div>
+        <div className="flex justify-center mt-4">
+          <div className="bg-white rounded-lg shadow-md p-4 text-center mx-4">
+            <p className="text-xl font-bold">Team A Salary</p>
+            <p
+              className={`text-2xl font-bold ${
+                teamASalary >= SALARY_CAP ? "text-red-500" : "text-green-500"
+              }`}
+            >
+              ${teamASalary}M / ${SALARY_CAP}M
+            </p>
+          </div>
+          <div className="bg-white rounded-lg shadow-md p-4 text-center mx-4">
+            <p className="text-xl font-bold">Team B Salary</p>
+            <p
+              className={`text-2xl font-bold ${
+                teamBSalary > SALARY_CAP ? "text-red-500" : "text-green-500"
+              }`}
+            >
+              ${teamBSalary}M / ${SALARY_CAP}M
+            </p>
+          </div>
+        </div>
         <button
           className="bg-blue-500 text-white py-2 px-4 rounded"
           onClick={openModal}
@@ -204,6 +271,7 @@ const Trade = () => {
                   </div>
                 ))}
               </div>
+
               <div className="flex justify-center items-center mt-2 space-x-2">
                 <button
                   className="bg-red-500 text-white py-2 px-2 rounded"
