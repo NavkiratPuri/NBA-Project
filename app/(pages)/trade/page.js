@@ -6,9 +6,9 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import playerData from "@/utils/playerData";
 import { calculatePlayerValue } from "@/utils/calculateValue";
-
 import DraftPicks from "@/components/DraftPicks";
-import Player from "@/components/Player";
+import { avgStats, AvgModal } from "@/utils/avgStats";
+import { Glossary } from "@/utils/glossary";
 
 const Trade = () => {
   const [players, setPlayers] = useState([]);
@@ -34,13 +34,17 @@ const Trade = () => {
   const [tempWeights, setTempWeights] = useState(weights);
   const [teamATotalValue, setTeamATotalValue] = useState(0);
   const [teamBTotalValue, setTeamBTotalValue] = useState(0);
-
   const [draftPicksTeamA, setDraftPicksTeamA] = useState([]);
   const [draftPicksTeamB, setDraftPicksTeamB] = useState([]);
-
   const [teamASalary, setTeamASalary] = useState(0);
   const [teamBSalary, setTeamBSalary] = useState(0);
-  const SALARY_CAP = 140588000;
+  const SALARY_CAP = 136000000;
+  const [isAvgStatsModalOpen, setIsAvgStatsModalOpen] = useState(false);
+  const [teamAStats, setTeamAStats] = useState({});
+  const [teamBStats, setTeamBStats] = useState({});
+  const [isGlossaryOpen, setGlossaryOpen] = useState(false);
+  const openGlossary = () => setGlossaryOpen(true);
+  const closeGlossary = () => setGlossaryOpen(false);
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -54,7 +58,7 @@ const Trade = () => {
     fetchPlayers();
   }, []);
 
-  const handleSelectPlayer = (player, team) => {
+  const selectPlayer = (player, team) => {
     const salary = parseFloat(player.Salary) || 0;
 
     if (team === "A") {
@@ -66,7 +70,7 @@ const Trade = () => {
     }
   };
 
-  const handleRemovePlayer = (index, team) => {
+  const removePlayer = (index, team) => {
     if (team === "A") {
       const playerToRemove = teamAPlayers[index];
       const salary = parseFloat(playerToRemove?.Salary) || 0;
@@ -84,7 +88,7 @@ const Trade = () => {
     }
   };
 
-  const handleAddDraftPick = (team, pick) => {
+  const addDraftPick = (team, pick) => {
     if (team === "A") {
       setDraftPicksTeamA([...draftPicksTeamA, pick]);
     } else if (team === "B") {
@@ -92,7 +96,7 @@ const Trade = () => {
     }
   };
 
-  const handleRemoveDraftPick = (index, team) => {
+  const removeDraftPick = (index, team) => {
     if (team === "A") {
       setDraftPicksTeamA(draftPicksTeamA.filter((_, i) => i !== index));
     } else if (team === "B") {
@@ -135,25 +139,50 @@ const Trade = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  const showAvgStats = () => {
+    const avgStatsA = avgStats(teamAPlayers);
+    const avgStatsB = avgStats(teamBPlayers);
+    setTeamAStats(avgStatsA);
+    setTeamBStats(avgStatsB);
+    setIsAvgStatsModalOpen(true);
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Header />
-      <main className="flex-grow p-3">
+      <main className="flex-grow p-2">
+        <div>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600 rounded"
+            onClick={openModal}
+          >
+            Adjust Stat Weights
+          </button>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 m-2 hover:bg-blue-600 rounded"
+            onClick={showAvgStats}
+          >
+            Show Average Stats
+          </button>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600 rounded"
+            onClick={openGlossary}
+          >
+            Glossary
+          </button>
+        </div>
         <div className="flex justify-end mb-4"></div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 relative">
           <div className="pr-2 border-r-2 border-black">
-            <h2 className="text-center text-xl font-bold mb-2">
-              Team A (Click the cards for stats then click again for
-              values!!!!!)
-            </h2>
+            <h2 className="text-center text-xl font-bold mb-2">Team A</h2>
             <PlayerSelector
               players={players}
-              onSelectPlayer={(player) => handleSelectPlayer(player, "A")}
+              onSelectPlayer={(player) => selectPlayer(player, "A")}
             />
             <DraftPicks
               draftPicks={draftPicksTeamA}
-              onSelectDraftPick={(pick) => handleAddDraftPick("A", pick)}
-              onRemoveDraftPick={(index) => handleRemoveDraftPick(index, "A")}
+              onSelectDraftPick={(pick) => addDraftPick("A", pick)}
+              onRemoveDraftPick={(index) => removeDraftPick(index, "A")}
               team="A"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
@@ -161,25 +190,32 @@ const Trade = () => {
                 <PlayerCard
                   key={index}
                   player={player}
-                  onRemove={() => handleRemovePlayer(index, "A")}
+                  onRemove={() => removePlayer(index, "A")}
                   weights={weights}
                 />
               ))}
             </div>
+            <div className="rounded-lg  p-4 text-center mx-4">
+              <p className="text-lg font-bold">Team A Salary</p>
+              <p
+                className={`text-lg font-bold ${
+                  teamASalary >= SALARY_CAP ? "text-red-500" : "text-green-500"
+                }`}
+              >
+                ${teamASalary}M / ${SALARY_CAP}M
+              </p>
+            </div>
           </div>
           <div className="">
-            <h2 className="text-center text-xl font-bold mb-2">
-              Team B (Click the cards for stats then click again for
-              values!!!!!)
-            </h2>
+            <h2 className="text-center text-xl font-bold mb-2">Team B</h2>
             <PlayerSelector
               players={players}
-              onSelectPlayer={(player) => handleSelectPlayer(player, "B")}
+              onSelectPlayer={(player) => selectPlayer(player, "B")}
             />
             <DraftPicks
               draftPicks={draftPicksTeamB}
-              onSelectDraftPick={(pick) => handleAddDraftPick("B", pick)}
-              onRemoveDraftPick={(index) => handleRemoveDraftPick(index, "B")}
+              onSelectDraftPick={(pick) => addDraftPick("B", pick)}
+              onRemoveDraftPick={(index) => removeDraftPick(index, "B")}
               team="B"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
@@ -187,10 +223,20 @@ const Trade = () => {
                 <PlayerCard
                   key={index}
                   player={player}
-                  onRemove={() => handleRemovePlayer(index, "B")}
+                  onRemove={() => removePlayer(index, "B")}
                   weights={weights}
                 />
               ))}
+            </div>
+            <div className=" rounded-lg  p-4 text-center mx-4">
+              <p className="text-lg font-bold">Team B Salary</p>
+              <p
+                className={`text-lg font-bold ${
+                  teamBSalary > SALARY_CAP ? "text-red-500" : "text-green-500"
+                }`}
+              >
+                ${teamBSalary}M / ${SALARY_CAP}M
+              </p>
             </div>
           </div>
         </div>
@@ -221,85 +267,58 @@ const Trade = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-center mt-4">
-          <div className="bg-white rounded-lg shadow-md p-4 text-center mx-4">
-            <p className="text-xl font-bold">Team A Salary</p>
-            <p
-              className={`text-2xl font-bold ${
-                teamASalary >= SALARY_CAP ? "text-red-500" : "text-green-500"
-              }`}
-            >
-              ${teamASalary}M / ${SALARY_CAP}M
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-4 text-center mx-4">
-            <p className="text-xl font-bold">Team B Salary</p>
-            <p
-              className={`text-2xl font-bold ${
-                teamBSalary > SALARY_CAP ? "text-red-500" : "text-green-500"
-              }`}
-            >
-              ${teamBSalary}M / ${SALARY_CAP}M
-            </p>
-          </div>
-        </div>
-        <button
-          className="bg-blue-500 text-white py-2 px-4 rounded"
-          onClick={openModal}
-        >
-          Adjust Stat Weights
-        </button>
-        {isModalOpen && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-2 rounded-lg shadow-md w-11/12 max-w-3xl">
-              <h2 className="text-center text-xl font-bold mb-2">
-                Adjust Stat Weights
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                {Object.keys(tempWeights).map((key) => (
-                  <div key={key} className="flex flex-col items-center">
-                    <label className="text-center mb-1 font-medium">
-                      {key.toUpperCase()}
-                    </label>
-                    <input
-                      type="number"
-                      name={key}
-                      value={tempWeights[key]}
-                      onChange={handleWeightChange}
-                      className="p-2 border rounded text-center w-20"
-                    />
-                  </div>
-                ))}
-              </div>
 
-              <div className="flex justify-center items-center mt-2 space-x-2">
-                <button
-                  className="bg-red-500 text-white py-2 px-2 rounded"
-                  onClick={closeModal}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="bg-green-500 text-white py-2 px-2 rounded"
-                  onClick={saveWeights}
-                >
-                  Save
-                </button>
-              </div>
-              <div className="mt-2 text-center">
-                <p className="text-xs text-gray-500">
-                  PPG (Points), APG (Assists), BPG (Blocks), SPG (Steals), TO
-                  (Turnovers), FT (Free Throws), EFG (Effective Field Goal)
-                </p>
-                <p className="text-xs text-gray-500">
-                  GP (Games Played), GS(Games Started), OR (Offensive Rebounds),
-                  DR (Defensive Rebounds), PF (Personal Fouls), MP (Minutes
-                  Played)
-                </p>
+        <div>
+          {isModalOpen && (
+            <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+              <div className="bg-white p-2 rounded-lg shadow-md w-11/12 max-w-3xl">
+                <h2 className="text-center text-xl font-bold mb-2">
+                  Adjust Stat Weights
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                  {Object.keys(tempWeights).map((key) => (
+                    <div key={key} className="flex flex-col items-center">
+                      <label className="text-center mb-1 font-medium">
+                        {key.toUpperCase()}
+                      </label>
+                      <input
+                        type="number"
+                        name={key}
+                        value={tempWeights[key]}
+                        onChange={handleWeightChange}
+                        className="p-2 border rounded text-center w-20"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-center items-center mt-2 space-x-2">
+                  <button
+                    className="bg-red-500 text-white py-2 px-2 rounded"
+                    onClick={closeModal}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="bg-green-500 text-white py-2 px-2 rounded"
+                    onClick={saveWeights}
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+        <div>
+          <AvgModal
+            isOpen={isAvgStatsModalOpen}
+            onClose={() => setIsAvgStatsModalOpen(false)}
+            teamAStats={teamAStats}
+            teamBStats={teamBStats}
+          />
+          <Glossary isOpen={isGlossaryOpen} onClose={closeGlossary} />
+        </div>
       </main>
       <Footer />
     </div>

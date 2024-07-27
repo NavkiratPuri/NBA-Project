@@ -69,7 +69,7 @@ const PlayerCard = ({ player, onRemove, customClasses, weights }) => {
                   {player.Tm} - {player.Year}
                 </p>
                 <p className="text-gray-500">
-                  {player.Pos} - {player.Salary}
+                  {player.Pos} - ${player.Salary}
                 </p>
               </div>
             </div>
