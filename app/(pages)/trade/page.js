@@ -58,15 +58,18 @@ const Trade = () => {
     fetchPlayers();
   }, []);
 
-  const selectPlayer = (player, team) => {
-    const salary = parseFloat(player.Salary) || 0;
+  const selectPlayer = (selectedPlayers, team) => {
+    const totalSalary = selectedPlayers.reduce(
+      (total, player) => total + (parseFloat(player.Salary) || 0),
+      0
+    );
 
     if (team === "A") {
-      setTeamAPlayers((prevPlayers) => [...prevPlayers, player]);
-      setTeamASalary((prevSalary) => prevSalary + salary);
+      setTeamAPlayers((prevPlayers) => [...prevPlayers, ...selectedPlayers]);
+      setTeamASalary((prevSalary) => prevSalary + totalSalary);
     } else if (team === "B") {
-      setTeamBPlayers((prevPlayers) => [...prevPlayers, player]);
-      setTeamBSalary((prevSalary) => prevSalary + salary);
+      setTeamBPlayers((prevPlayers) => [...prevPlayers, ...selectedPlayers]);
+      setTeamBSalary((prevSalary) => prevSalary + totalSalary);
     }
   };
 
@@ -177,7 +180,10 @@ const Trade = () => {
             <h2 className="text-center text-xl font-bold mb-2">Team A</h2>
             <PlayerSelector
               players={players}
-              onSelectPlayer={(player) => selectPlayer(player, "A")}
+              onSelectPlayer={(selectedPlayers) =>
+                selectPlayer(selectedPlayers, "A")
+              }
+              multiSelect={true}
             />
             <DraftPicks
               draftPicks={draftPicksTeamA}
@@ -210,7 +216,10 @@ const Trade = () => {
             <h2 className="text-center text-xl font-bold mb-2">Team B</h2>
             <PlayerSelector
               players={players}
-              onSelectPlayer={(player) => selectPlayer(player, "B")}
+              onSelectPlayer={(selectedPlayers) =>
+                selectPlayer(selectedPlayers, "B")
+              }
+              multiSelect={true}
             />
             <DraftPicks
               draftPicks={draftPicksTeamB}

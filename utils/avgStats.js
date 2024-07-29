@@ -1,6 +1,7 @@
 export const avgStats = (players) => {
   if (players.length === 0) {
     return {
+      age: 0,
       ppg: 0,
       apg: 0,
       bpg: 0,
@@ -19,6 +20,7 @@ export const avgStats = (players) => {
 
   const totalStats = players.reduce(
     (acc, player) => {
+      acc.age += Number(player.Age) || 0;
       acc.ppg += Number(player.PTS) || 0;
       acc.apg += Number(player.AST) || 0;
       acc.bpg += Number(player.BLK) || 0;
@@ -35,6 +37,7 @@ export const avgStats = (players) => {
       return acc;
     },
     {
+      age: 0,
       ppg: 0,
       apg: 0,
       bpg: 0,
@@ -53,6 +56,7 @@ export const avgStats = (players) => {
 
   const playerCount = players.length;
   return {
+    age: totalStats.age / playerCount,
     ppg: totalStats.ppg / playerCount,
     apg: totalStats.apg / playerCount,
     bpg: totalStats.bpg / playerCount,
