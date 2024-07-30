@@ -9,8 +9,8 @@ const PlayerSelector = ({
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredPlayers, setFilteredPlayers] = useState([]);
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selectedTeam, setSelectedTeam] = useState("");
+  const [selectedYear, setSelectedYear] = useState("2024");
+  const [selectedTeam, setSelectedTeam] = useState("BOS");
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const dropdown = useRef(null);
 
@@ -113,7 +113,7 @@ const PlayerSelector = ({
             id="year-filter"
             value={selectedYear}
             onChange={handleYearChange}
-            className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
           >
             <option value="">All Years</option>
             {uniqueYears.map((year) => (
@@ -128,7 +128,7 @@ const PlayerSelector = ({
             id="team-filter"
             value={selectedTeam}
             onChange={handleTeamChange}
-            className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
           >
             <option value="">All Teams</option>
             {uniqueTeams.map((team) => (
@@ -180,7 +180,7 @@ const PlayerSelector = ({
         </div>
         {multiSelect && (
           <button
-            className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded"
+            className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded cursor-pointer"
             onClick={handleSelectPlayers}
             disabled={selectedPlayers.length === 0}
           >

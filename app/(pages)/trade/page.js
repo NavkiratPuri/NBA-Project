@@ -151,30 +151,33 @@ const Trade = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-white">
       <Header />
       <main className="flex-grow p-2">
         <div>
           <button
-            className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600 rounded"
+            className="bg-blue-700 text-white py-2 px-4 hover:bg-blue-800
+             rounded"
             onClick={openModal}
           >
             Adjust Stat Weights
           </button>
           <button
-            className="bg-blue-500 text-white py-2 px-4 m-2 hover:bg-blue-600 rounded"
+            className="bg-blue-700 text-white py-2 px-4 m-2 hover:bg-blue-800
+             rounded"
             onClick={showAvgStats}
           >
             Show Average Stats
           </button>
           <button
-            className="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600 rounded"
+            className="bg-blue-700 text-white py-2 px-4 hover:bg-blue-800
+             rounded"
             onClick={openGlossary}
           >
             Glossary
           </button>
         </div>
-        <div className="flex justify-end mb-4"></div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 relative">
           <div className="pr-2 border-r-2 border-black">
             <h2 className="text-center text-xl font-bold mb-2">Team A</h2>
@@ -205,7 +208,7 @@ const Trade = () => {
               <p className="text-lg font-bold">Team A Salary</p>
               <p
                 className={`text-lg font-bold ${
-                  teamASalary >= SALARY_CAP ? "text-red-500" : "text-green-500"
+                  teamASalary >= SALARY_CAP ? "text-red-700" : "text-green-700"
                 }`}
               >
                 ${teamASalary}M / ${SALARY_CAP}M
@@ -241,7 +244,7 @@ const Trade = () => {
               <p className="text-lg font-bold">Team B Salary</p>
               <p
                 className={`text-lg font-bold ${
-                  teamBSalary > SALARY_CAP ? "text-red-500" : "text-green-500"
+                  teamBSalary > SALARY_CAP ? "text-red-700" : "text-green-700"
                 }`}
               >
                 ${teamBSalary}M / ${SALARY_CAP}M
@@ -255,8 +258,8 @@ const Trade = () => {
               <p
                 className={`text-2xl font-bold ${
                   teamATotalValue >= teamBTotalValue
-                    ? "text-green-500"
-                    : "text-red-500"
+                    ? "text-green-700"
+                    : "text-red-700"
                 }`}
               >
                 {teamATotalValue.toFixed(2)}
@@ -267,8 +270,8 @@ const Trade = () => {
               <p
                 className={`text-2xl font-bold ${
                   teamBTotalValue >= teamATotalValue
-                    ? "text-green-500"
-                    : "text-red-500"
+                    ? "text-green-700"
+                    : "text-red-700"
                 }`}
               >
                 {teamBTotalValue.toFixed(2)}
@@ -279,7 +282,7 @@ const Trade = () => {
 
         <div>
           {isModalOpen && (
-            <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+            <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center">
               <div className="bg-white p-2 rounded-lg shadow-md w-11/12 max-w-3xl">
                 <h2 className="text-center text-xl font-bold mb-2">
                   Adjust Stat Weights
@@ -303,13 +306,13 @@ const Trade = () => {
 
                 <div className="flex justify-center items-center mt-2 space-x-2">
                   <button
-                    className="bg-red-500 text-white py-2 px-2 rounded"
+                    className="bg-red-700 text-white py-2 px-2 rounded"
                     onClick={closeModal}
                   >
                     Cancel
                   </button>
                   <button
-                    className="bg-green-500 text-white py-2 px-2 rounded"
+                    className="bg-green-700 text-white py-2 px-2 rounded"
                     onClick={saveWeights}
                   >
                     Save

@@ -19,6 +19,7 @@
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.4.3",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "css": "^3.0.0",
     "csv-parser": "^3.0.0",
     "delay": "^6.0.0",
