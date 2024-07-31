@@ -6,6 +6,7 @@ import GameInfo from './GameInfo';
 import PlayerCard from './PlayerCard';
 import GameOver from './GameOver';
 import playerData from '@/utils/playerData';
+import fetchPlayerImage from '@/utils/fetchPlayerImage';
 
 // Fetch player data from the API
 const fetchPlayer = async () => {

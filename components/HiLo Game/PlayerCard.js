@@ -10,6 +10,7 @@ const PlayerCard = ({
   selectedCategory,
   handlePlayerButtonClick,
   handleHintButtonClick,
+  image, // Add image prop here
 }) => {
   const isSelected = selectedPlayer === index;
   const isCorrect = index === correctPlayerIndex;
@@ -32,7 +33,7 @@ const PlayerCard = ({
         <div
           className="absolute inset-0 z-0"
           style={{
-            backgroundImage: `url(${player.image}), linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))`,
+            backgroundImage: `url(${image}), linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             transition: 'opacity 0.3s ease',

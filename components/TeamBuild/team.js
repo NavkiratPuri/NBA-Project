@@ -226,104 +226,121 @@ const TeamBuilder = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto">
       <div className="flex">
         {/* Left Section: Player Selection and Buttons */}
-        <div className="flex flex-col w-1/2 pr-4 border-r border-gray-300">
+        <div className="flex flex-col w-1/2 ">
           <div className="flex flex-col mb-4">
             {/* Player Selection */}
-            <div className="selected-players mb-8 p-4 border-t border-gray-300 flex flex-col">
-              <h2 className="text-lg font-bold mb-4">Player Selection</h2>
-              {Object.keys(categorizedPlayers).map(
-                (position) =>
-                  !usedPositions.includes(position) && (
-                    <div key={position} className="flex items-center mb-4">
-                      <div className="w-1/3 font-semibold text-lg">
-                        {positionLabels[position]}
-                      </div>
-                      <div className="w-2/3">
+            <div className="selected-players mb-8 border-t border-gray-300 flex flex-col">
+              <h2 className="text-lg font-bold m-4">Player Selection</h2>
+              <div className="bg-gray-800 text-white shadow-lg p-4">
+                {Object.keys(positionLabels).map((position) => (
+                  <div key={position} className="flex items-center mb-4 bg-gray-700 p-2 rounded-lg">
+                    <div className="w-1/3 font-semibold text-lg">
+                      {positionLabels[position]}
+                    </div>
+                    <div className="text-black w-2/3">
+                      {selectedPlayers[position] ? (
+                        <h1 className="bg-gray-700 text-white p-5 rounded-lg">Already Picked.</h1>
+                      ) : (
                         <PlayerSelector
                           players={filteredPlayersByPosition(position)}
-                          onSelectPlayer={(player) =>
-                            handleSelectPlayer(position, player)
-                          }
-                          label={position}
-                          teams={availableTeams} // Pass available teams here
+                          onSelectPlayer={(player) => handleSelectPlayer(position, player)}
+                          teams={availableTeams}
                         />
-                      </div>
+                      )}
                     </div>
-                  )
-              )}
+                  </div>
+                ))}
+              </div>
             </div>
-
+  
             {/* Total Value */}
-            <div className="total-value p-4 border-t border-gray-300 flex flex-col items-center">
+            <div className="total-value p-4 border-t border-gray-300 flex flex-col items-center bg-gray-800 text-white shadow-lg py-3">
               <h2 className="text-lg font-bold mb-4">Total Score</h2>
-              <p className="text-xl font-semibold mb-4">
-                {totalValue.toFixed(2)}
-              </p>
+              <div className="w-full bg-gray-700 text-white rounded-lg text-center">              
+                <p className="text-xl font-semibold m-2">
+                  {totalValue.toFixed(2)}
+                </p>
+              </div>
               <button
                 onClick={handleSubmit}
-                className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-700"
+                className="w-full p-2 bg-orange-500 text-white rounded hover:bg-orange-400 mt-4"
               >
                 Submit
               </button>
             </div>
           </div>
         </div>
-
+  
         {/* Right Section: Selected Players and Available Teams */}
         <div className="w-1/2 flex flex-col pl-4">
           <div className="flex flex-col mb-4">
             {/* Selected Players */}
-            <div className="selected-players p-4 border-t border-gray-300 flex flex-col mb-8">
+            <div className="selected-players p-4 border-t border-gray-300 flex flex-col">
               <h2 className="text-lg font-bold mb-4">Selected Players</h2>
-              {Object.keys(selectedPlayers).map(
-                (position) =>
-                  selectedPlayers[position] && (
-                    <div key={position} className="flex items-center mb-4">
+              <div className="bg-gray-800 text-white shadow-lg">
+                {Object.keys(selectedPlayers).map((position) => (
+                  selectedPlayers[position] ? (
+                    <div key={position} className="flex items-center bg-gray-700 text-white p-5 m-4 rounded-lg">
+                      <div className="w-1/3 font-semibold text-lg">
+                        {positionLabels[position]}
+                      </div>
+                      <div className="flex items-center w-2/3 justify-between">
+                        <p className="mr-2">
+                          {selectedPlayers[position].Player}
+                        </p>
+                        <p className="mr-2">
+                          {selectedPlayers[position].Tm}
+                        </p>
+                        <p className="mr-4">
+                          {selectedPlayers[position].Year}
+                        </p>
+                        
+                      </div>
+                      <button
+                          onClick={() => handleDeselectPlayer(position)}
+                          className="p-2 bg-orange-500 text-white rounded hover:bg-orange-400 ml-auto mt-2"
+                        >
+                          Deselect
+                        </button>
+                    </div>
+                  ) : (
+                    <div key={position} className="flex items-center mb-4 bg-gray-700 text-white p-6 m-4 rounded-lg mb-6">
                       <div className="w-1/3 font-semibold text-lg">
                         {positionLabels[position]}
                       </div>
                       <div className="w-2/3 flex items-center">
-                        <p className="mr-4">
-                          {selectedPlayers[position].Player}
-                        </p>
-                        <button
-                          onClick={() => handleDeselectPlayer(position)}
-                          className="p-2 bg-red-500 text-white rounded hover:bg-red-700"
-                        >
-                          Deselect
-                        </button>
+                        <h1>Not Picked Yet.</h1>
                       </div>
                     </div>
                   )
-              )}
-            </div>
-
-            {/* Available Teams */}
-            <div className="available-teams p-4 border-t border-gray-300 flex flex-col">
-              <h2 className="text-lg font-bold mb-4">Available Teams</h2>
-              <ul>
-                {availableTeams.map((team) => (
-                  <li key={team} className="mb-2">
-                    {team}
-                  </li>
                 ))}
-              </ul>
+              </div>
+            </div>
+  
+            {/* Available Teams */}
+            <div className="available-teams p-4 border-t border-gray-300 flex flex-col bg-gray-800 text-white m-4">
+              <h2 className="text-lg font-bold mb-4">Available Teams</h2>
+              <div className="flex flex-wrap justify-between">
+                {availableTeams.map((team) => (
+                  <div key={team} className="w-1/5 p-2 bg-gray-700 text-white rounded text-center border border-gray-800">
+                    {team}
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={handleReset}
+                className="p-2 bg-orange-500 text-white rounded hover:bg-orange-400 mt-4"
+              >
+                Reset
+              </button>
             </div>
           </div>
-
-          <button
-            onClick={handleReset}
-            className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-          >
-            Reset
-          </button>
         </div>
       </div>
     </div>
-  );
-};
-
+  );  
+}  
 export default TeamBuilder;
