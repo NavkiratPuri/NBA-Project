@@ -13,6 +13,7 @@ const Footer = () => {
                     <a href="#" className="hover:text-gray-400 text-xs">Privacy Policy</a>
                     <a href="#" className="hover:text-gray-400 text-xs">About Us</a>
                     <a href="#" className="hover:text-gray-400 text-xs">Contact Us</a>
+                    <a href="/request" className="hover:text-gray-400 text-xs">Request Admin</a>
                 </div>
             </div>
         </footer>
