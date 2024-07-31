@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { calculatePlayerValue } from "@/utils/calculateValue";
 
-const PlayerCard = ({ player, onRemove, customClasses, weights }) => {
+const PlayerDisplay = ({ player, onRemove, customClasses, weights }) => {
   const [view, setView] = useState(0);
   const {
     totalValue,
@@ -146,4 +146,4 @@ const PlayerCard = ({ player, onRemove, customClasses, weights }) => {
   );
 };
 
-export default PlayerCard;
+export default PlayerDisplay;

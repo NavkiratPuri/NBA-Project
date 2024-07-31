@@ -24,14 +24,14 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
                 display: true,
                 text: "Age",
                 font: {
-                  size: 40, // Customize the font size for x-axis title
+                  size: 40,
                   weight: "bold",
                   lineHeight: 1,
                 },
               },
               ticks: {
                 font: {
-                  size: 20, // Customize the font size for x-axis labels
+                  size: 20,
                   weight: "semibold",
                 },
               },
@@ -55,7 +55,7 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
           },
           elements: {
             line: {
-              borderWidth: 8, // Customize the line thickness
+              borderWidth: 8,
               borderCapStyle: "round",
             },
           },
@@ -70,15 +70,20 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
         id="statHeader"
         value={category}
         onChange={statsFilter}
-        className="w-30 h-10 text-xl font-semibold bg-red-200 p-1 rounded-md ml-2 mb-2"
+        className="w-30 h-10 text-lg font-semibold bg-red-200 hover:bg-red-300 p-1 rounded-md ml-2 mb-2"
       >
-        <option value="Total Value">Total Value</option>
+        <option value="TotalValue">Total Value</option>
         <option value="Points">Points</option>
         <option value="Assists">Assists</option>
-        <option value="Steals">Steals</option>
         <option value="Rebounds">Rebounds</option>
+        <option value="Blocks">Blocks</option>
+        <option value="Steals">Steals</option>
         <option value="Turnovers">Turnovers</option>
+        <option value="FTPercent">Free Throw %</option>
+        <option value="eFGPercent">Effective FG %</option>
         <option value="Games">Games</option>
+        <option value="GamesStarted">Games Started</option>
+        <option value="PersonalFouls">Personal Fouls</option>
         <option value="Minutes">Minutes</option>
       </select>
 

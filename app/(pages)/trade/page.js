@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import PlayerSelector from "@/components/PlayerSelector";
-import PlayerCard from "@/components/PlayerCard";
+import PlayerDisplay from "@/components/PlayerDisplay";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import playerData from "@/utils/playerData";
@@ -196,7 +196,7 @@ const Trade = () => {
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
               {teamAPlayers.map((player, index) => (
-                <PlayerCard
+                <PlayerDisplay
                   key={index}
                   player={player}
                   onRemove={() => removePlayer(index, "A")}
@@ -232,7 +232,7 @@ const Trade = () => {
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
               {teamBPlayers.map((player, index) => (
-                <PlayerCard
+                <PlayerDisplay
                   key={index}
                   player={player}
                   onRemove={() => removePlayer(index, "B")}
