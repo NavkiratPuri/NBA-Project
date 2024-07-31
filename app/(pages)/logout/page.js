@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import LoginHeader from '@/components/LoginHeader';
 //import route from '@/app/api/auth/[...nextauth]/route';
 //import '../app/globals.css';
 
@@ -34,16 +35,20 @@ export default function LogoutPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      {!confirmLogout ? (
-        <div className="text-center">
-          <p className="text-xl font-semibold mb-4">Are you sure you want to log out?</p>
-          <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2" onClick={handleConfirmLogout}>Yes, Log out</button>
-          <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded" onClick={handleCancelLogout}>Cancel</button>
-        </div>
-      ) : (
-        <p>Logging out...</p>
-      )}
-    </div>
+    <>
+      <LoginHeader />
+      <div className="min-h-screen flex mt-20 justify-center">
+        
+        {!confirmLogout ? (
+          <div className="text-center">
+            <p className="text-xl font-semibold mb-4">Are you sure you want to log out?</p>
+            <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2" onClick={handleConfirmLogout}>Yes, Log out</button>
+            <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded" onClick={handleCancelLogout}>Cancel</button>
+          </div>
+        ) : (
+          <p>Logging out...</p>
+        )}
+      </div>
+    </>
   );
 }
