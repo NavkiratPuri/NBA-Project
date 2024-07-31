@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from './Modal'; // Ensure the path is correct
 
+const PAGE_SIZE = 20;
+
 const TeamStandings = () => {
     const [standings, setStandings] = useState([]);
     const [filteredStandings, setFilteredStandings] = useState([]);
@@ -11,6 +13,7 @@ const TeamStandings = () => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         fetchStandings();
@@ -96,7 +99,7 @@ const TeamStandings = () => {
 
     const getSortDirectionIcon = (key) => {
         if (sortConfig.key === key) {
-            return sortConfig.direction === 'ascending' ? '▲' : '▼';
+            return sortConfig.direction === 'ascending' ? '↑' : '↓';
         }
         return '';
     };
@@ -107,49 +110,85 @@ const TeamStandings = () => {
                 'bg-gray-500 text-white px-4 py-2 rounded-lg'
     );
 
+    const currentData = filteredStandings.slice(
+        (currentPage - 1) * PAGE_SIZE,
+        currentPage * PAGE_SIZE
+    );
+
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-2 sm:px-4">
             <h1 className="text-3xl font-bold mb-6 text-center text-blue-900">Team Standings</h1>
             <div className="flex space-x-4 mb-6 justify-center">
                 <button onClick={() => handleConferenceFilter('E')} className={getButtonClass('E')}>Eastern Conference</button>
                 <button onClick={() => handleConferenceFilter('W')} className={getButtonClass('W')}>Western Conference</button>
                 <button onClick={() => handleConferenceFilter('')} className={getButtonClass('')}>League</button>
             </div>
-            <div className="max-h-screen overflow-y-auto">
-                <table className="w-full table-auto">
-                    <thead className="bg-blue-900 text-white">
-                        <tr className="text-center">
-                            <th onClick={() => handleSort('rank')} className="cursor-pointer px-4 py-2">Rank {getSortDirectionIcon('rank')}</th>
-                            <th onClick={() => handleSort('team')} className="cursor-pointer px-4 py-2">Team {getSortDirectionIcon('team')}</th>
-                            {showConference && <th onClick={() => handleSort('conference')} className="cursor-pointer px-4 py-2">Conference {getSortDirectionIcon('conference')}</th>}
-                            <th onClick={() => handleSort('wins')} className="cursor-pointer px-4 py-2">Wins {getSortDirectionIcon('wins')}</th>
-                            <th onClick={() => handleSort('losses')} className="cursor-pointer px-4 py-2">Losses {getSortDirectionIcon('losses')}</th>
-                            <th onClick={() => handleSort('eastWins')} className="cursor-pointer px-4 py-2">Eastern Conference Wins {getSortDirectionIcon('eastWins')}</th>
-                            <th onClick={() => handleSort('eastLosses')} className="cursor-pointer px-4 py-2">Eastern Conference Losses {getSortDirectionIcon('eastLosses')}</th>
-                            <th onClick={() => handleSort('westWins')} className="cursor-pointer px-4 py-2">Western Conference Wins {getSortDirectionIcon('westWins')}</th>
-                            <th onClick={() => handleSort('westLosses')} className="cursor-pointer px-4 py-2">Western Conference Losses {getSortDirectionIcon('westLosses')}</th>
-                            <th className="px-4 py-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredStandings.map((team, index) => (
-                            <tr key={index} className="text-center border-b hover:bg-gray-100">
-                                <td className="px-4 py-2">{team.rank}</td>
-                                <td className="px-4 py-2 text-blue-500">{team.team}</td>
-                                {showConference && <td className="px-4 py-2">{team.conference}</td>}
-                                <td className="px-4 py-2">{team.wins}</td>
-                                <td className="px-4 py-2">{team.losses}</td>
-                                <td className="px-4 py-2">{team.eastWins}</td>
-                                <td className="px-4 py-2">{team.eastLosses}</td>
-                                <td className="px-4 py-2">{team.westWins}</td>
-                                <td className="px-4 py-2">{team.westLosses}</td>
-                                <td className="px-4 py-2">
-                                    <button onClick={() => editTeam(team)} className="bg-green-600 text-white mr-2 px-3 py-1 rounded-lg shadow-md hover:bg-green-700">Edit</button>
-                                </td>
+            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200 text-xs">
+                        <thead className="bg-gray-50">
+                            <tr className="text-center">
+                                <th onClick={() => handleSort('rank')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Rank {getSortDirectionIcon('rank')}</th>
+                                <th onClick={() => handleSort('team')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Team {getSortDirectionIcon('team')}</th>
+                                {showConference && <th onClick={() => handleSort('conference')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Conference {getSortDirectionIcon('conference')}</th>}
+                                <th onClick={() => handleSort('wins')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Wins {getSortDirectionIcon('wins')}</th>
+                                <th onClick={() => handleSort('losses')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Losses {getSortDirectionIcon('losses')}</th>
+                                <th onClick={() => handleSort('eastWins')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Eastern Conference Wins {getSortDirectionIcon('eastWins')}</th>
+                                <th onClick={() => handleSort('eastLosses')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Eastern Conference Losses {getSortDirectionIcon('eastLosses')}</th>
+                                <th onClick={() => handleSort('westWins')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Western Conference Wins {getSortDirectionIcon('westWins')}</th>
+                                <th onClick={() => handleSort('westLosses')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Western Conference Losses {getSortDirectionIcon('westLosses')}</th>
+                                <th className="px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {currentData.length > 0 ? (
+                                currentData.map((team, index) => (
+                                    <tr key={index} className="text-center border-b hover:bg-gray-100">
+                                        <td className="px-4 py-2">{team.rank}</td>
+                                        <td className="px-4 py-2 text-blue-500">{team.team}</td>
+                                        {showConference && <td className="px-4 py-2">{team.conference}</td>}
+                                        <td className="px-4 py-2">{team.wins}</td>
+                                        <td className="px-4 py-2">{team.losses}</td>
+                                        <td className="px-4 py-2">{team.eastWins}</td>
+                                        <td className="px-4 py-2">{team.eastLosses}</td>
+                                        <td className="px-4 py-2">{team.westWins}</td>
+                                        <td className="px-4 py-2">{team.westLosses}</td>
+                                        <td className="px-4 py-2">
+                                            <button onClick={() => editTeam(team)} className="bg-green-600 text-white mr-2 px-3 py-1 rounded-lg shadow-md hover:bg-green-700">Edit</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="31" className="text-center py-4">
+                                        No teams found
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div className="flex justify-between mt-2">
+                <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-2 py-1 bg-blue-700 text-white rounded-md disabled:bg-gray-400"
+                >
+                    Previous
+                </button>
+                <span className="px-2 py-1">{currentPage}</span>
+                <button
+                    onClick={() =>
+                        setCurrentPage((prev) =>
+                            prev * PAGE_SIZE >= filteredStandings.length ? prev : prev + 1
+                        )
+                    }
+                    disabled={currentPage * PAGE_SIZE >= filteredStandings.length}
+                    className="px-2 py-1 bg-blue-700 text-white rounded-md disabled:bg-gray-400"
+                >
+                    Next
+                </button>
             </div>
             {showEditModal && (
                 <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
