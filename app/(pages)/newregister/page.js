@@ -83,11 +83,11 @@ export default function Register() {
                     <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                       Password
                     </label>
-                    <div className="text-sm">
+                    {/* <div className="text-sm">
                       <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                         Forgot password?
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="mt-2">
                     <input
@@ -112,7 +112,16 @@ export default function Register() {
                   </button>
                 </div>
               </form>
-              <button onClick={()=> router.push('/')} >Press here for the Login Page</button>
+
+              <div className="mt-12 space-y-4 text-center">
+                <p className="text-sm text-gray-600">Already have an account?</p>
+                <button
+                  onClick={() => router.push('/')}
+                  className="w-full bg-indigo-900 text-white text-sm font-semibold py-2 rounded-md shadow-md hover:bg-gray-800 transition duration-200"
+                >
+                  Go to Login Page
+                </button>
+              </div>
     
               
             </div>
