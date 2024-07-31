@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const PlayerSelector = ({ players, onSelectPlayer, label, teams }) => {
+const PlayerSelector = ({
+  players,
+  onSelectPlayer,
+  label,
+  teams,
+  multiSelect = false,
+}) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredPlayers, setFilteredPlayers] = useState([]);
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selectedTeam, setSelectedTeam] = useState("");
+  const [selectedYear, setSelectedYear] = useState("2024");
+  const [selectedTeam, setSelectedTeam] = useState("BOS");
+  const [selectedPlayers, setSelectedPlayers] = useState([]);
   const dropdown = useRef(null);
 
   const filterPlayers = (value, year, team) => {
@@ -49,18 +56,42 @@ const PlayerSelector = ({ players, onSelectPlayer, label, teams }) => {
     filterPlayers(inputValue, selectedYear, team);
   };
 
-  const selectPlayer = (player) => {
-    setInputValue("");
+  const handleCheckboxChange = (player) => {
+    setSelectedPlayers((prevSelected) => {
+      if (prevSelected.includes(player)) {
+        return prevSelected.filter((p) => p !== player);
+      } else {
+        return [...prevSelected, player];
+      }
+    });
+  };
+
+  const handleSelectPlayers = () => {
+    onSelectPlayer(selectedPlayers);
+    setSelectedPlayers([]);
     setFilteredPlayers([]);
-    onSelectPlayer(player);
+    setInputValue("");
+  };
+
+  const selectPlayer = (player) => {
+    if (multiSelect) {
+      handleCheckboxChange(player);
+    } else {
+      onSelectPlayer(player);
+      setInputValue("");
+      setFilteredPlayers([]);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && filteredPlayers.length > 0) {
+      selectPlayer(filteredPlayers[0]);
+    }
   };
 
   const dropdownF = (e) => {
     if (dropdown.current && !dropdown.current.contains(e.target)) {
       setFilteredPlayers([]);
-    }
-    if (e.key === "Enter" && filteredPlayers.length > 0) {
-      selectPlayer(filteredPlayers[0]);
     }
   };
 
@@ -72,7 +103,7 @@ const PlayerSelector = ({ players, onSelectPlayer, label, teams }) => {
   }, []);
 
   const uniqueYears = [...new Set(players.map((player) => player.Year))];
-  const uniqueTeams = [...new Set(players.map((player) => player.Tm))]; // Changed to use unique teams from players
+  const uniqueTeams = [...new Set(players.map((player) => player.Tm))];
 
   return (
     <div className="player-selector-container" ref={dropdown}>
@@ -82,7 +113,7 @@ const PlayerSelector = ({ players, onSelectPlayer, label, teams }) => {
             id="year-filter"
             value={selectedYear}
             onChange={handleYearChange}
-            className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
           >
             <option value="">All Years</option>
             {uniqueYears.map((year) => (
@@ -97,7 +128,7 @@ const PlayerSelector = ({ players, onSelectPlayer, label, teams }) => {
             id="team-filter"
             value={selectedTeam}
             onChange={handleTeamChange}
-            className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
           >
             <option value="">All Teams</option>
             {uniqueTeams.map((team) => (
@@ -107,7 +138,7 @@ const PlayerSelector = ({ players, onSelectPlayer, label, teams }) => {
             ))}
           </select>
         </div>
-        <div className="flex-grow">
+        <div className="flex-1">
           <label htmlFor="player-input" className="block mb-2 font-medium">
             {label}
           </label>
@@ -119,18 +150,27 @@ const PlayerSelector = ({ players, onSelectPlayer, label, teams }) => {
               value={inputValue}
               onChange={handleInputChange}
               placeholder="Enter Player"
-              onFocus={() => filterPlayers(inputValue, selectedYear, selectedTeam)}
-              onKeyDown={dropdownF}
+              onFocus={() =>
+                filterPlayers(inputValue, selectedYear, selectedTeam)
+              }
+              onKeyDown={handleKeyPress}
             />
-
             {filteredPlayers.length > 0 && (
               <ul className="absolute z-10 w-full max-h-40 overflow-auto bg-white border border-gray-300 rounded mt-1">
                 {filteredPlayers.map((player) => (
                   <li
                     key={player.id}
-                    className="p-2 cursor-pointer hover:bg-blue-100"
+                    className="p-2 flex items-center cursor-pointer hover:bg-blue-100"
                     onClick={() => selectPlayer(player)}
                   >
+                    {multiSelect && (
+                      <input
+                        type="checkbox"
+                        checked={selectedPlayers.includes(player)}
+                        onChange={() => handleCheckboxChange(player)}
+                        className="mr-2"
+                      />
+                    )}
                     {player.Player} - {player.Tm} - {player.Year}
                   </li>
                 ))}
@@ -138,6 +178,15 @@ const PlayerSelector = ({ players, onSelectPlayer, label, teams }) => {
             )}
           </div>
         </div>
+        {multiSelect && (
+          <button
+            className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded cursor-pointer"
+            onClick={handleSelectPlayers}
+            disabled={selectedPlayers.length === 0}
+          >
+            Select Players
+          </button>
+        )}
       </div>
     </div>
   );
