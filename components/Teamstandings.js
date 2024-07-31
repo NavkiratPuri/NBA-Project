@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from './Modal'; // Ensure the path is correct
 
-const PAGE_SIZE = 20;
-
 const TeamStandings = () => {
     const [standings, setStandings] = useState([]);
     const [filteredStandings, setFilteredStandings] = useState([]);
@@ -13,7 +11,6 @@ const TeamStandings = () => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         fetchStandings();
@@ -110,11 +107,6 @@ const TeamStandings = () => {
                 'bg-gray-500 text-white px-4 py-2 rounded-lg'
     );
 
-    const currentData = filteredStandings.slice(
-        (currentPage - 1) * PAGE_SIZE,
-        currentPage * PAGE_SIZE
-    );
-
     return (
         <div className="container mx-auto px-2 sm:px-4">
             <h1 className="text-3xl font-bold mb-6 text-center text-blue-900">Team Standings</h1>
@@ -141,8 +133,8 @@ const TeamStandings = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {currentData.length > 0 ? (
-                                currentData.map((team, index) => (
+                            {filteredStandings.length > 0 ? (
+                                filteredStandings.map((team, index) => (
                                     <tr key={index} className="text-center border-b hover:bg-gray-100">
                                         <td className="px-4 py-2">{team.rank}</td>
                                         <td className="px-4 py-2 text-blue-500">{team.team}</td>
@@ -168,27 +160,6 @@ const TeamStandings = () => {
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div className="flex justify-between mt-2">
-                <button
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="px-2 py-1 bg-blue-700 text-white rounded-md disabled:bg-gray-400"
-                >
-                    Previous
-                </button>
-                <span className="px-2 py-1">{currentPage}</span>
-                <button
-                    onClick={() =>
-                        setCurrentPage((prev) =>
-                            prev * PAGE_SIZE >= filteredStandings.length ? prev : prev + 1
-                        )
-                    }
-                    disabled={currentPage * PAGE_SIZE >= filteredStandings.length}
-                    className="px-2 py-1 bg-blue-700 text-white rounded-md disabled:bg-gray-400"
-                >
-                    Next
-                </button>
             </div>
             {showEditModal && (
                 <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
