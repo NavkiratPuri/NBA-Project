@@ -5,6 +5,7 @@ import CompareChart from "@/components/CompareChart";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import playerData from "@/utils/playerData";
+import { allAvgStats } from "@/utils/allAvg";
 import { calculatePlayerValue } from "@/utils/calculateValue";
 
 const processPlayerData = (data, playerName) => {
@@ -15,12 +16,17 @@ const processPlayerData = (data, playerName) => {
     Assists: playerData.map((player) => player.AST),
     Blocks: playerData.map((player) => player.BLK),
     Steals: playerData.map((player) => player.STL),
-    Rebounds: playerData.map((player) => player.TRB),
     Turnovers: playerData.map((player) => player.TOV),
+    FTPercent: playerData.map((player) => player.FTPercent),
+    eFGPercent: playerData.map((player) => player.eFGPercent),
+    Games: playerData.map((player) => player.G),
+    GamesStarted: playerData.map((player) => player.GS),
+    Rebounds: playerData.map(
+      (player) => (parseFloat(player.ORB) || 0) + (parseFloat(player.DRB) || 0)
+    ),
+    PersonalFouls: playerData.map((player) => player.PF),
     Minutes: playerData.map((player) => player.MP),
-    Games: playerData.map((player) => player.GS),
-
-    "Total Value": playerData.map(
+    TotalValue: playerData.map(
       (player) => calculatePlayerValue(player).totalValue
     ),
   };
@@ -31,13 +37,18 @@ const Compare = () => {
   const [player1, setPlayer1] = useState(null);
   const [player2, setPlayer2] = useState(null);
   const [chartData, setChartData] = useState(null);
-  const [category, setCategory] = useState("Total Value");
+  const [category, setCategory] = useState("TotalValue");
+  const [allPlayersAverages, setAllPlayersAverages] = useState(null);
+  const [selectAllMode, setSelectAllMode] = useState(false);
 
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
         const data = await playerData();
         setPlayers(data);
+        const averages = allAvgStats(data);
+        setAllPlayersAverages(averages);
+        console.log("Averages:", averages);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -105,65 +116,113 @@ const Compare = () => {
     createChart(player1, player, category);
   };
 
+  const handleSelectAllPlayers = (category) => {
+    if (allPlayersAverages) {
+      setChartData({
+        labels: allPlayersAverages.ages,
+        datasets: [
+          {
+            label: `Average ${category}`,
+            data: allPlayersAverages[category],
+            borderColor: "green",
+            borderWidth: 5,
+            borderCapStyle: "round",
+            fill: false,
+          },
+        ],
+      });
+    }
+  };
+
   const statsFilter = (e) => {
     const newCategory = e.target.value;
     setCategory(newCategory);
-    createChart(player1, player2, newCategory);
+    if (selectAllMode) {
+      handleSelectAllPlayers(newCategory);
+    } else {
+      createChart(player1, player2, newCategory);
+    }
   };
+
+  const toggleSelectAllMode = () => {
+    setSelectAllMode(!selectAllMode);
+    if (!selectAllMode) {
+      handleSelectAllPlayers(category);
+    } else {
+      setChartData(null);
+    }
+  };
+
+  useEffect(() => {
+    if (selectAllMode) {
+      handleSelectAllPlayers(category);
+    } else if (player1 && player2) {
+      createChart(player1, player2, category);
+    }
+  }, [selectAllMode, category, player1, player2]);
 
   return (
     <div>
       <Header />
       <main className="flex flex-wrap m-2">
         <div className="flex flex-cols-1 md:flex-cols-2 gap-2 relative w-full order-1">
-          <div className="w-full">
-            <PlayerSelector
-              players={players}
-              onSelectPlayer={handleSelectPlayer1}
-            />
-            {player1 && (
-              <div className="flex items-center mt-2">
-                <img
-                  src={player1.image}
-                  alt={player1.Player}
-                  className="w-20 h-20 rounded-full border-2 border-gray-600"
+          {!selectAllMode && (
+            <>
+              <div className="w-full">
+                <PlayerSelector
+                  players={players}
+                  onSelectPlayer={handleSelectPlayer1}
+                  multiSelect={false}
                 />
-                <span className="text-7xl font-bold text-red-600 ml-2">
-                  {player1.Player}
-                </span>
+                {player1 && (
+                  <div className="flex items-center mt-2">
+                    <img
+                      src={player1.image}
+                      alt={player1.Player}
+                      className="w-20 h-20 rounded-full border-2 border-gray-600"
+                    />
+                    <span className="text-7xl font-bold text-red-600 ml-2">
+                      {player1.Player}
+                    </span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          <div className="w-full">
-            <PlayerSelector
-              players={players}
-              onSelectPlayer={handleSelectPlayer2}
-            />
-            {player2 && (
-              <div className="flex items-center mt-2">
-                <img
-                  src={player2.image}
-                  alt={player2.Player}
-                  className="w-20 h-20 rounded-full border-2 border-gray-600"
+              <div className="w-full">
+                <PlayerSelector
+                  players={players}
+                  onSelectPlayer={handleSelectPlayer2}
+                  multiSelect={false}
                 />
-                <span className="text-7xl font-bold text-blue-600 ml-2">
-                  {player2.Player}
-                </span>
+                {player2 && (
+                  <div className="flex items-center mt-2">
+                    <img
+                      src={player2.image}
+                      alt={player2.Player}
+                      className="w-20 h-20 rounded-full border-2 border-gray-600"
+                    />
+                    <span className="text-7xl font-bold text-blue-600 ml-2">
+                      {player2.Player}
+                    </span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          )}
         </div>
-        <div className="w-full mt-2 order-3">
+        <div className="w-full flex-row mt-2 order-3">
           <CompareChart
-            players={players}
-            player1={player1}
-            player2={player2}
             chartData={chartData}
             category={category}
-            handleSelectPlayer1={handleSelectPlayer1}
-            handleSelectPlayer2={handleSelectPlayer2}
             statsFilter={statsFilter}
           />
+        </div>
+        <div>
+          <button
+            onClick={toggleSelectAllMode}
+            className="w-30 h-10 text-lg font-semibold bg-green-200 hover:bg-green-300 p-1 rounded-md ml-2 mb-2"
+          >
+            {selectAllMode ? "Compare Players" : "Select All Players"}
+          </button>
         </div>
       </main>
       <Footer />
