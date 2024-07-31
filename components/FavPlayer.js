@@ -7,6 +7,7 @@ import FavPlayerDisplay from './FavPlayerDisplay';
 import fetchPlayer from '@/utils/fetchPlayer';
 
 
+
 const FavPlayer = ({playerId}) => {
     
     const [players, setPlayers] = useState([]);

@@ -2,6 +2,11 @@ import React from "react";
 import Image from "next/image"; 
 
 const FavPlayerDisplay = ({ player }) => {
+
+  
+
+
+
   return (
     <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md">
       {player && (
