@@ -46,13 +46,13 @@ export const PATCH = async (req) => {
 
     console.log('Request body:', body);
 
-    if (!favPlayerId && !favTeamId) {
-      return new Response(JSON.stringify({ message: "favPlayerId or favTeamId is required" }), { status: 400 });
+    if (favPlayerId === undefined && favTeamId === undefined && newHighScore === undefined) {
+      return new Response(JSON.stringify({ message: "At least one of favPlayerId, favTeamId, or newHighScore is required" }), { status: 400 });
     }
 
     const updateData = {};
-    if (favPlayerId) updateData.favPlayerId = favPlayerId;
-    if (favTeamId) updateData.favTeamId = favTeamId;
+    if (favPlayerId !== undefined) updateData.favPlayerId = favPlayerId;
+    if (favTeamId !== undefined) updateData.favTeamId = favTeamId;
 
     if (gameType) {
       if (gameType === 'higherLower') {
@@ -80,12 +80,12 @@ export const PATCH = async (req) => {
   }
 };
 
-export const handler = (req, res) => {
+export const handler = async (req, res) => {
   switch (req.method) {
     case 'GET':
-      return GET(req);
+      return await GET(req);
     case 'PATCH':
-      return PATCH(req);
+      return await PATCH(req);
     default:
       res.setHeader('Allow', ['GET', 'PATCH']);
       return res.status(405).end(`Method ${req.method} Not Allowed`);

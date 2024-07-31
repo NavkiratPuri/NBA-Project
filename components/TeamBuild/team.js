@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Ensure axios is imported
+import axios from "axios";
 import PlayerSelector from "@/components/PlayerSelector";
 import fetchCSV from "@/utils/fetchCsv";
-import { calculatePlayerValue } from "@/utils/calculateValue"; // Adjust the import path
+import { calculatePlayerValue } from "@/utils/calculateValue";
 
 const getRandomTeams = (players, numTeams = 5) => {
   const teams = [...new Set(players.map((player) => player.Tm))];
@@ -74,7 +74,7 @@ const TeamBuilder = () => {
         try {
           if (totalValue > (user.highScoreT || 0)) {
             setIsNewHighScore(true);
-            await axios.patch("/api/updateHighScore", {
+            await axios.patch("/api/user", {
               newHighScore: totalValue,
               gameType: "teambuilder",
             });

@@ -29,7 +29,7 @@ function Trivia() {
   const fetchTrivia = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("/api/trivia");
+      const response = await axios.get("/api/user");
       setQuestions(response.data);
       setSelectedAnswers({});
       setCorrectAnswers({});
