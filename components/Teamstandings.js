@@ -108,7 +108,7 @@ const TeamStandings = () => {
     );
 
     return (
-        <div className="container mx-auto px-2 sm:px-4">
+        <div className="container mx-auto px-2 sm:px-4 pb-8"> {/* Added padding at the bottom */}
             <h1 className="text-3xl font-bold mb-6 text-center text-blue-900">Team Standings</h1>
             <div className="flex space-x-4 mb-6 justify-center">
                 <button onClick={() => handleConferenceFilter('E')} className={getButtonClass('E')}>Eastern Conference</button>
