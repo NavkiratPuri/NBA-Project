@@ -20,7 +20,12 @@ export async function GET(req) {
       orderBy: { highScoreT: 'desc' },
     });
 
-    return new Response(JSON.stringify({ highScoresHL, highScoresT }), { status: 200 });
+    const highScoresTrivia = await client.user.findMany({
+      where: { highScoreTrivia: { not: null } },
+      orderBy: { highScoreTrivia: 'desc' },
+    });
+
+    return new Response(JSON.stringify({ highScoresHL, highScoresT, highScoresTrivia }), { status: 200 });
   } catch (error) {
     console.error("Error fetching high scores:", error);
     return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });

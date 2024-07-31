@@ -22,6 +22,45 @@ function Trivia() {
   });
   const [answersSubmitted, setAnswersSubmitted] = useState(false);
 
+  const [isNewHighScore, setIsNewHighScore] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get("/api/user");
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const updateHighScore = async () => {
+      if (user) {
+        try {
+          if (score > (user.highScoreTrivia || 0)) {
+            // Handle undefined highScoreTrivia
+            setIsNewHighScore(true);
+            await axios.patch("/api/updateHighScore", {
+              newHighScore: score,
+              gameType: "trivia",
+            });
+          }
+        } catch (error) {
+          console.error("Error updating high score:", error);
+        }
+      }
+    };
+
+    updateHighScore();
+  }, [score, user]);
+  useEffect(() => {
+    fetchTrivia();
+  }, []);
   useEffect(() => {
     fetchTrivia();
   }, []);
@@ -69,6 +108,18 @@ function Trivia() {
     setAnswersSubmitted(true); // Set the submitted state
   };
 
+  const handleNextBatch = () => {
+    let newIndex = currentIndex + 10;
+    if (newIndex >= questions.length) {
+      newIndex = 0;
+      fetchTrivia();
+    }
+    setCurrentIndex(newIndex);
+    setSelectedAnswers({});
+    setCorrectAnswers({});
+    setScore(null);
+    setAnswersSubmitted(false); // Reset the submitted state
+  };
   const handleNextBatch = () => {
     let newIndex = currentIndex + 5;
     if (newIndex >= questions.length) {
@@ -138,6 +189,212 @@ function Trivia() {
     );
   }
 
+  return (
+    <div className="p-5">
+      {questions.slice(currentIndex, currentIndex + 10).map((question) => (
+        <div key={question.id} className="mb-4">
+          <h3 className="text-lg font-bold">{question.question}</h3>
+          <ul className="list-none p-0">
+            {["optionA", "optionB", "optionC", "optionD"].map((option) => (
+              <li
+                key={option}
+                className="cursor-pointer hover:bg-gray-200 p-2"
+                onClick={() =>
+                  handleAnswerSelect(question.id, question[option])
+                }
+              >
+                {question[option]}
+              </li>
+            ))}
+          </ul>
+          {selectedAnswers[question.id] && (
+            <p className="text-green-600">
+              You selected: {selectedAnswers[question.id]}
+            </p>
+          )}
+          {correctAnswers[question.id] !== undefined && (
+            <p className="text-xl">
+              {correctAnswers[question.id]
+                ? "Correct Answer!"
+                : "Wrong Answer, try again!"}
+            </p>
+          )}
+          <button
+            className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2"
+            onClick={() => handleEditQuestion(question)}
+          >
+            Edit
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => handleDeleteQuestion(question.id)}
+          >
+            Delete
+          </button>
+        </div>
+      ))}
+      {!allQuestionsAnswered() && (
+        <p className="text-red-500 mb-4">
+          You have to answer all questions before you can submit.
+        </p>
+      )}
+      {!answersSubmitted && (
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleSubmitAnswers}
+          disabled={!allQuestionsAnswered()}
+        >
+          Submit Answers
+        </button>
+      )}
+      {score !== null && (
+        <>
+          <p className="text-lg">
+            Your score: {score} out of{" "}
+            {questions.slice(currentIndex, currentIndex + 5).length}
+          </p>
+          {score <= 1 && <p>Maybe start watching badminton!</p>}
+          {score === 2 && <p>You&apos;re worse than Mid!</p>}
+          {score === 3 && <p>You&apos;re Mid!</p>}
+          {score === 4 && <p>Not too Shabby!</p>}
+          {score === 5 && <p>Go touch Grass!</p>}
+          <button
+            className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleNextBatch}
+          >
+            Play Next Batch
+          </button>
+        </>
+      )}
+      {showModal && (
+        <Modal showModal={showModal} setShowModal={setShowModal}>
+          <form onSubmit={handleModalSubmit} className="p-5">
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="question"
+              >
+                Question
+              </label>
+              <input
+                type="text"
+                id="question"
+                name="question"
+                value={questionToEdit.question}
+                onChange={handleModalChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="optionA"
+              >
+                Option A
+              </label>
+              <input
+                type="text"
+                id="optionA"
+                name="optionA"
+                value={questionToEdit.optionA}
+                onChange={handleModalChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="optionB"
+              >
+                Option B
+              </label>
+              <input
+                type="text"
+                id="optionB"
+                name="optionB"
+                value={questionToEdit.optionB}
+                onChange={handleModalChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="optionC"
+              >
+                Option C
+              </label>
+              <input
+                type="text"
+                id="optionC"
+                name="optionC"
+                value={questionToEdit.optionC}
+                onChange={handleModalChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="optionD"
+              >
+                Option D
+              </label>
+              <input
+                type="text"
+                id="optionD"
+                name="optionD"
+                value={questionToEdit.optionD}
+                onChange={handleModalChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="correctAnswer"
+              >
+                Correct Answer
+              </label>
+              <select
+                id="correctAnswer"
+                name="correctAnswer"
+                value={questionToEdit.correctAnswer}
+                onChange={handleModalChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              >
+                <option value="">Select the correct answer</option>
+                <option value={questionToEdit.optionA}>
+                  {questionToEdit.optionA}
+                </option>
+                <option value={questionToEdit.optionB}>
+                  {questionToEdit.optionB}
+                </option>
+                <option value={questionToEdit.optionC}>
+                  {questionToEdit.optionC}
+                </option>
+                <option value={questionToEdit.optionD}>
+                  {questionToEdit.optionD}
+                </option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Update Question
+            </button>
+          </form>
+        </Modal>
+      )}
+    </div>
+  );
   return (
     <div className="p-5 bg-white">
       {questions.slice(currentIndex, currentIndex + 5).map((question) => (

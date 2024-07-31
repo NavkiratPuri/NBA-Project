@@ -53,6 +53,12 @@ model player {
   PTS           Float?
 }
 
+model playerImages {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  Player String
+  ImageSource  String
+}
+
 model team {
   id         String  @id @default(auto()) @map("_id") @db.ObjectId
   rk         Int?
@@ -94,6 +100,7 @@ model User {
   isAdmin     Boolean @default(false)
   highScoreHL   Int?    @default(0)
   highScoreT  Int?    @default(0)
+  highScoreTrivia  Int?    @default(0)
 
   accounts Account[]
 
