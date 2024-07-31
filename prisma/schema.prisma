@@ -53,6 +53,12 @@ model player {
   PTS           Float?
 }
 
+model playerImages {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  Player String
+  ImageSource  String
+}
+
 model team {
   id         String  @id @default(auto()) @map("_id") @db.ObjectId
   rk         Int?
