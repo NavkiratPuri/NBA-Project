@@ -1,23 +1,26 @@
 import React from "react";
-import Image from "next/image"; 
+import Image from "next/image";
 
 const FavPlayerDisplay = ({ player, imgsrc }) => {
-
-  
-
-
-
   return (
     <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md">
-      {player && (
+      {player ? (
         <div className="space-y-2 text-center">
           <h2 className="text-2xl font-semibold">Favorite Player:</h2>
           <div className="flex flex-col items-center space-y-2">
-            <img
-              src={imgsrc} //need to add the actual image source here
-              alt={player.Player}
-              className="w-16 h-16 rounded-full border-2 border-gray-600"
-            />
+            {imgsrc ? (
+              <Image
+                src={imgsrc}
+                alt={`Image of ${player.Player}`}
+                width={64}
+                height={64}
+                className="w-16 h-16 rounded-full border-2 border-gray-600"
+              />
+            ) : (
+              <div className="w-16 h-16 rounded-full border-2 border-gray-600 flex items-center justify-center">
+                <span className="text-sm text-gray-500">No Image</span>
+              </div>
+            )}
             <p>Player: {player.Player}</p>
             <p>Team: {player.Tm}</p>
             <p>Points Per Game: {player.PTS}</p>
@@ -27,9 +30,11 @@ const FavPlayerDisplay = ({ player, imgsrc }) => {
             <p>Rebounds Per Game: {player.TRB}</p>
           </div>
         </div>
+      ) : (
+        <p className="text-center text-gray-500">No favorite player selected.</p>
       )}
     </div>
   );
 };
- 
+
 export default FavPlayerDisplay;

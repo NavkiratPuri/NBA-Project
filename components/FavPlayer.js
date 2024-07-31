@@ -11,7 +11,7 @@ const FavPlayer = ({ playerId }) => {
   const [players, setPlayers] = useState([]);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [favPlayer, setFavPlayer] = useState(null);
-  const [favPlayerId, setFavplayerId] = useState(playerId);
+  const [favPlayerId, setFavPlayerId] = useState(playerId);
   const [imgSrc, setImgSrc] = useState(null);
   const [error, setError] = useState(null);
 
@@ -19,12 +19,8 @@ const FavPlayer = ({ playerId }) => {
     const getFavPlayerData = async () => {
       try {
         const data = await fetchPlayer(playerId);
-        console.log('data:', data);
         setFavPlayer(data);
-        console.log('favPlayer:', data.Player);
-
         const imgData = await fetchPlayerImage(data.Player);
-        console.log('imgData:', imgData);
         if (imgData) {
           setImgSrc(imgData.ImageSource);
         }
@@ -35,7 +31,6 @@ const FavPlayer = ({ playerId }) => {
 
     if (playerId) {
       getFavPlayerData();
-      console.log('playerId:', playerId);
     }
   }, [playerId]);
 
@@ -45,19 +40,15 @@ const FavPlayer = ({ playerId }) => {
         const data = await currentPlayers();
         setPlayers(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        setError(error.message);
       }
     };
     fetchPlayers();
   }, []);
 
-  useEffect(() => {
-    console.log('Updated favPlayerId:', favPlayerId);
-  }, [favPlayerId]);
-
   const handleSelectPlayer = async (player) => {
     setFavPlayer(player);
-    setFavplayerId(player.id);
+    setFavPlayerId(player.id);
 
     try {
       const imgData = await fetchPlayerImage(player.Player);
@@ -65,7 +56,7 @@ const FavPlayer = ({ playerId }) => {
         setImgSrc(imgData.ImageSource);
       }
     } catch (error) {
-      console.error('Error fetching player image:', error);
+      setError(error.message);
     }
   };
 
@@ -74,19 +65,21 @@ const FavPlayer = ({ playerId }) => {
       const response = await axios.patch('/api/user', {
         favPlayerId: playerId
       });
-      console.log('response:', response);
+      if (response.status === 200) {
+        alert('Favorite Player Updated');
+      }
     } catch (error) {
-      console.error('Error updating favPlayer:', error);
+      setError('Error updating favorite player');
     }
   };
 
   const handleSave = () => {
     updateFavPlayer(favPlayerId);
-    alert('Favorite Player Updated');
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
+      {error && <div className="text-red-500">{error}</div>}
       <FavPlayerDisplay player={favPlayer} imgsrc={imgSrc} />
       <h2 className="text-2xl font-semibold mt-4">Edit Favorite Player:</h2>
       <FavPlayerSelector
