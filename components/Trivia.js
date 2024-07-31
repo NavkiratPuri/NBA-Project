@@ -66,10 +66,10 @@ function Trivia() {
     const updateHighScore = async () => {
       if (user) {
         try {
-          if (points > (user.highScoreTrivia || 0)) {  // Handle undefined highScoreHL
+          if (score > (user.highScoreTrivia || 0)) {  // Handle undefined highScoreHL
             setIsNewHighScore(true);
             await axios.patch('/api/user', {
-              newHighScore: points,
+              newHighScore: score,
               gameType: 'trivia',
             });
           }
@@ -80,7 +80,7 @@ function Trivia() {
     };
 
     updateHighScore();
-  }, [points, user]);
+  }, [score, user]);
 
   console.log("User:", user)
   const handleAnswerSelect = (questionId, answer) => {
