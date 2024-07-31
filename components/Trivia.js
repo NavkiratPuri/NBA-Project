@@ -29,7 +29,7 @@ function Trivia() {
   const fetchTrivia = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("/api/user");
+      const response = await axios.get("/api/trivia");
       setQuestions(response.data);
       setSelectedAnswers({});
       setCorrectAnswers({});
@@ -46,7 +46,43 @@ function Trivia() {
       setLoading(false);
     }
   };
+  const [isNewHighScore, setIsNewHighScore] = useState(false);
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('/api/user');
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const updateHighScore = async () => {
+      if (user) {
+        try {
+          if (points > (user.highScoreTrivia || 0)) {  // Handle undefined highScoreHL
+            setIsNewHighScore(true);
+            await axios.patch('/api/user', {
+              newHighScore: points,
+              gameType: 'trivia',
+            });
+          }
+        } catch (error) {
+          console.error("Error updating high score:", error);
+        }
+      }
+    };
+
+    updateHighScore();
+  }, [points, user]);
+
+  console.log("User:", user)
   const handleAnswerSelect = (questionId, answer) => {
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
