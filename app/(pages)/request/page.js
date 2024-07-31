@@ -6,7 +6,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import axios from "axios";
 
-// Home Page after log in
+
 const Request = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
