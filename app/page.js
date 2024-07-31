@@ -77,11 +77,11 @@ export default function Login() {
                     <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                       Password
                     </label>
-                    <div className="text-sm">
+                    {/* <div className="text-sm">
                       <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                         Forgot password?
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="mt-2">
                     <input
@@ -107,14 +107,47 @@ export default function Login() {
                 </div>
               </form>
   
-              <h1>Sign into Github below</h1>
-              <button onClick={()=>signIn('github')} className="bg-black text-white w-full">Sign in with Github</button>
-  
-              <h1>Sign into Google below</h1>
-              <button onClick={()=>signIn('google')} className="bg-black text-white w-full">Sign in with Google</button>
+              <div className="mt-12 space-y-6">
+                <div className="text-center">
+                  <h1 className="text-lg font-semibold text-gray-900">Sign in with</h1>
+                  <div className="mt-4 space-y-4">
+                    <button
+                      onClick={() => signIn('github')}
+                      className="flex items-center justify-center w-full py-2 px-4 rounded-md bg-indigo-900 text-white shadow-md hover:bg-indigo-500 transition duration-200"
+                    >
+                      <img
+                        src="/githublogo.png"  // Update this path with your GitHub logo image
+                        alt="GitHub Logo"
+                        className="h-5 w-5 mr-2"
+                      />
+                      GitHub
+                    </button>
 
-              <h1>Sign up for new account here</h1>
-              <button onClick={()=>router.push('/newregister')} className="bg-black text-white w-full">Sign up for new account</button>
+                    <button
+                      onClick={() => signIn('google')}
+                      className="flex items-center justify-center w-full py-2 px-4 rounded-md bg-indigo-900 text-white shadow-md hover:bg-indigo-500 transition duration-200"
+                    >
+                      <img
+                        src="/googlelogo.webp"  // Update this path with your Google logo image
+                        alt="Google Logo"
+                        className="h-5 w-5 mr-2"
+                      />
+                      Google
+                    </button>
+                  </div>
+                </div>
+
+                <div className="text-center mt-8">
+                  <h1 className="text-lg font-semibold text-gray-900">Need a new account?</h1>
+                  <button
+                    onClick={() => router.push('/newregister')}
+                    className="mt-4 bg-indigo-700 text-white w-full py-2 rounded-md shadow-md hover:bg-indigo-500 transition duration-200"
+                  >
+                    Sign up for a new account
+                  </button>
+                </div>
+              </div>
+
     
               
             </div>
