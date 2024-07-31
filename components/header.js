@@ -37,7 +37,7 @@ const Header = () => {
   const isChartsActive = chartItems.some((chart) => chart.href === pathname);
 
   return (
-    <header className="bg-gray-800 text-white shadow-lg py-3">
+    <header className="bg-gray-800 text-white shadow-lg py-3 p-4 border-b border-white">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <img src="/bpa.webp" alt="NBA Logo" className="h-20 w-auto" />
@@ -87,7 +87,7 @@ const Header = () => {
                     key={index}
                     className={`relative px-3 py-2 rounded ${
                       isChartsActive
-                        ? "bg-orange-500 text-gray-800"
+                        ? "bg-orange-500 text-white"
                         : "hover:bg-gray-600"
                     } cursor-pointer`}
                     onMouseEnter={() =>
@@ -105,7 +105,7 @@ const Header = () => {
                             key={chartIndex}
                             className={`px-4 py-2 ${
                               pathname === chart.href
-                                ? "bg-orange-500 text-gray-800"
+                                ? "bg-orange-500 text-white"
                                 : "hover:bg-gray-600 text-white"
                             }`}
                           >
@@ -122,7 +122,7 @@ const Header = () => {
                     key={index}
                     className={`px-3 py-2 rounded ${
                       pathname === link.href
-                        ? "bg-orange-500 text-gray-800"
+                        ? "bg-orange-500 text-white"
                         : "hover:bg-gray-600"
                     }`}
                   >
