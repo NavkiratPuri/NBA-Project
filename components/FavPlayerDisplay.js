@@ -9,7 +9,7 @@ const FavPlayerDisplay = ({ player }) => {
           <h2 className="text-2xl font-semibold">Favorite Player:</h2>
           <div className="flex flex-col items-center space-y-2">
             <Image
-              src={player.image}
+              src={player.image} //need to add the actual image source here
               alt={player.Player}
               className="w-16 h-16 rounded-full border-2 border-gray-600"
             />
