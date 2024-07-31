@@ -6,17 +6,34 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import axios from "axios";
 
-
 const Request = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/");
+    } else if (status === "authenticated") {
+      axios
+        .get("/api/user")
+        .then((response) => {
+          setProfile(response.data);
+          setLoading(false);
+          if (response.data.isAdmin) {
+            setIsAdmin(true);
+          }
+        })
+        .catch((error) => {
+          setFetchError(error);
+          setLoading(false);
+        });
     }
   }, [status, router]);
 
@@ -35,13 +52,29 @@ const Request = () => {
     }
   };
 
-  if (status === "loading") {
+  if (status === "loading" || loading) {
     return <p>Loading...</p>;
   }
 
+  if (fetchError) {
+    return <div>Error: {fetchError.message}</div>;
+  }
+
+  if (isAdmin) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">
+          <div className="mt-4 p-4  rounded-lg  text-center">
+            <h1 className="text-2xl font-semibold">You are already an Admin</h1>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   if (status === "authenticated") {
-
-
     return (
       <div className="flex flex-col min-h-screen">
         <Header />
@@ -61,7 +94,7 @@ const Request = () => {
                     setMessage(e.target.value);
                     if (e.target.value.length <= 125) setError(false);
                   }}
-                  maxLength="75"
+                  maxLength="125"
                   rows="3"
                   className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-indigo-200"
                   placeholder="Explain in 125 characters or less..."
@@ -87,7 +120,7 @@ const Request = () => {
     );
   }
 
-  
+  return null;
 };
 
 export default Request;
