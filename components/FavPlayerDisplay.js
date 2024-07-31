@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image"; 
 
-const FavPlayerDisplay = ({ player }) => {
+const FavPlayerDisplay = ({ player, imgsrc }) => {
 
   
 
@@ -13,8 +13,8 @@ const FavPlayerDisplay = ({ player }) => {
         <div className="space-y-2 text-center">
           <h2 className="text-2xl font-semibold">Favorite Player:</h2>
           <div className="flex flex-col items-center space-y-2">
-            <Image
-              src={player.image} //need to add the actual image source here
+            <img
+              src={imgsrc} //need to add the actual image source here
               alt={player.Player}
               className="w-16 h-16 rounded-full border-2 border-gray-600"
             />

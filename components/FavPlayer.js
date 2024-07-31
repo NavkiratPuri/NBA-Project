@@ -5,7 +5,7 @@ import currentPlayers from '@/utils/currentPlayers';
 import axios from 'axios';
 import FavPlayerDisplay from './FavPlayerDisplay';
 import fetchPlayer from '@/utils/fetchPlayer';
-
+import fetchPlayerImage from '@/utils/fetchPlayerImage';
 
 
 const FavPlayer = ({playerId}) => {
@@ -14,6 +14,7 @@ const FavPlayer = ({playerId}) => {
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [favPlayer, setFavPlayer] = useState(null);
     const [favPlayerId, setFavplayerId] = useState(playerId);
+    const [imgSrc, setImgSrc] = useState(null);
     
     useEffect(() => {
 
@@ -23,6 +24,14 @@ const FavPlayer = ({playerId}) => {
                 const data = await fetchPlayer(playerId);
                 console.log('data:', data);
                 setFavPlayer(data);
+                console.log('favPlayer:', data.Player);
+                
+                const imgData = await fetchPlayerImage(data.Player);
+                console.log('imgData:', imgData);
+                if (imgData) {
+                    setImgSrc(imgData.ImageSource);
+                }
+
             } catch (err) {
                 setError(err.message);
             }
@@ -54,6 +63,7 @@ const FavPlayer = ({playerId}) => {
     const handleSelectPlayer = (player) => {
         setFavPlayer(player);
         setFavplayerId(player.id);
+        
         // updateFavPlayer(player.id);
         
     };
@@ -88,7 +98,7 @@ const FavPlayer = ({playerId}) => {
             
             {/* <p>debug favPlayer: {favPlayer?.name}</p> */}
 
-             <FavPlayerDisplay player={favPlayer}/>
+             <FavPlayerDisplay player={favPlayer} imgsrc={imgSrc} />
                       
             <h2 className="text-2xl font-semibold mt-4">Edit Favorite Player:</h2>
             <FavPlayerSelector
