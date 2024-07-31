@@ -9,6 +9,8 @@ const TeamStandings = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [teamToEdit, setTeamToEdit] = useState({});
     const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         fetchStandings();
@@ -31,12 +33,14 @@ const TeamStandings = () => {
         } else {
             filtered = [...standings].sort((a, b) => a.rk - b.rk);
         }
+        filtered = filtered.map((team, index) => ({ ...team, rank: index + 1 }));
         setFilteredStandings(filtered);
         setShowConference(conference === '');
     };
 
     const handleEditSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
             await axios.patch(`/api/team/${teamToEdit.id}`, {
                 wins: teamToEdit.wins,
@@ -51,6 +55,9 @@ const TeamStandings = () => {
             setShowEditModal(false); // Close modal after submission
         } catch (error) {
             console.error('Failed to update team:', error);
+            setError('Failed to update team details.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -79,7 +86,12 @@ const TeamStandings = () => {
             return 0;
         });
 
-        setFilteredStandings(sortedStandings);
+        const reRankedStandings = sortedStandings.map((team, index) => ({
+            ...team,
+            rank: index + 1
+        }));
+
+        setFilteredStandings(reRankedStandings);
     };
 
     const getSortDirectionIcon = (key) => {
@@ -91,8 +103,8 @@ const TeamStandings = () => {
 
     const getButtonClass = (conference) => (
         conference === 'E' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg' :
-        conference === 'W' ? 'bg-green-500 text-white px-4 py-2 rounded-lg' :
-        'bg-gray-500 text-white px-4 py-2 rounded-lg'
+            conference === 'W' ? 'bg-green-500 text-white px-4 py-2 rounded-lg' :
+                'bg-gray-500 text-white px-4 py-2 rounded-lg'
     );
 
     return (
@@ -107,22 +119,22 @@ const TeamStandings = () => {
                 <table className="w-full table-auto">
                     <thead className="bg-blue-900 text-white">
                         <tr className="text-center">
-                            <th onClick={() => handleSort('rk')}>Rank {getSortDirectionIcon('rk')}</th>
-                            <th onClick={() => handleSort('team')}>Team {getSortDirectionIcon('team')}</th>
-                            {showConference && <th onClick={() => handleSort('conference')}>Conference {getSortDirectionIcon('conference')}</th>}
-                            <th onClick={() => handleSort('wins')}>Wins {getSortDirectionIcon('wins')}</th>
-                            <th onClick={() => handleSort('losses')}>Losses {getSortDirectionIcon('losses')}</th>
-                            <th onClick={() => handleSort('eastWins')}>Eastern Conference Wins {getSortDirectionIcon('eastWins')}</th>
-                            <th onClick={() => handleSort('eastLosses')}>Eastern Conference Losses {getSortDirectionIcon('eastLosses')}</th>
-                            <th onClick={() => handleSort('westWins')}>Western Conference Wins {getSortDirectionIcon('westWins')}</th>
-                            <th onClick={() => handleSort('westLosses')}>Western Conference Losses {getSortDirectionIcon('westLosses')}</th>
-                            <th>Actions</th>
+                            <th onClick={() => handleSort('rank')} className="cursor-pointer px-4 py-2">Rank {getSortDirectionIcon('rank')}</th>
+                            <th onClick={() => handleSort('team')} className="cursor-pointer px-4 py-2">Team {getSortDirectionIcon('team')}</th>
+                            {showConference && <th onClick={() => handleSort('conference')} className="cursor-pointer px-4 py-2">Conference {getSortDirectionIcon('conference')}</th>}
+                            <th onClick={() => handleSort('wins')} className="cursor-pointer px-4 py-2">Wins {getSortDirectionIcon('wins')}</th>
+                            <th onClick={() => handleSort('losses')} className="cursor-pointer px-4 py-2">Losses {getSortDirectionIcon('losses')}</th>
+                            <th onClick={() => handleSort('eastWins')} className="cursor-pointer px-4 py-2">Eastern Conference Wins {getSortDirectionIcon('eastWins')}</th>
+                            <th onClick={() => handleSort('eastLosses')} className="cursor-pointer px-4 py-2">Eastern Conference Losses {getSortDirectionIcon('eastLosses')}</th>
+                            <th onClick={() => handleSort('westWins')} className="cursor-pointer px-4 py-2">Western Conference Wins {getSortDirectionIcon('westWins')}</th>
+                            <th onClick={() => handleSort('westLosses')} className="cursor-pointer px-4 py-2">Western Conference Losses {getSortDirectionIcon('westLosses')}</th>
+                            <th className="px-4 py-2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredStandings.map((team, index) => (
                             <tr key={index} className="text-center border-b hover:bg-gray-100">
-                                <td className="px-4 py-2">{team.rk}</td>
+                                <td className="px-4 py-2">{team.rank}</td>
                                 <td className="px-4 py-2 text-blue-500">{team.team}</td>
                                 {showConference && <td className="px-4 py-2">{team.conference}</td>}
                                 <td className="px-4 py-2">{team.wins}</td>
@@ -132,7 +144,7 @@ const TeamStandings = () => {
                                 <td className="px-4 py-2">{team.westWins}</td>
                                 <td className="px-4 py-2">{team.westLosses}</td>
                                 <td className="px-4 py-2">
-                                    <button onClick={() => editTeam(team)} className="bg-yellow-500 text-white px-3 py-1 rounded-lg shadow-md hover:bg-yellow-600">Edit</button>
+                                    <button onClick={() => editTeam(team)} className="bg-green-600 text-white mr-2 px-3 py-1 rounded-lg shadow-md hover:bg-green-700">Edit</button>
                                 </td>
                             </tr>
                         ))}
@@ -142,76 +154,25 @@ const TeamStandings = () => {
             {showEditModal && (
                 <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
                     <form onSubmit={handleEditSubmit} className="space-y-4">
-                        <div>
-                            <label>Wins: </label>
-                            <input
-                                type="number"
-                                value={teamToEdit.wins || ''}
-                                onChange={e => setTeamToEdit({ ...teamToEdit, wins: parseInt(e.target.value, 10) })}
-                                className="border rounded-lg px-2 py-1"
-                            />
-                        </div>
-                        <div>
-                            <label>Losses: </label>
-                            <input
-                                type="number"
-                                value={teamToEdit.losses || ''}
-                                onChange={e => setTeamToEdit({ ...teamToEdit, losses: parseInt(e.target.value, 10) })}
-                                className="border rounded-lg px-2 py-1"
-                            />
-                        </div>
-                        <div>
-                            <label>East Wins: </label>
-                            <input
-                                type="number"
-                                value={teamToEdit.eastWins || ''}
-                                onChange={e => setTeamToEdit({ ...teamToEdit, eastWins: parseInt(e.target.value, 10) })}
-                                className="border rounded-lg px-2 py-1"
-                            />
-                        </div>
-                        <div>
-                            <label>East Losses: </label>
-                            <input
-                                type="number"
-                                value={teamToEdit.eastLosses || ''}
-                                onChange={e => setTeamToEdit({ ...teamToEdit, eastLosses: parseInt(e.target.value, 10) })}
-                                className="border rounded-lg px-2 py-1"
-                            />
-                        </div>
-                        <div>
-                            <label>West Wins: </label>
-                            <input
-                                type="number"
-                                value={teamToEdit.westWins || ''}
-                                onChange={e => setTeamToEdit({ ...teamToEdit, westWins: parseInt(e.target.value, 10) })}
-                                className="border rounded-lg px-2 py-1"
-                            />
-                        </div>
-                        <div>
-                            <label>West Losses: </label>
-                            <input
-                                type="number"
-                                value={teamToEdit.westLosses || ''}
-                                onChange={e => setTeamToEdit({ ...teamToEdit, westLosses: parseInt(e.target.value, 10) })}
-                                className="border rounded-lg px-2 py-1"
-                            />
-                        </div>
-                        <div>
-                            <label>Conference: </label>
-                            <select
-                                value={teamToEdit.conference || ''}
-                                onChange={e => setTeamToEdit({ ...teamToEdit, conference: e.target.value })}
-                                className="border rounded-lg px-2 py-1"
-                            >
-                                <option value="">Select Conference</option>
-                                <option value="E">Eastern</option>
-                                <option value="W">Western</option>
-                            </select>
-                        </div>
-                        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600">Save Changes</button>
+                        {Object.keys(teamToEdit).map(key => (
+                            <div key={key}>
+                                <label className="block text-gray-700">{key}:</label>
+                                <input
+                                    type={typeof teamToEdit[key] === 'number' ? 'number' : 'text'}
+                                    placeholder={key}
+                                    name={key}
+                                    className="border rounded-lg px-2 py-1 w-full"
+                                    value={teamToEdit[key] || ''}
+                                    onChange={e => setTeamToEdit({ ...teamToEdit, [key]: e.target.value })}
+                                    step="0.1"
+                                />
+                            </div>
+                        ))}
+                        <button type="submit" disabled={isLoading} className="bg-blue-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-800">Save Changes</button>
                     </form>
                 </Modal>
             )}
+            {error && <p className="text-red-500">{error}</p>}
         </div>
     );
 };
