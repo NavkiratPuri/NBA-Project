@@ -7,6 +7,17 @@ export const POST = async (req) => {
     const body = await req.json();
     const { message, email, name } = body;
 
+    const existingRequest = await client.adminReq.findUnique({
+        where: { email },
+    });
+
+    if (existingRequest) {
+        return NextResponse.json(
+          { message: "An admin request with this email already exists." },
+          { status: 400 }
+        );
+    }
+
     // Create a new admin request in the database
     const newAdminReq = await client.AdminReq.create({
       data: {

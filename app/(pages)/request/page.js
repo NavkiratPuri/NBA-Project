@@ -53,7 +53,11 @@ const Request = () => {
       setSuccess(true);
       setMessage("");
     } catch (err) {
-      setError("An error occurred. Please try again later.");
+      if (err.response && err.response.status === 400) {
+        setError(err.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
     }
   };
 
@@ -70,7 +74,7 @@ const Request = () => {
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-grow">
-          <div className="mt-4 p-4  rounded-lg  text-center">
+          <div className="mt-4 p-4 rounded-lg text-center">
             <h1 className="text-2xl font-semibold">You are already an Admin</h1>
           </div>
         </main>
@@ -116,7 +120,7 @@ const Request = () => {
                   {message.length}/125
                 </p>
               </div>
-              {error && <p className="text-red-600 text-sm mb-4">{alert.error}</p>}
+              {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
               {success && (
                 <p className="text-green-600 text-sm mb-4">
                   Request sent successfully!
