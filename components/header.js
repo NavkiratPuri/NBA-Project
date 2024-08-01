@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 // Header component to display the navigation bar
 const Header = () => {
+  const { data: session, status } = useSession();
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState({
     games: false,
     charts: false,
+    admin: false,
   });
 
   const navItems = [
@@ -33,8 +36,15 @@ const Header = () => {
     { label: "Leaderboard", href: "/leaderboard" },
   ];
 
+  const adminItems = [
+    { label: "Dashboard", href: "/admin/dashboard" },
+    { label: "User Management", href: "/admin/users" },
+    { label: "Settings", href: "/admin/settings" },
+  ];
+
   const isGamesActive = gameItems.some((game) => game.href === pathname);
   const isChartsActive = chartItems.some((chart) => chart.href === pathname);
+  const isAdminActive = adminItems.some((admin) => admin.href === pathname);
 
   return (
     <header className="bg-gray-800 text-white shadow-lg py-3 p-4 border-b border-white">
@@ -126,6 +136,38 @@ const Header = () => {
                 );
               }
             })}
+            {/* Conditional Admin Dropdown Menu */}
+            {status === "authenticated" && session.user.isAdmin && (
+              <li
+                className={`relative px-3 py-2 rounded ${isAdminActive
+                    ? "bg-orange-500 text-white"
+                    : "hover:bg-gray-600"
+                  } cursor-pointer`}
+                onMouseEnter={() =>
+                  setDropdownOpen({ ...dropdownOpen, admin: true })
+                }
+                onMouseLeave={() =>
+                  setDropdownOpen({ ...dropdownOpen, admin: false })
+                }
+              >
+                <span>Admin</span>
+                {dropdownOpen.admin && (
+                  <ul className="absolute left-0 mt-2 bg-gray-700 rounded-lg shadow-lg w-40 z-50">
+                    {adminItems.map((admin, adminIndex) => (
+                      <li
+                        key={adminIndex}
+                        className={`px-4 py-2 ${pathname === admin.href
+                            ? "bg-orange-500 text-white"
+                            : "hover:bg-gray-600 text-white"
+                          }`}
+                      >
+                        <Link href={admin.href}>{admin.label}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            )}
           </ul>
         </nav>
       </div>
