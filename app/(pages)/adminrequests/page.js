@@ -34,7 +34,11 @@ const AdminRequests = () => {
 
   const handleRequest = async (id, action) => {
     try {
-      await axios.patch(`/api/adminrequests/${id}`, { action });
+      if (action === "approve") {
+        await axios.patch(`/api/adminrequests/${id}`, { action });
+      } else if (action === "deny") {
+        await axios.delete(`/api/adminrequests/${id}`);
+      }
       setRequests(requests.filter((req) => req.id !== id));
     } catch (err) {
       setError("An error occurred. Please try again later.");
