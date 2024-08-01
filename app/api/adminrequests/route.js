@@ -36,3 +36,16 @@ export const POST = async (req) => {
     );
   }
 };
+
+export const GET = async () => {
+    try {
+      const adminRequests = await client.AdminReq.findMany();
+      return NextResponse.json(adminRequests);
+    } catch (error) {
+      console.error(error);
+      return NextResponse.json(
+        { message: "Error fetching admin requests", error: error.message },
+        { status: 500 }
+      );
+    }
+};
