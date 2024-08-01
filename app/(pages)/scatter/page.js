@@ -174,9 +174,6 @@ const ScatterChartPage = () => {
             {teamBAverages.wsfoureight.toFixed(2)}
           </p>
         </div>
-        <div className="w-full mt-4">
-          <Scatter data={scatterData} options={options} />
-        </div>
         <div className="w-full flex justify-center mt-4">
           <button
             className="bg-green-500 text-white py-2 px-4 rounded"
@@ -184,6 +181,9 @@ const ScatterChartPage = () => {
           >
             Open Glossary
           </button>
+        </div>
+        <div className="w-full mt-4">
+          <Scatter data={scatterData} options={options} />
         </div>
       </main>
       <Footer />
