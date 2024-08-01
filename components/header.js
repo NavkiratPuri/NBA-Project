@@ -37,9 +37,9 @@ const Header = () => {
   ];
 
   const adminItems = [
-    { label: "Dashboard", href: "/admin/dashboard" },
-    { label: "User Management", href: "/admin/users" },
-    { label: "Settings", href: "/admin/settings" },
+    { label: "Change Stats", href: "/edit" },
+    { label: "Change Standings", href: "/teamstandings" },
+    { label: "Admin Requests", href: "/adminrequests" },
   ];
 
   const isGamesActive = gameItems.some((game) => game.href === pathname);
