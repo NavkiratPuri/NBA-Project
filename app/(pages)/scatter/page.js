@@ -5,6 +5,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Scatter } from "react-chartjs-2";
 import playerData from "@/utils/playerData";
+import { GlossaryWS } from "@/utils/glossaryWs"; // Import the GlossaryWS component
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -55,6 +56,7 @@ const ScatterChartPage = () => {
     bpm: 0,
     wsfoureight: 0,
   });
+  const [isGlossaryOpen, setIsGlossaryOpen] = useState(false); // State to control glossary modal
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -175,8 +177,17 @@ const ScatterChartPage = () => {
         <div className="w-full mt-4">
           <Scatter data={scatterData} options={options} />
         </div>
+        <div className="w-full flex justify-center mt-4">
+          <button
+            className="bg-green-500 text-white py-2 px-4 rounded"
+            onClick={() => setIsGlossaryOpen(true)}
+          >
+            Open Glossary
+          </button>
+        </div>
       </main>
       <Footer />
+      <GlossaryWS isOpen={isGlossaryOpen} onClose={() => setIsGlossaryOpen(false)} />
     </div>
   );
 };
