@@ -6,6 +6,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import bcrypt from 'bcrypt';
 
+
 //handle all nextauth routes
 // export default NextAuth({
 
@@ -48,7 +49,7 @@ export const authOptions = {
 
 
                 // check to see if user exists
-                const User = await prisma.User.findUnique({
+                const user = await prisma.user.findUnique({
                     where: {
                         email: credentials.email
                     }
@@ -56,13 +57,13 @@ export const authOptions = {
 
                 // if user does not exist, throw error
 
-                if (!User || !User?.hashedPassword) {
-                    throw new Error('User not found');
+                if (!user || !user?.hashedPassword) {
+                    throw new Error('user not found');
                 }
 
                 // check to see if password is correct
 
-                const passwordMatch = await bcrypt.compare(credentials.password, User.hashedPassword);
+                const passwordMatch = await bcrypt.compare(credentials.password, user.hashedPassword);
 
                 // if password is incorrect, throw error
 
@@ -70,11 +71,39 @@ export const authOptions = {
                     throw new Error('Password incorrect');
                 }
 
-                return User;
+                return user;
 
             }
         })
     ],
+
+    callbacks: {
+        async jwt({token, user, session}) {
+            console.log('jwt callback', {token, user, session});
+            if (user) {
+                return {
+                    ...token,
+                    id: user.id,
+                    isAdmin: user.isAdmin,
+                };
+            }
+            return token;
+        },
+        async session({session, token, user}) {
+            console.log('session callback', {session, token, user});
+            
+            return {
+                ...session,
+                user: {
+                    id: token.id,
+                    isAdmin: token.isAdmin,
+                }
+            };
+            
+            return session;
+        },
+    },
+
     secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: "jwt",
