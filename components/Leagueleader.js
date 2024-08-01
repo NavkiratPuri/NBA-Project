@@ -153,8 +153,8 @@ const LeadersList = () => {
             Select a year
           </option>
           {Array.from(
-            { length: new Date().getFullYear() - 1992 },
-            (_, i) => 1993 + i
+            { length: new Date().getFullYear() - 1991 },
+            (_, i) => 1992 + i
           ).map((year) => (
             <option key={year} value={year}>
               {year}
