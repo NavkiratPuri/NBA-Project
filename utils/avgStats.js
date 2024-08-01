@@ -76,13 +76,23 @@ export const avgStats = (players) => {
 export const AvgModal = ({ isOpen, onClose, teamAStats, teamBStats }) => {
   if (!isOpen) return null;
 
-  const getColorClass = (teamAValue, teamBValue) => {
-    if (teamAValue > teamBValue) {
-      return ["text-green-500", "text-red-500"];
-    } else if (teamAValue < teamBValue) {
-      return ["text-red-500", "text-green-500"];
+  const getColorClass = (teamAValue, teamBValue, stat) => {
+    if (stat === "pf" || stat === "to") {
+      if (teamAValue > teamBValue) {
+        return ["text-red-500", "text-green-500"];
+      } else if (teamAValue < teamBValue) {
+        return ["text-green-500", "text-red-500"];
+      } else {
+        return ["text-black", "text-black"];
+      }
     } else {
-      return ["text-black", "text-black"];
+      if (teamAValue > teamBValue) {
+        return ["text-green-500", "text-red-500"];
+      } else if (teamAValue < teamBValue) {
+        return ["text-red-500", "text-green-500"];
+      } else {
+        return ["text-black", "text-black"];
+      }
     }
   };
 
@@ -97,10 +107,10 @@ export const AvgModal = ({ isOpen, onClose, teamAStats, teamBStats }) => {
             <h3 className="text-lg font-bold mb-2">Team A</h3>
             <ul>
               {Object.keys(teamAStats).map((stat) => {
-                const [teamAClass, teamBClass] = getColorClass(
-                  teamAStats[stat],
-                  teamBStats[stat]
-                );
+                const [teamAClass, teamBClass] =
+                  stat !== "age"
+                    ? getColorClass(teamAStats[stat], teamBStats[stat], stat)
+                    : ["text-black", "text-black"];
                 return (
                   <li key={stat} className="flex justify-end items-center mb-1">
                     <span className={`font-bold ${teamAClass}`}>
@@ -119,10 +129,10 @@ export const AvgModal = ({ isOpen, onClose, teamAStats, teamBStats }) => {
             <h3 className="text-lg font-bold mb-2">Team B</h3>
             <ul>
               {Object.keys(teamBStats).map((stat) => {
-                const [teamAClass, teamBClass] = getColorClass(
-                  teamAStats[stat],
-                  teamBStats[stat]
-                );
+                const [teamAClass, teamBClass] =
+                  stat !== "age"
+                    ? getColorClass(teamAStats[stat], teamBStats[stat], stat)
+                    : ["text-black", "text-black"];
                 return (
                   <li
                     key={stat}
