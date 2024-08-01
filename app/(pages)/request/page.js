@@ -45,8 +45,13 @@ const Request = () => {
     }
 
     try {
-      await axios.post("/api/request-admin", { message, userId: session.user.id });
+      await axios.post("/api/adminrequests", {
+        message,
+        email: session.user.email,
+        name: session.user.name,
+      });
       setSuccess(true);
+      setMessage("");
     } catch (err) {
       setError("An error occurred. Please try again later.");
     }
@@ -83,7 +88,10 @@ const Request = () => {
             <h2 className="text-xl font-bold mb-4">Request Admin Privileges</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Why do you want to be an admin?
                 </label>
                 <textarea
@@ -100,12 +108,20 @@ const Request = () => {
                   placeholder="Explain in 125 characters or less..."
                   required
                 ></textarea>
-                <p className={`text-sm mt-1 ${message.length > 125 ? "text-red-600" : "text-gray-600"}`}>
+                <p
+                  className={`text-sm mt-1 ${
+                    message.length > 125 ? "text-red-600" : "text-gray-600"
+                  }`}
+                >
                   {message.length}/125
                 </p>
               </div>
               {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
-              {success && <p className="text-green-600 text-sm mb-4">Request sent successfully!</p>}
+              {success && (
+                <p className="text-green-600 text-sm mb-4">
+                  Request sent successfully!
+                </p>
+              )}
               <button
                 type="submit"
                 className="w-full bg-indigo-900 text-white text-sm font-semibold py-2 rounded-md shadow-md hover:bg-indigo-700 transition duration-200"
