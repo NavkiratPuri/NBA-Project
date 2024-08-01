@@ -184,7 +184,7 @@ model yearlyplayer {
 
 model AdminReq {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  email     String?
-  name      String?
-  message   String?
+  email     String  @unique
+  name      String
+  message   String
 }

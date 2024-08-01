@@ -116,7 +116,7 @@ const Request = () => {
                   {message.length}/125
                 </p>
               </div>
-              {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
+              {error && <p className="text-red-600 text-sm mb-4">{alert.error}</p>}
               {success && (
                 <p className="text-green-600 text-sm mb-4">
                   Request sent successfully!

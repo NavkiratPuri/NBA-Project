@@ -8,7 +8,7 @@ export const POST = async (req) => {
     const { message, email, name } = body;
 
     // Create a new admin request in the database
-    const newAdminRequest = await client.adminRequest.create({
+    const newAdminReq = await client.AdminReq.create({
       data: {
         message,
         email,
@@ -16,7 +16,7 @@ export const POST = async (req) => {
       },
     });
 
-    return NextResponse.json(newAdminRequest);
+    return NextResponse.json(newAdminReq);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
