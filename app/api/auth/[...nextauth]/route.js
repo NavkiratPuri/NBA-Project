@@ -96,6 +96,8 @@ export const authOptions = {
                 ...session,
                 user: {
                     id: token.id,
+                    email: token.email,
+                    name: token.name,
                     isAdmin: token.isAdmin,
                 }
             };
