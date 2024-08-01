@@ -45,7 +45,7 @@ const Profile = () => {
         <p>Name: {profile.name}</p>
         <p>Email: {profile.email}</p>
         {session.user.isAdmin && <p>Admin Status: Yes</p>}
-        {!session.user.isAdmin && <p>Admin Status: No</p>}
+        {/* {!session.user.isAdmin && <p>Admin Status: No</p>} */}
         {/* <p>Favorite Player: {profile.favPlayerId}</p>
         <p>Favorite Team: {profile.favTeamId}</p>
         <p>Admin Status: {profile.isAdmin}</p> */}
