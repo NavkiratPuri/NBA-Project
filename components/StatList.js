@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Player from "./Player";
+import StatLine from "./StatLine";
 
 const PAGE_SIZE = 20;
 
-const PlayerList = ({ players }) => {
+const StatList = ({ players }) => {
   const [filteredPlayers, setFilteredPlayers] = useState(players);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
@@ -68,10 +68,9 @@ const PlayerList = ({ players }) => {
               <thead className="bg-gray-50">
                 <tr>
                   {[
-                    "Rk",
                     "Player",
                     "Pos",
-                    "Tm",
+                    "Team",
                     "G",
                     "GS",
                     "MP",
@@ -106,34 +105,16 @@ const PlayerList = ({ players }) => {
                       {key} {getArrow(key)}
                     </th>
                   ))}
-                  <th className="px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {currentData.length > 0 ? (
                   currentData.map((player) => (
-                    <Player
-                      key={player.id}
-                      player={player}
-                      onPlayerUpdate={(id, updatedPlayer) =>
-                        setPlayers((prevPlayers) =>
-                          prevPlayers.map((p) =>
-                            p.id === id ? { ...p, ...updatedPlayer } : p
-                          )
-                        )
-                      }
-                      onPlayerDelete={(id) =>
-                        setPlayers((prevPlayers) =>
-                          prevPlayers.filter((p) => p.id !== id)
-                        )
-                      }
-                    />
+                    <StatLine key={player.id} player={player} />
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="31" className="text-center py-4">
+                    <td colSpan="30" className="text-center py-4">
                       No players found
                     </td>
                   </tr>
@@ -168,4 +149,4 @@ const PlayerList = ({ players }) => {
   );
 };
 
-export default PlayerList;
+export default StatList;

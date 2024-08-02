@@ -5,6 +5,7 @@ import PlayerList from "@/components/Playerlist";
 import AddPlayer from "@/components/Addplayer";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import StatList from "@/components/StatList";
 
 const PlayerStats = () => {
   const [players, setPlayers] = useState([]);
@@ -34,10 +35,8 @@ const PlayerStats = () => {
         Modify Player
       </h1>
       <div className="flex-grow">
-        <PlayerList players={players} />
-        <div className="">
-          <AddPlayer />
-        </div>
+        <StatList players={players} />
+        
       </div>
       <Footer />
     </div>
