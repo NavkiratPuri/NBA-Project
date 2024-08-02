@@ -14,7 +14,6 @@ const Add = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,8 +24,10 @@ const Add = () => {
         const data = await res.json();
         console.log("Data received:", data);
         setPlayers(data);
+        setLoading(false);  
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false);  
       }
     };
 
@@ -34,10 +35,7 @@ const Add = () => {
   }, []);
 
   useEffect(() => {
-    if (status === "unauthenticated" ) {
-      router.push("/");
-    } 
-    if (session && !session.user.isAdmin) {
+    if (status === "unauthenticated" || (session && !session.user.isAdmin)) {
       router.push("/");
     }
   }, [status, session, router]);

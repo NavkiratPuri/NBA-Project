@@ -9,11 +9,11 @@ import fetchPlayerImage from '@/utils/fetchPlayerImage';
 
 const FavPlayer = ({ playerId }) => {
   const [players, setPlayers] = useState([]);
-  const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [favPlayer, setFavPlayer] = useState(null);
   const [favPlayerId, setFavPlayerId] = useState(playerId);
   const [imgSrc, setImgSrc] = useState(null);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); // New state for editing mode
 
   useEffect(() => {
     const getFavPlayerData = async () => {
@@ -67,6 +67,7 @@ const FavPlayer = ({ playerId }) => {
       });
       if (response.status === 200) {
         alert('Favorite Player Updated');
+        setIsEditing(false); // Hide editor after saving
       }
     } catch (error) {
       setError('Error updating favorite player');
@@ -81,14 +82,26 @@ const FavPlayer = ({ playerId }) => {
     <div className="bg-gray-700 rounded-lg shadow-md p-6">
       {error && <div className="text-red-500 bg-white">{error}</div>}
       <FavPlayerDisplay player={favPlayer} imgsrc={imgSrc} />
-      <h2 className="text-2xl font-semibold mt-6 text-white">Select Your Favorite Player:</h2>
-      <FavPlayerSelector
-        players={players}
-        onSelectPlayer={handleSelectPlayer}
-      />
-      <button onClick={handleSave} className="mt-4 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg">
-        Save
-      </button>
+      <div className="mt-4 text-center">
+        <button
+          onClick={() => setIsEditing(!isEditing)}
+          className="px-2 py-1 bg-indigo-700 text-white  text-sm rounded-lg hover:bg-indigo-900 transition duration-200"
+        >
+          {isEditing ? 'Cancel' : 'Edit Favorite Player'}
+        </button>
+      </div>
+      {isEditing && (
+        <div className='mt-4 text-center'>
+          <FavPlayerSelector
+            players={players}
+            onSelectPlayer={handleSelectPlayer}
+            label="Change Favorite Player:"
+          />
+          <button onClick={handleSave} className="mt-4 px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-indigo-800 transition duration-200">
+            Save
+          </button>
+        </div>
+      )}
     </div>
   );
 };
