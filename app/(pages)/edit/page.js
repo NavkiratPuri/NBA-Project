@@ -42,6 +42,10 @@ const Add = () => {
     }
   }, [status, session, router]);
 
+  if (status === "loading" || loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
