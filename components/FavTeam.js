@@ -74,14 +74,16 @@ const FavTeam = ({ teamId }) => {
   
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      {error && <p className="text-red-500">{error}</p>}
+    <div className="bg-gray-700 rounded-lg shadow-md p-6 mt-4">
+      {error && <p className="text-red-500 bg-white">{error}</p>}
       <FavTeamDisplay team={favTeam} />
-      <h2 className="text-xl font-semibold">Select your favorite team:</h2>
-      <TeamSelector teams={teams} onSelectTeam={handleSelectTeam} label="Change Favorite Team:" />
-      <button onClick={handleSave} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-        Save    
-      </button>
+      <div className='p-2 rounded-lg mt-4'>
+        <h2 className="mt-2 text-2xl font-semibold text-orange-400">Select Your Favorite Team:</h2>
+        <TeamSelector teams={teams} onSelectTeam={handleSelectTeam} />
+        <button onClick={handleSave} className="mt-4 px-4 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-lg">
+          Save    
+        </button>
+      </div>
     </div>
   );
 };

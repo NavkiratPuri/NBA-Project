@@ -38,17 +38,19 @@ const Profile = () => {
   }
 
   return (
-    <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md text-center">
+    <div className="p-4 bg-gray-800 rounded-lg shadow-md text-center">
         {/* <p>Debug: {status}</p> */}
-        <h1 className="text-2xl font-semibold">
+        <div className="bg-gray-700 mb-4 p-2 rounded-lg">
+        <h1 className="text-2xl font-semibold text-orange-400">
           Profile</h1>
-        <p>Name: {profile.name}</p>
-        <p>Email: {profile.email}</p>
+        <p className="text-white">Name: {profile.name}</p>
+        <p className="text-white">Email: {profile.email}</p>
         {session.user.isAdmin && <p>Admin Status: Yes</p>}
         {/* {!session.user.isAdmin && <p>Admin Status: No</p>} */}
         {/* <p>Favorite Player: {profile.favPlayerId}</p>
         <p>Favorite Team: {profile.favTeamId}</p>
         <p>Admin Status: {profile.isAdmin}</p> */}
+        </div>
         
 
         <FavPlayer playerId={profile.favPlayerId}/>
