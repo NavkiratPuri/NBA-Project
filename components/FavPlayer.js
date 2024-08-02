@@ -81,7 +81,7 @@ const FavPlayer = ({ playerId }) => {
     <div className="bg-gray-700 rounded-lg shadow-md p-6">
       {error && <div className="text-red-500 bg-white">{error}</div>}
       <FavPlayerDisplay player={favPlayer} imgsrc={imgSrc} />
-      <h2 className="text-2xl font-semibold mt-6 text-orange-400">Select Your Favorite Player:</h2>
+      <h2 className="text-2xl font-semibold mt-6 text-white">Select Your Favorite Player:</h2>
       <FavPlayerSelector
         players={players}
         onSelectPlayer={handleSelectPlayer}

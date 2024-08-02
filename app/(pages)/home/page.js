@@ -34,7 +34,7 @@ const Home = () => {
       <Header />
       <main className="flex-grow">
         <div className="container mx-auto px-4 py-8 ">
-          <h1 className="text-3xl font-bold text-center mb-8 bg-gray-800 p-4 rounded-lg text-orange-400">
+          <h1 className="text-3xl font-bold text-center mb-8 bg-gray-800 p-4 rounded-lg text-white">
             Hi {session?.user?.name}, Welcome to NBAlytics!
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -43,7 +43,7 @@ const Home = () => {
             </div>
             <div className="col-span-2">
               <div className="p-4 bg-gray-800 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold mb-4 text-orange-400">Latest NBA News</h2>
+                <h2 className="text-xl font-semibold mb-4 text-white">Latest NBA News</h2>
                 <div className="space-y-4 h-[67rem] overflow-y-auto ">
                   {articles.map((article, index) => (
                     <div
