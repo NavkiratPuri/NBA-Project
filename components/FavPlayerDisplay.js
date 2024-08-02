@@ -21,7 +21,7 @@ const FavPlayerDisplay = ({ player, imgsrc }) => {
                 <span className="text-sm text-gray-500">No Image</span>
               </div>
             )}
-            <p className="text-lg font-medium text-gray-700">Player: {player.Player}</p>
+            <p className="text-lg font-medium text-gray-700">{player.Player}</p>
             <p className="text-lg font-medium text-gray-700">Team: {player.Tm}</p>
             <p className="text-lg font-medium text-gray-700">Points Per Game: {player.PTS}</p>
             <p className="text-lg font-medium text-gray-700">Assists Per Game: {player.AST}</p>
