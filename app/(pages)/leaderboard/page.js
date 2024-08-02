@@ -6,6 +6,8 @@ import Footer from '@/components/footer';
 import LeaderboardHL from '@/components/Leaderboards/leaderboardHL';
 import LeaderboardT from '@/components/Leaderboards/leaderboardT';
 import LeaderboardTrivia from '@/components/Leaderboards/leaderboardTrivia'
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Leaderboard = () => {
   const [highScoresHL, setHighScoresHL] = useState([]);
@@ -13,6 +15,8 @@ const Leaderboard = () => {
   const [highScoresTrivia, setHighScoresTrivia] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchHighScores = async () => {
@@ -30,6 +34,16 @@ const Leaderboard = () => {
 
     fetchHighScores();
   }, []);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+    } else if (status === "authenticated") {
+      
+        setLoading(false);
+      
+    }
+  }, [status, router]);
 
   if (loading) {
     return <div>Loading...</div>;
