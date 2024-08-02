@@ -1,18 +1,56 @@
 import React, { useState, useEffect } from "react";
 import Player from "./Player";
+import Modal from "./Modal";
 
 const PAGE_SIZE = 20;
+
+const teamMapping = {
+  ATL: "Atlanta Hawks",
+  BOS: "Boston Celtics",
+  BKN: "Brooklyn Nets",
+  CHA: "Charlotte Hornets",
+  CHI: "Chicago Bulls",
+  CLE: "Cleveland Cavaliers",
+  DAL: "Dallas Mavericks",
+  DEN: "Denver Nuggets",
+  DET: "Detroit Pistons",
+  GSW: "Golden State Warriors",
+  HOU: "Houston Rockets",
+  IND: "Indiana Pacers",
+  LAC: "Los Angeles Clippers",
+  LAL: "Los Angeles Lakers",
+  MEM: "Memphis Grizzlies",
+  MIA: "Miami Heat",
+  MIL: "Milwaukee Bucks",
+  MIN: "Minnesota Timberwolves",
+  NOP: "New Orleans Pelicans",
+  NYK: "New York Knicks",
+  OKC: "Oklahoma City Thunder",
+  ORL: "Orlando Magic",
+  PHI: "Philadelphia 76ers",
+  PHX: "Phoenix Suns",
+  POR: "Portland Trail Blazers",
+  SAC: "Sacramento Kings",
+  SAS: "San Antonio Spurs",
+  TOR: "Toronto Raptors",
+  UTA: "Utah Jazz",
+  WAS: "Washington Wizards",
+  TOT: "Total"
+};
 
 const PlayerList = ({ players }) => {
   const [filteredPlayers, setFilteredPlayers] = useState(players);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalInfo, setModalInfo] = useState({ show: false, type: "", player: null });
 
   useEffect(() => {
     setFilteredPlayers(
       players.filter((player) =>
-        player.Player.toLowerCase().includes(searchTerm.toLowerCase())
+        player.Player.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        player.Tm.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (teamMapping[player.Tm] && teamMapping[player.Tm].toLowerCase().includes(searchTerm.toLowerCase()))
       )
     );
   }, [searchTerm, players]);
@@ -56,7 +94,7 @@ const PlayerList = ({ players }) => {
         <div>
           <input
             type="text"
-            placeholder="Search by player name..."
+            placeholder="Search by player or team name..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="p-2 mb-2 w-full border border-gray-300 rounded-md"
@@ -118,17 +156,18 @@ const PlayerList = ({ players }) => {
                       key={player.id}
                       player={player}
                       onPlayerUpdate={(id, updatedPlayer) =>
-                        setPlayers((prevPlayers) =>
+                        setFilteredPlayers((prevPlayers) =>
                           prevPlayers.map((p) =>
                             p.id === id ? { ...p, ...updatedPlayer } : p
                           )
                         )
                       }
                       onPlayerDelete={(id) =>
-                        setPlayers((prevPlayers) =>
+                        setFilteredPlayers((prevPlayers) =>
                           prevPlayers.filter((p) => p.id !== id)
                         )
                       }
+                      setModalInfo={setModalInfo}
                     />
                   ))
                 ) : (
@@ -164,6 +203,55 @@ const PlayerList = ({ players }) => {
           </button>
         </div>
       </div>
+      {modalInfo.show && (
+        <Modal
+          showModal={modalInfo.show}
+          setShowModal={(show) => setModalInfo({ ...modalInfo, show })}
+        >
+          {modalInfo.type === "edit" && (
+            <form onSubmit={handleEditSubmit} className="w-full px-5 pb-6">
+              {Object.keys(modalInfo.player).map((key) => (
+                <input
+                  key={key}
+                  type={typeof modalInfo.player[key] === "number" ? "number" : "text"}
+                  placeholder={key}
+                  name={key}
+                  className="w-full p-2 mb-3"
+                  value={modalInfo.player[key] || ""}
+                  onChange={handleChange}
+                  step="0.1"
+                />
+              ))}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="bg-blue-700 text-white px-5 py-2"
+              >
+                Update Player
+              </button>
+            </form>
+          )}
+          {modalInfo.type === "delete" && (
+            <div>
+              <p className="text-lg text-grey-600 font-semibold my-2">
+                Are you sure you want to delete this player?
+              </p>
+              <button
+                onClick={handleDeletePlayer}
+                className="bg-red-700 text-white mr-2 font-bold"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setModalInfo({ ...modalInfo, show: false })}
+                className="bg-blue-800 text-white font-bold"
+              >
+                No
+              </button>
+            </div>
+          )}
+        </Modal>
+      )}
     </div>
   );
 };

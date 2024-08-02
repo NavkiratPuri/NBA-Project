@@ -44,7 +44,7 @@ const LeadersList = () => {
   const renderPlayers = (category) => {
     if (year === "" || category === "") {
       return (
-        <p className="text-gray-600">
+        <p className="text-orange-400 text-center mt-4">
           Please select both a year and a category to view the data.
         </p>
       );
@@ -57,11 +57,11 @@ const LeadersList = () => {
     );
     return (
       <div className="mt-5">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+        <h2 className="text-xl font-semibold text-white mb-4 text-center">
           Top 10 Players in {category} for {year}
         </h2>
         <table className="min-w-full bg-white border border-gray-300">
-          <thead className="bg-blue-900 text-white">
+          <thead className="bg-orange-400 text-white">
             <tr className="text-left">
               <th className="py-2 px-4 border-b">Rank</th>
               <th className="py-2 px-4 border-b">Player</th>
@@ -71,11 +71,11 @@ const LeadersList = () => {
           <tbody>
             {sortedPlayers.map((player, index) => (
               <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
-                <td className="py-2 px-4 border-b">{index + 1}</td>
-                <td className="py-2 px-4 border-b text-blue-500">
+                <td className="py-2 px-4 border-b text-black hover:bg-gray-400 hover:text-white">{index + 1}</td>
+                <td className="py-2 px-4 border-b text-black hover:bg-gray-400 hover:text-white">
                   {player.Player}
                 </td>
-                <td className="py-2 px-4 border-b">{player[category]}</td>
+                <td className="py-2 px-4 border-b text-black hover:bg-gray-400 hover:text-white">{player[category]}</td>
               </tr>
             ))}
           </tbody>
@@ -86,19 +86,19 @@ const LeadersList = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <h1 className="text-3xl font-bold text-center text-blue-900 mt-4 mb-4">
+      <h1 className="text-3xl font-bold text-center text-white mt-4 mb-4">
         League Leaders
       </h1>
       <div className="max-w-md mx-auto">
         <label
           htmlFor="category"
-          className="block text-gray-700 font-medium mb-2"
+          className="block text-white font-medium mb-2"
         >
           Select Category:
         </label>
         <select
           id="category"
-          className="form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
           onChange={(e) => setCategory(e.target.value)}
           value={category}
         >
@@ -140,7 +140,7 @@ const LeadersList = () => {
         </select>
       </div>
       <div className="max-w-md mx-auto mt-4">
-        <label htmlFor="year" className="block text-gray-700 font-medium mb-2">
+        <label htmlFor="year" className="block text-white font-medium mb-2">
           Select Year:
         </label>
         <select

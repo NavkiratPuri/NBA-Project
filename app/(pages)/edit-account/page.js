@@ -85,17 +85,17 @@ const EditAccount = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-700">
       <Header />
       <main className="flex-grow">
         <div className="max-w-md mx-auto mt-10 p-4 border rounded-md shadow-md">
-          <h2 className="text-xl font-bold mb-4">Edit Account</h2>
+          <h2 className="text-xl font-bold mb-4 text-white">Edit Account</h2>
           {message && <p className="text-green-600 mb-4">{message}</p>}
           <form onSubmit={handleUpdate}>
-            <div className="mb-4">
+            <div className="mb-4 text-white">
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-white"
               >
                 Name
               </label>
@@ -105,14 +105,14 @@ const EditAccount = () => {
                 name="name"
                 value={profile.name}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-indigo-200"
+                className="mt-1 block w-full p-2 borde text-black rounded-md shadow-sm focus:ring focus:ring-indigo-200"
                 required
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-4 text-white">
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-white"
               >
                 Email
               </label>
@@ -122,14 +122,14 @@ const EditAccount = () => {
                 name="email"
                 value={profile.email}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-indigo-200"
+                className="mt-1 block w-full p-2 border text-black rounded-md shadow-sm focus:ring focus:ring-indigo-200"
                 required
               />
             </div>
             <div className="mb-4">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-white"
               >
                 Password (leave blank to keep current password)
               </label>
@@ -139,7 +139,7 @@ const EditAccount = () => {
                 name="password"
                 value={profile.password}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-indigo-200"
+                className="mt-1 block w-full p-2 border rounded-md text-black shadow-sm focus:ring focus:ring-indigo-200"
               />
             </div>
             <button

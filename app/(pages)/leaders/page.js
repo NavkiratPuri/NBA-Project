@@ -29,7 +29,7 @@ const Page = () => {
 
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen bg-gray-700">
             <Header />
             <div className="flex-grow">
                 <LeadersList />

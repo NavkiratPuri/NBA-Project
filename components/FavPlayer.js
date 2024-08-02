@@ -79,8 +79,8 @@ const FavPlayer = ({ playerId }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      {error && <div className="text-red-500">{error}</div>}
+    <div className="bg-gray-700 rounded-lg shadow-md p-6">
+      {error && <div className="text-red-500 bg-white">{error}</div>}
       <FavPlayerDisplay player={favPlayer} imgsrc={imgSrc} />
       <div className="mt-4 text-center">
         <button
@@ -91,7 +91,7 @@ const FavPlayer = ({ playerId }) => {
         </button>
       </div>
       {isEditing && (
-        <div className='mt-4 text-center'>
+        <div className='mt-4 text-center text-white'>
           <FavPlayerSelector
             players={players}
             onSelectPlayer={handleSelectPlayer}

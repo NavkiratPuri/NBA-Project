@@ -54,7 +54,7 @@ const Leaderboard = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen w-full border-b-2">
+    <div className="flex flex-col min-h-screen w-full border-b-2 ">
       <Header />
       <main className="flex-grow flex">
         <div className="flex-1 border-r border-gray-200">

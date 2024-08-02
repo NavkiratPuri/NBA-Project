@@ -6,7 +6,7 @@ export const GlossaryWS = ({ isOpen, onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white rounded-lg shadow-md w-3/6 flex flex-col">
+            <div className="bg-gray-700 rounded-lg shadow-md w-3/6 flex flex-col text-white">
                 <h2 className="text-center mt-2 font-bold text-2xl">Glossary</h2>
                 <div className="flex flex-col p-4 justify-center space-y-4">
                     <p>

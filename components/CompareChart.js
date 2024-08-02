@@ -17,7 +17,13 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
         options: {
           responsive: true,
           maintainAspectRatio: true,
-          plugins: {},
+          plugins: {
+            legend: {
+              labels: {
+                color: "white",
+              },
+            },
+          },
           scales: {
             x: {
               title: {
@@ -28,12 +34,17 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
                   weight: "bold",
                   lineHeight: 1,
                 },
+                color: "white",
               },
               ticks: {
                 font: {
                   size: 20,
                   weight: "semibold",
                 },
+                color: "white",
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.2)",
               },
             },
             y: {
@@ -45,11 +56,16 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
                   weight: "bold",
                   lineHeight: 2,
                 },
+                color: "white",
               },
               ticks: {
                 font: {
                   size: 20,
                 },
+                color: "white",
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.2)",
               },
             },
           },
@@ -70,7 +86,7 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
         id="statHeader"
         value={category}
         onChange={statsFilter}
-        className="w-30 h-10 text-lg font-semibold bg-red-200 hover:bg-red-300 p-1 rounded-md ml-2 mb-2"
+        className="w-30 h-10 text-lg bg-orange-600 text-white py-2 px-4 hover:bg-orange-700 mb-2 rounded "
       >
         <option value="TotalValue">Total Value</option>
         <option value="Points">Points</option>
@@ -87,7 +103,7 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
         <option value="Minutes">Minutes</option>
       </select>
 
-      <canvas ref={chartRef} className=" max-h-6/12 mr-5"></canvas>
+      <canvas ref={chartRef} className="max-h-6/12 mr-5"></canvas>
     </div>
   );
 };

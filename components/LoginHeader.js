@@ -4,7 +4,7 @@ const LoginHeader = () => {
   
 
   return (
-    <header className="bg-gray-800 text-white shadow-lg py-3 p-4 border-b border-white">
+    <header className="bg-gray-800 text-white shadow-lg py-3 p-4">
       <div className="container mx-auto flex justify-center items-center">
         <div className="flex items-center space-x-4">
           <img src="/bpa.webp" alt="NBA Logo" className="h-20 w-auto" />

@@ -33,7 +33,7 @@ const Standings = () => {
 
 
     return (
-        <div>
+        <div className='bg-gray-700'>
             <Header />
             <StandingsDisplay />
             <Footer />

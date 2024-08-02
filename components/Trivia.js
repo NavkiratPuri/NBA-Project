@@ -22,6 +22,8 @@ function Trivia() {
     optionD: "",
     correctAnswer: "",
   });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [questionToDelete, setQuestionToDelete] = useState(null);
   const [answersSubmitted, setAnswersSubmitted] = useState(false);
 
   useEffect(() => {
@@ -40,14 +42,14 @@ function Trivia() {
       setAnswersSubmitted(false); // Reset the submitted state
     } catch (error) {
       setError(
-        `Failed to load trivia questions: ${
-          error.response ? error.response.data.message : error.message
+        `Failed to load trivia questions: ${error.response ? error.response.data.message : error.message
         }`
       );
     } finally {
       setLoading(false);
     }
   };
+
   const [isNewHighScore, setIsNewHighScore] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -131,8 +133,7 @@ function Trivia() {
       fetchTrivia();
     } catch (error) {
       setError(
-        `Failed to delete question: ${
-          error.response ? error.response.data.message : error.message
+        `Failed to delete question: ${error.response ? error.response.data.message : error.message
         }`
       );
     }
@@ -160,6 +161,11 @@ function Trivia() {
       .every((question) => selectedAnswers[question.id]);
   };
 
+  const confirmDeleteQuestion = (questionId) => {
+    setQuestionToDelete(questionId);
+    setShowDeleteModal(true);
+  };
+
   if (error) {
     return <p className="text-red-500">{error}</p>;
   }
@@ -177,7 +183,7 @@ function Trivia() {
   }
 
   return (
-    <div className="p-5">
+    <div className="p-5 text-white">
       {questions.slice(currentIndex, currentIndex + 5).map((question) => (
         <div key={question.id} className="mb-4">
           <h3 className="text-lg font-bold">{question.question}</h3>
@@ -185,7 +191,7 @@ function Trivia() {
             {["optionA", "optionB", "optionC", "optionD"].map((option) => (
               <li
                 key={option}
-                className="cursor-pointer hover:bg-gray-200 p-2"
+                className="cursor-pointer hover:bg-gray-200 p-2 hover:text-black"
                 onClick={() =>
                   handleAnswerSelect(question.id, question[option])
                 }
@@ -207,8 +213,8 @@ function Trivia() {
             </p>
           )}
           {/* Conditional render this */}
-          { session?.user?.isAdmin &&  (
-           <>
+          {session?.user?.isAdmin && (
+            <>
               <button
                 className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2"
                 onClick={() => handleEditQuestion(question)}
@@ -217,7 +223,7 @@ function Trivia() {
               </button>
               <button
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => handleDeleteQuestion(question.id)}
+                onClick={() => confirmDeleteQuestion(question.id)}
               >
                 Delete
               </button>
@@ -233,7 +239,7 @@ function Trivia() {
       )}
       {!answersSubmitted && (
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
           onClick={handleSubmitAnswers}
           disabled={!allQuestionsAnswered()}
         >
@@ -386,7 +392,32 @@ function Trivia() {
           </form>
         </Modal>
       )}
-    </div>
+      {showDeleteModal && (
+        <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
+          <div className="p-5">
+            <p className="text-xl mb-4">Are you sure you want to delete this question?</p>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={() => {
+                  handleDeleteQuestion(questionToDelete);
+                  setShowDeleteModal(false);
+                }}
+                className="bg-red-700 text-white px-6 py-3 mr-2 font-bold text-lg"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="bg-blue-800 text-white px-6 py-3 font-bold text-lg"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )
+      }
+    </div >
   );
 }
 

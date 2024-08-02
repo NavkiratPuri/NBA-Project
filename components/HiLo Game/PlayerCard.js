@@ -33,7 +33,7 @@ const PlayerCard = ({
         <div
           className="absolute inset-0 z-0"
           style={{
-            backgroundImage: `url(${image}), linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))`,
+            backgroundImage: `url(${player.image}), linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             transition: 'opacity 0.3s ease',
@@ -56,7 +56,7 @@ const PlayerCard = ({
       {!hintUsed && (
         <button
           onClick={() => handleHintButtonClick(index)}
-          className="absolute bottom-10 bg-green-500 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded mt-4"
+          className="absolute bottom-10 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded mt-4"
         >
           Hint
         </button>

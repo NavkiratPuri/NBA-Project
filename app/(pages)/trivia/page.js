@@ -30,7 +30,7 @@ const TriviaPage = () => {
   }
 
   return (
-    <div>
+    <div className="bg-gray-700">
       <Header />
       <Trivia />
       {showModal && (

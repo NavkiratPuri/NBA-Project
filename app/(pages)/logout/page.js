@@ -35,9 +35,9 @@ export default function LogoutPage() {
   };
 
   return (
-    <>
+    <div className='bg-gray-700 text-white '>
       <LoginHeader />
-      <div className="min-h-screen flex mt-20 justify-center">
+      <div className="h-screen flex mt-20 justify-center">
         
         {!confirmLogout ? (
           <div className="text-center">
@@ -49,6 +49,6 @@ export default function LogoutPage() {
           <p>Logging out...</p>
         )}
       </div>
-    </>
+    </div>
   );
 }

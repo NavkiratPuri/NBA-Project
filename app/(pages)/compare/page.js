@@ -170,18 +170,16 @@ const Compare = () => {
     if (status === "unauthenticated") {
       router.push("/");
     } else if (status === "authenticated") {
-      
-        setLoading(false);
-      
+      setLoading(false);
     }
   }, [status, router]);
- 
+
   if (status === "loading" || loading) {
     return <p>Loading...</p>;
   }
 
   return (
-    <div>
+    <div className="bg-gray-700">
       <Header />
       <main className="flex flex-wrap m-2">
         <div className="flex flex-cols-1 md:flex-cols-2 gap-2 relative w-full order-1">
@@ -198,7 +196,7 @@ const Compare = () => {
                     <img
                       src={player1.image}
                       alt={player1.Player}
-                      className="w-20 h-20 rounded-full border-2 border-gray-600"
+                      className="w-20 h-20 rounded-full border-2 border-gray-600 bg-white"
                     />
                     <span className="text-7xl font-bold text-red-600 ml-2">
                       {player1.Player}
@@ -217,7 +215,7 @@ const Compare = () => {
                     <img
                       src={player2.image}
                       alt={player2.Player}
-                      className="w-20 h-20 rounded-full border-2 border-gray-600"
+                      className="w-20 h-20 rounded-full border-2 border-gray-600 bg-white"
                     />
                     <span className="text-7xl font-bold text-blue-600 ml-2">
                       {player2.Player}
@@ -238,7 +236,7 @@ const Compare = () => {
         <div>
           <button
             onClick={toggleSelectAllMode}
-            className="w-30 h-10 text-lg font-semibold bg-green-200 hover:bg-green-300 p-1 rounded-md ml-2 mb-2"
+            className="w-30 h-10 bg-orange-600 text-white py-2 px-4 hover:bg-orange-700 rounded ml-2 mb-2"
           >
             {selectAllMode ? "Compare Players" : "Select All Players"}
           </button>

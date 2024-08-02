@@ -100,7 +100,7 @@ const StatList = ({ players }) => {
         <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 text-xs">
-              <thead className="bg-gray-50">
+              <thead className="bg-orange-400">
                 <tr>
                   {[
                     "Player",
@@ -134,7 +134,7 @@ const StatList = ({ players }) => {
                   ].map((key) => (
                     <th
                       key={key}
-                      className="px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                      className="px-2 py-1 text-left font-medium text-white uppercase tracking-wider cursor-pointer"
                       onClick={() => handleSort(key)}
                     >
                       {key} {getArrow(key)}
@@ -142,7 +142,7 @@ const StatList = ({ players }) => {
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-gray-200 ">
                 {currentData.length > 0 ? (
                   currentData.map((player) => (
                     <StatLine key={player.id} player={player} />
@@ -162,11 +162,11 @@ const StatList = ({ players }) => {
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="px-2 py-1 bg-blue-700 text-white rounded-md disabled:bg-gray-400"
+            className="px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-md disabled:bg-gray-400"
           >
             Previous
           </button>
-          <span className="px-2 py-1">{currentPage}</span>
+          <span className="px-2 py-1 text-white bg-gray-800 rounded-lg p-6">Page {currentPage}</span>
           <button
             onClick={() =>
               setCurrentPage((prev) =>
@@ -174,7 +174,7 @@ const StatList = ({ players }) => {
               )
             }
             disabled={currentPage * PAGE_SIZE >= filteredPlayers.length}
-            className="px-2 py-1 bg-blue-700 text-white rounded-md disabled:bg-gray-400"
+            className="px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-md disabled:bg-gray-400"
           >
             Next
           </button>

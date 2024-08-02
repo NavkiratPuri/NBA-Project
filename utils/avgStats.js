@@ -98,19 +98,19 @@ export const AvgModal = ({ isOpen, onClose, teamAStats, teamBStats }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-4 rounded-lg shadow-md w-1/6 max-h-1/6">
-        <h2 className="text-center text-xl font-bold mb-4">
+      <div className="bg-gray-700 p-4 rounded-lg shadow-md w-1/6 max-h-1/6">
+        <h2 className="text-center text-xl font-bold mb-4 text-white">
           Average Stats Comparison
         </h2>
         <div className="flex flex-cols-3 justify-center gap-2">
           <div className="flex flex-col items-end pr-2">
-            <h3 className="text-lg font-bold mb-2">Team A</h3>
+            <h3 className="text-lg font-bold mb-2 text-white">Team A</h3>
             <ul>
               {Object.keys(teamAStats).map((stat) => {
                 const [teamAClass, teamBClass] =
                   stat !== "age"
                     ? getColorClass(teamAStats[stat], teamBStats[stat], stat)
-                    : ["text-black", "text-black"];
+                    : ["text-white", "text-white"];
                 return (
                   <li key={stat} className="flex justify-end items-center mb-1">
                     <span className={`font-bold ${teamAClass}`}>
@@ -126,13 +126,13 @@ export const AvgModal = ({ isOpen, onClose, teamAStats, teamBStats }) => {
           </div>
           <div className="flex item-center mr-2 border-r-2 border-black"></div>
           <div className="flex flex-col items-start pl-2">
-            <h3 className="text-lg font-bold mb-2">Team B</h3>
+            <h3 className="text-lg font-bold mb-2 text-white">Team B</h3>
             <ul>
               {Object.keys(teamBStats).map((stat) => {
                 const [teamAClass, teamBClass] =
                   stat !== "age"
                     ? getColorClass(teamAStats[stat], teamBStats[stat], stat)
-                    : ["text-black", "text-black"];
+                    : ["text-white", "text-white"];
                 return (
                   <li
                     key={stat}
