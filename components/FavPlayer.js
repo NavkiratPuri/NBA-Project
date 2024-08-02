@@ -11,7 +11,7 @@ const FavPlayer = ({ playerId }) => {
   const [players, setPlayers] = useState([]);
   const [favPlayer, setFavPlayer] = useState(null);
   const [favPlayerId, setFavPlayerId] = useState(playerId);
-  const [imgSrc, setImgSrc] = useState(null);
+  const [imgSrc, setImgSrc] = useState("/default-headshot.webp"); // Set default image here
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false); // New state for editing mode
 
@@ -21,7 +21,7 @@ const FavPlayer = ({ playerId }) => {
         const data = await fetchPlayer(playerId);
         setFavPlayer(data);
         const imgData = await fetchPlayerImage(data.Player);
-        if (imgData) {
+        if (imgData && imgData.ImageSource) {
           setImgSrc(imgData.ImageSource);
         }
       } catch (err) {
@@ -54,9 +54,12 @@ const FavPlayer = ({ playerId }) => {
       const imgData = await fetchPlayerImage(player.Player);
       if (imgData && imgData.ImageSource) {
         setImgSrc(imgData.ImageSource);
+      } else {
+        setImgSrc("/default-headshot.webp"); // Reset to default image if no image found
       }
     } catch (error) {
       setError(error.message);
+      setImgSrc("/default-headshot.webp"); // Reset to default image on error
     }
   };
 
