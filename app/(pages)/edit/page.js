@@ -5,9 +5,15 @@ import PlayerList from "@/components/Playerlist";
 import AddPlayer from "@/components/Addplayer";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Add = () => {
   const [players, setPlayers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,6 +32,15 @@ const Add = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (status === "unauthenticated" ) {
+      router.push("/");
+    } 
+    if (session && !session.user.isAdmin) {
+      router.push("/");
+    }
+  }, [status, session, router]);
 
   return (
     <div className="flex flex-col min-h-screen">
