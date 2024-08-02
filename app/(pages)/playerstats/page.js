@@ -32,11 +32,11 @@ const PlayerStats = () => {
     <div className="flex flex-col min-h-screen">
       <Header />
       <h1 className="text-3xl font-bold text-center text-gray-800 mt-4 mb-4">
-        Modify Player
+        Player Stats
       </h1>
       <div className="flex-grow">
         <StatList players={players} />
-        
+
       </div>
       <Footer />
     </div>
