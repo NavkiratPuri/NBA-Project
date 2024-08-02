@@ -26,40 +26,41 @@ const Profile = () => {
   }, [status]);
 
   if (status === "loading" || loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center mt-4">Loading...</div>;
   }
 
   if (status === "unauthenticated") {
-    return <div>You need to be authenticated to view your profile.</div>;
+    return <div className="text-center mt-4">You need to be authenticated to view your profile.</div>;
   }
 
   if (error) {
-    return <div>Error1: {error.message}, <p>Debug: {status}</p> </div>;
+    return (
+      <div className="text-center mt-4">
+        Error: {error.message}
+        <p>Debug: {status}</p>
+      </div>
+    );
   }
 
   return (
-    <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md text-center">
-        {/* <p>Debug: {status}</p> */}
-        <h1 className="text-2xl font-semibold">
-          Profile</h1>
-        <p>Name: {profile.name}</p>
-        <p>Email: {profile.email}</p>
-        {session.user.isAdmin && <p>Admin Status: Yes</p>}
-        {/* {!session.user.isAdmin && <p>Admin Status: No</p>} */}
-        {/* <p>Favorite Player: {profile.favPlayerId}</p>
-        <p>Favorite Team: {profile.favTeamId}</p>
-        <p>Admin Status: {profile.isAdmin}</p> */}
-        
-
-        <FavPlayer playerId={profile.favPlayerId}/>
-        <FavTeam teamId={profile.favTeamId}/>
-
-
+    <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md">
+      <h2 className="text-2xl font-semibold mb-4 text-center">{profile.name}</h2>
+      {session.user.isAdmin && <p className="text-lg mb-2 text-center"><span className="font-semibold">App Admin</span></p>}
+      <div className="text-center mb-4">
+        <a
+          href="/edit-account"
+          className="inline-block bg-indigo-900 text-white text-sm font-semibold py-2 px-4 rounded-md shadow-md hover:bg-indigo-700 transition duration-200"
+        >
+          Edit Account
+        </a>
+      </div>
+      <div className="mt-4">
+        <FavPlayer playerId={profile.favPlayerId} />
+      </div>
+      <div className="mt-4">
+        <FavTeam teamId={profile.favTeamId} />
+      </div>
     </div>
-
-  
-
-
   );
 };
 

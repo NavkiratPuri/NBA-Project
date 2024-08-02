@@ -3,6 +3,39 @@ import StatLine from "./StatLine";
 
 const PAGE_SIZE = 20;
 
+const teamMapping = {
+  ATL: "Atlanta Hawks",
+  BOS: "Boston Celtics",
+  BKN: "Brooklyn Nets",
+  CHA: "Charlotte Hornets",
+  CHI: "Chicago Bulls",
+  CLE: "Cleveland Cavaliers",
+  DAL: "Dallas Mavericks",
+  DEN: "Denver Nuggets",
+  DET: "Detroit Pistons",
+  GSW: "Golden State Warriors",
+  HOU: "Houston Rockets",
+  IND: "Indiana Pacers",
+  LAC: "Los Angeles Clippers",
+  LAL: "Los Angeles Lakers",
+  MEM: "Memphis Grizzlies",
+  MIA: "Miami Heat",
+  MIL: "Milwaukee Bucks",
+  MIN: "Minnesota Timberwolves",
+  NOP: "New Orleans Pelicans",
+  NYK: "New York Knicks",
+  OKC: "Oklahoma City Thunder",
+  ORL: "Orlando Magic",
+  PHI: "Philadelphia 76ers",
+  PHX: "Phoenix Suns",
+  POR: "Portland Trail Blazers",
+  SAC: "Sacramento Kings",
+  SAS: "San Antonio Spurs",
+  TOR: "Toronto Raptors",
+  UTA: "Utah Jazz",
+  WAS: "Washington Wizards"
+};
+
 const StatList = ({ players }) => {
   const [filteredPlayers, setFilteredPlayers] = useState(players);
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,7 +45,9 @@ const StatList = ({ players }) => {
   useEffect(() => {
     setFilteredPlayers(
       players.filter((player) =>
-        player.Player.toLowerCase().includes(searchTerm.toLowerCase())
+        player.Player.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        player.Tm.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (teamMapping[player.Tm] && teamMapping[player.Tm].toLowerCase().includes(searchTerm.toLowerCase()))
       )
     );
   }, [searchTerm, players]);
@@ -56,7 +91,7 @@ const StatList = ({ players }) => {
         <div>
           <input
             type="text"
-            placeholder="Search by player name..."
+            placeholder="Search by player or team name.."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="p-2 mb-2 w-full border border-gray-300 rounded-md"

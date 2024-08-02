@@ -27,9 +27,7 @@ const AdminRequests = () => {
           setError(error);
           setLoading(false);
         });
-    } else {
-      router.push("/");
-    }
+    } 
   }, [status, session, router]);
 
   const handleRequest = async (id, action) => {

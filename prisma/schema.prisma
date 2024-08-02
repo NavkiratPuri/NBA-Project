@@ -70,6 +70,7 @@ model team {
   westWins   Int?
   westLosses Int?
   conference String?
+  logo       String  @default("https://cdn.nba.com/logos/leagues/logo-nba.svg")
 }
 
 model trivia {
