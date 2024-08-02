@@ -23,6 +23,7 @@ const TeamStandings = () => {
             setFilteredStandings(response.data);
         } catch (error) {
             console.error('Error fetching standings:', error);
+            setError('Error fetching standings.');
         }
     };
 
@@ -41,16 +42,9 @@ const TeamStandings = () => {
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+        console.log('Submitting PATCH request with data:', teamToEdit);
         try {
-            await axios.patch(`/api/team/${teamToEdit.id}`, {
-                wins: teamToEdit.wins,
-                losses: teamToEdit.losses,
-                eastWins: teamToEdit.eastWins,
-                eastLosses: teamToEdit.eastLosses,
-                westWins: teamToEdit.westWins,
-                westLosses: teamToEdit.westLosses,
-                conference: teamToEdit.conference
-            });
+            await axios.patch(`/api/team/${teamToEdit.id}`, teamToEdit);
             fetchStandings(); // Refresh data
             setShowEditModal(false); // Close modal after submission
         } catch (error) {
@@ -62,7 +56,8 @@ const TeamStandings = () => {
     };
 
     const editTeam = (team) => {
-        setTeamToEdit(team);
+        console.log('Editing team:', team);
+        setTeamToEdit({ ...team });
         setShowEditModal(true);
     };
 
@@ -152,7 +147,7 @@ const TeamStandings = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="31" className="text-center py-4">
+                                    <td colSpan="11" className="text-center py-4">
                                         No teams found
                                     </td>
                                 </tr>
@@ -164,21 +159,112 @@ const TeamStandings = () => {
             {showEditModal && (
                 <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
                     <form onSubmit={handleEditSubmit} className="space-y-4">
-                        {Object.keys(teamToEdit).map(key => (
-                            <div key={key}>
-                                <label className="block text-gray-700">{key}:</label>
-                                <input
-                                    type={typeof teamToEdit[key] === 'number' ? 'number' : 'text'}
-                                    placeholder={key}
-                                    name={key}
-                                    className="border rounded-lg px-2 py-1 w-full"
-                                    value={teamToEdit[key] || ''}
-                                    onChange={e => setTeamToEdit({ ...teamToEdit, [key]: e.target.value })}
-                                    step="0.1"
-                                />
-                            </div>
-                        ))}
-                        <button type="submit" disabled={isLoading} className="bg-blue-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-800">Save Changes</button>
+                        <div>
+                            <label className="block text-gray-700">Rank:</label>
+                            <input
+                                type="number"
+                                placeholder="Rank"
+                                name="rk"
+                                className="border rounded-lg px-2 py-1 w-full"
+                                value={teamToEdit.rk || ''}
+                                onChange={(e) => setTeamToEdit({ ...teamToEdit, rk: parseInt(e.target.value) })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700">Team:</label>
+                            <input
+                                type="text"
+                                placeholder="Team"
+                                name="team"
+                                className="border rounded-lg px-2 py-1 w-full"
+                                value={teamToEdit.team || ''}
+                                onChange={(e) => setTeamToEdit({ ...teamToEdit, team: e.target.value })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700">Wins:</label>
+                            <input
+                                type="number"
+                                placeholder="Wins"
+                                name="wins"
+                                className="border rounded-lg px-2 py-1 w-full"
+                                value={teamToEdit.wins || ''}
+                                onChange={(e) => setTeamToEdit({ ...teamToEdit, wins: parseInt(e.target.value) })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700">Losses:</label>
+                            <input
+                                type="number"
+                                placeholder="Losses"
+                                name="losses"
+                                className="border rounded-lg px-2 py-1 w-full"
+                                value={teamToEdit.losses || ''}
+                                onChange={(e) => setTeamToEdit({ ...teamToEdit, losses: parseInt(e.target.value) })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700">Eastern Conference Wins:</label>
+                            <input
+                                type="number"
+                                placeholder="Eastern Conference Wins"
+                                name="eastWins"
+                                className="border rounded-lg px-2 py-1 w-full"
+                                value={teamToEdit.eastWins || ''}
+                                onChange={(e) => setTeamToEdit({ ...teamToEdit, eastWins: parseInt(e.target.value) })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700">Eastern Conference Losses:</label>
+                            <input
+                                type="number"
+                                placeholder="Eastern Conference Losses"
+                                name="eastLosses"
+                                className="border rounded-lg px-2 py-1 w-full"
+                                value={teamToEdit.eastLosses || ''}
+                                onChange={(e) => setTeamToEdit({ ...teamToEdit, eastLosses: parseInt(e.target.value) })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700">Western Conference Wins:</label>
+                            <input
+                                type="number"
+                                placeholder="Western Conference Wins"
+                                name="westWins"
+                                className="border rounded-lg px-2 py-1 w-full"
+                                value={teamToEdit.westWins || ''}
+                                onChange={(e) => setTeamToEdit({ ...teamToEdit, westWins: parseInt(e.target.value) })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700">Western Conference Losses:</label>
+                            <input
+                                type="number"
+                                placeholder="Western Conference Losses"
+                                name="westLosses"
+                                className="border rounded-lg px-2 py-1 w-full"
+                                value={teamToEdit.westLosses || ''}
+                                onChange={(e) => setTeamToEdit({ ...teamToEdit, westLosses: parseInt(e.target.value) })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700">Conference:</label>
+                            <input
+                                type="text"
+                                placeholder="Conference"
+                                name="conference"
+                                className="border rounded-lg px-2 py-1 w-full"
+                                value={teamToEdit.conference || ''}
+                                onChange={(e) => setTeamToEdit({ ...teamToEdit, conference: e.target.value })}
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="bg-blue-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-800"
+                        >
+                            Save Changes
+                        </button>
                     </form>
                 </Modal>
             )}
