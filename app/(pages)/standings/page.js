@@ -1,17 +1,17 @@
 'use client'
 import React from 'react';
-import TeamStandings from "@/components/Teamstandings";
 import Header from '@/components/header';
 //import '../app/globals.css';
 import Footer from '@/components/footer';
-const Teams = () => {
+import StandingsDisplay from '@/components/StandingsDisplay';
+const Standings = () => {
     return (
         <div>
             <Header />
-            <TeamStandings />
+            <StandingsDisplay />
             <Footer />
         </div>
     );
 };
 
-export default Teams;
+export default Standings;

@@ -181,3 +181,10 @@ model yearlyplayer {
   PTS           Float?
   Year          Int?
 }
+
+model AdminReq {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  email     String  @unique
+  name      String
+  message   String
+}
