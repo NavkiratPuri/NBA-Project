@@ -81,15 +81,16 @@ const FavPlayer = ({ playerId }) => {
     <div className="bg-white rounded-lg shadow-md p-6">
       {error && <div className="text-red-500">{error}</div>}
       <FavPlayerDisplay player={favPlayer} imgsrc={imgSrc} />
-      <h2 className="text-2xl font-semibold mt-4">Edit Favorite Player:</h2>
-      <FavPlayerSelector
-        players={players}
-        onSelectPlayer={handleSelectPlayer}
-        label="Change Favorite Player:"
-      />
-      <button onClick={handleSave} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
-        Save
-      </button>
+      <div className='mt-2 text-center'>
+        <FavPlayerSelector
+          players={players}
+          onSelectPlayer={handleSelectPlayer}
+          label="Change Favorite Player:"
+        />
+        <button onClick={handleSave} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-200">
+          Save
+        </button>
+      </div>
     </div>
   );
 };
