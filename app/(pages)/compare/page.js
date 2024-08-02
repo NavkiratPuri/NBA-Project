@@ -162,7 +162,7 @@ const Compare = () => {
   }, [selectAllMode, category, player1, player2]);
 
   return (
-    <div>
+    <div className="bg-gray-700">
       <Header />
       <main className="flex flex-wrap m-2">
         <div className="flex flex-cols-1 md:flex-cols-2 gap-2 relative w-full order-1">
@@ -179,7 +179,7 @@ const Compare = () => {
                     <img
                       src={player1.image}
                       alt={player1.Player}
-                      className="w-20 h-20 rounded-full border-2 border-gray-600"
+                      className="w-20 h-20 rounded-full border-2 border-gray-600 bg-white"
                     />
                     <span className="text-7xl font-bold text-red-600 ml-2">
                       {player1.Player}
@@ -198,7 +198,7 @@ const Compare = () => {
                     <img
                       src={player2.image}
                       alt={player2.Player}
-                      className="w-20 h-20 rounded-full border-2 border-gray-600"
+                      className="w-20 h-20 rounded-full border-2 border-gray-600 bg-white"
                     />
                     <span className="text-7xl font-bold text-blue-600 ml-2">
                       {player2.Player}

@@ -17,7 +17,13 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
         options: {
           responsive: true,
           maintainAspectRatio: true,
-          plugins: {},
+          plugins: {
+            legend: {
+              labels: {
+                color: "white", // Legend text color
+              },
+            },
+          },
           scales: {
             x: {
               title: {
@@ -28,12 +34,17 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
                   weight: "bold",
                   lineHeight: 1,
                 },
+                color: "white",
               },
               ticks: {
                 font: {
                   size: 20,
                   weight: "semibold",
                 },
+                color: "white",
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.2)", // Grid line color
               },
             },
             y: {
@@ -45,11 +56,16 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
                   weight: "bold",
                   lineHeight: 2,
                 },
+                color: "white",
               },
               ticks: {
                 font: {
                   size: 20,
                 },
+                color: "white",
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.2)", // Grid line color
               },
             },
           },
@@ -87,7 +103,7 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
         <option value="Minutes">Minutes</option>
       </select>
 
-      <canvas ref={chartRef} className=" max-h-6/12 mr-5"></canvas>
+      <canvas ref={chartRef} className="max-h-6/12 mr-5"></canvas>
     </div>
   );
 };
