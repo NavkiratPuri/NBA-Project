@@ -74,7 +74,6 @@ const AddPlayer = () => {
     TOR: "TOR",
     UTA: "UTA",
     WAS: "WAS",
-    TOT: "TOT",
   };
 
   const wholeNumberFields = ["Rk", "Age", "G", "GS"];
@@ -179,9 +178,10 @@ const AddPlayer = () => {
         PTS: "",
       });
       setShowModal(false);
-      router.refresh();
     } catch (error) {
       console.error("Failed to submit player:", error);
+    } finally {
+      router.refresh();
     }
   };
 
