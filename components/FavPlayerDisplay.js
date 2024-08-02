@@ -9,7 +9,7 @@ const FavPlayerDisplay = ({ player, imgsrc }) => {
           <h2 className="text-2xl font-semibold text-orange-500">Favorite Player</h2>
           <div className="flex flex-col items-center space-y-2">
             {imgsrc ? (
-              <Image
+              <img
                 src={imgsrc}
                 alt={`Image of ${player.Player}`}
                 width={64}
