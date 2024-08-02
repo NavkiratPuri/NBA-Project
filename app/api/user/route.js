@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import client from "@/app/libs/prismadb";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import bcrypt from "bcrypt";
 
 export const GET = async (req) => {
   try {
@@ -42,17 +43,23 @@ export const PATCH = async (req) => {
     }
 
     const body = await req.json();
-    const { favPlayerId, newHighScore, gameType, favTeamId } = body;
+    const { favPlayerId, newHighScore, gameType, favTeamId, email, name, password } = body;
 
     console.log('Request body:', body);
 
-    if (favPlayerId === undefined && favTeamId === undefined && newHighScore === undefined) {
-      return new Response(JSON.stringify({ message: "At least one of favPlayerId, favTeamId, or newHighScore is required" }), { status: 400 });
+    if (favPlayerId === undefined && favTeamId === undefined && newHighScore === undefined && !email && !name && !password) {
+      return new Response(JSON.stringify({ message: "At least one of favPlayerId, favTeamId, newHighScore, email, name, or password is required" }), { status: 400 });
     }
 
     const updateData = {};
     if (favPlayerId !== undefined) updateData.favPlayerId = favPlayerId;
     if (favTeamId !== undefined) updateData.favTeamId = favTeamId;
+    if (email) updateData.email = email;
+    if (name) updateData.name = name;
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updateData.password = hashedPassword;
+    }
 
     if (gameType) {
       if (gameType === 'higherLower') {
@@ -80,14 +87,35 @@ export const PATCH = async (req) => {
   }
 };
 
+export const DELETE = async (req) => {
+  try {
+    const session = await getServerSession({ req, options: authOptions });
+
+    if (!session) {
+      return new Response(JSON.stringify({ message: "Not authenticated" }), { status: 401 });
+    }
+
+    await client.user.delete({
+      where: { email: session.user.email },
+    });
+
+    return new Response(JSON.stringify({ message: "User deleted successfully" }), { status: 200 });
+  } catch (error) {
+    console.error("Error in DELETE handler:", error);
+    return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
+  }
+};
+
 export const handler = async (req, res) => {
   switch (req.method) {
     case 'GET':
       return await GET(req);
     case 'PATCH':
       return await PATCH(req);
+    case 'DELETE':
+      return await DELETE(req);
     default:
-      res.setHeader('Allow', ['GET', 'PATCH']);
+      res.setHeader('Allow', ['GET', 'PATCH', 'DELETE']);
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 };

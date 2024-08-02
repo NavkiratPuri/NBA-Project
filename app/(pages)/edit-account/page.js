@@ -43,7 +43,7 @@ const EditAccount = () => {
         setMessage("Profile updated successfully.");
       })
       .catch((error) => {
-        setError(error);
+        setError(error.response?.data.message || "An error occurred. Please try again later.");
       })
       .finally(() => {
         setLoading(false);
@@ -63,7 +63,7 @@ const EditAccount = () => {
           router.push("/logout");
         })
         .catch((error) => {
-          setError(error);
+          setError(error.response?.data.message || "An error occurred. Please try again later.");
         })
         .finally(() => {
           setLoading(false);
@@ -80,7 +80,7 @@ const EditAccount = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error}</div>;
   }
 
   return (
