@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Modal from './Modal'; // Ensure the path is correct
 
-const TeamStandings = () => {
+const StandingsDisplay = () => {
     const [standings, setStandings] = useState([]);
     const [filteredStandings, setFilteredStandings] = useState([]);
     const [showConference, setShowConference] = useState(true);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [teamToEdit, setTeamToEdit] = useState({});
     const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         fetchStandings();
@@ -36,34 +31,6 @@ const TeamStandings = () => {
         filtered = filtered.map((team, index) => ({ ...team, rank: index + 1 }));
         setFilteredStandings(filtered);
         setShowConference(conference === '');
-    };
-
-    const handleEditSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        try {
-            await axios.patch(`/api/team/${teamToEdit.id}`, {
-                wins: teamToEdit.wins,
-                losses: teamToEdit.losses,
-                eastWins: teamToEdit.eastWins,
-                eastLosses: teamToEdit.eastLosses,
-                westWins: teamToEdit.westWins,
-                westLosses: teamToEdit.westLosses,
-                conference: teamToEdit.conference
-            });
-            fetchStandings(); // Refresh data
-            setShowEditModal(false); // Close modal after submission
-        } catch (error) {
-            console.error('Failed to update team:', error);
-            setError('Failed to update team details.');
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const editTeam = (team) => {
-        setTeamToEdit(team);
-        setShowEditModal(true);
     };
 
     const handleSort = (key) => {
@@ -129,7 +96,6 @@ const TeamStandings = () => {
                                 <th onClick={() => handleSort('eastLosses')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Eastern Conference Losses {getSortDirectionIcon('eastLosses')}</th>
                                 <th onClick={() => handleSort('westWins')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Western Conference Wins {getSortDirectionIcon('westWins')}</th>
                                 <th onClick={() => handleSort('westLosses')} className="cursor-pointer px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Western Conference Losses {getSortDirectionIcon('westLosses')}</th>
-                                <th className="px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -145,9 +111,6 @@ const TeamStandings = () => {
                                         <td className="px-4 py-2">{team.eastLosses}</td>
                                         <td className="px-4 py-2">{team.westWins}</td>
                                         <td className="px-4 py-2">{team.westLosses}</td>
-                                        <td className="px-4 py-2">
-                                            <button onClick={() => editTeam(team)} className="bg-green-600 text-white mr-2 px-3 py-1 rounded-lg shadow-md hover:bg-green-700">Edit</button>
-                                        </td>
                                     </tr>
                                 ))
                             ) : (
@@ -161,30 +124,8 @@ const TeamStandings = () => {
                     </table>
                 </div>
             </div>
-            {showEditModal && (
-                <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
-                    <form onSubmit={handleEditSubmit} className="space-y-4">
-                        {Object.keys(teamToEdit).map(key => (
-                            <div key={key}>
-                                <label className="block text-gray-700">{key}:</label>
-                                <input
-                                    type={typeof teamToEdit[key] === 'number' ? 'number' : 'text'}
-                                    placeholder={key}
-                                    name={key}
-                                    className="border rounded-lg px-2 py-1 w-full"
-                                    value={teamToEdit[key] || ''}
-                                    onChange={e => setTeamToEdit({ ...teamToEdit, [key]: e.target.value })}
-                                    step="0.1"
-                                />
-                            </div>
-                        ))}
-                        <button type="submit" disabled={isLoading} className="bg-blue-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-800">Save Changes</button>
-                    </form>
-                </Modal>
-            )}
-            {error && <p className="text-red-500">{error}</p>}
         </div>
     );
 };
 
-export default TeamStandings;
+export default StandingsDisplay;
