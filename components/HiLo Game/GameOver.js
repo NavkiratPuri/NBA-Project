@@ -43,11 +43,11 @@ const GameOver = ({ points, onRestart }) => {
 
   return (
     <div className="h-screen inset-0 flex flex-col items-center justify-center z-10 text-center">
-      <div className="bg-gray-500 bg-opacity-50 border rounded shadow p-4">
-        {isNewHighScore && <p className="text-2xl text-red-500 rainbow-text">NEW HIGHSCORE!!!</p>}
-        <h2 className="text-2xl animate-bounce">Game Over!</h2>
-        <p className="text-2xl">Your Final Score: {points}</p>
-        <button onClick={onRestart} className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4">
+      <div className="bg-gray-700 bg-opacity-50 border rounded shadow p-4">
+        {isNewHighScore && <p className="text-2xl text-red-500 rainbow-text mb-4 ">NEW HIGHSCORE!!!</p>}
+        <h2 className="text-2xl animate-bounce text-white">Game Over!</h2>
+        <p className="text-2xl text-white">Your Final Score: {points}</p>
+        <button onClick={onRestart} className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded mt-4">
           Restart
         </button>
       </div>
