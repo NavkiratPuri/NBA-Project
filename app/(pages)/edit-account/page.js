@@ -1,8 +1,10 @@
-'use client'
+"use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import axios from "axios";
 
 const EditAccount = () => {
   const { data: session, status } = useSession();
@@ -17,7 +19,7 @@ const EditAccount = () => {
       axios
         .get("/api/user")
         .then((response) => {
-          setProfile(response.data);
+          setProfile({ ...response.data, password: "" }); // Don't prefill password field
           setLoading(false);
         })
         .catch((error) => {
@@ -49,7 +51,11 @@ const EditAccount = () => {
   };
 
   const handleDeleteAccount = () => {
-    if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+    if (
+      confirm(
+        "Are you sure you want to delete your account? This action cannot be undone."
+      )
+    ) {
       setLoading(true);
       axios
         .delete("/api/user")
@@ -66,7 +72,7 @@ const EditAccount = () => {
   };
 
   if (status === "loading" || loading) {
-    return <div>Loading...</div>;
+    return <p>Loading...</p>;
   }
 
   if (status === "unauthenticated") {
@@ -78,58 +84,80 @@ const EditAccount = () => {
   }
 
   return (
-    <div className="container mx-auto mt-4 p-4 bg-gray-50 rounded-lg shadow-md">
-      <h1 className="text-2xl font-semibold text-center">Edit Account</h1>
-      {message && <p className="text-green-500">{message}</p>}
-      <form onSubmit={handleUpdate} className="space-y-4">
-        <div>
-          <label className="block text-gray-700">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={profile.name}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={profile.email}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700">Password (leave blank to keep current password)</label>
-          <input
-            type="password"
-            name="password"
-            value={profile.password}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="flex justify-between items-center">
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-          >
-            Update Account
-          </button>
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-grow">
+        <div className="max-w-md mx-auto mt-10 p-4 border rounded-md shadow-md">
+          <h2 className="text-xl font-bold mb-4">Edit Account</h2>
+          {message && <p className="text-green-600 mb-4">{message}</p>}
+          <form onSubmit={handleUpdate}>
+            <div className="mb-4">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={profile.name}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-indigo-200"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={profile.email}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-indigo-200"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password (leave blank to keep current password)
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={profile.password}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-indigo-200"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-indigo-900 text-white text-sm font-semibold py-2 rounded-md shadow-md hover:bg-indigo-700 transition duration-200"
+            >
+              Update Account
+            </button>
+          </form>
           <button
             type="button"
             onClick={handleDeleteAccount}
-            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"
+            className="w-full mt-4 bg-red-500 text-white text-sm font-semibold py-2 rounded-md shadow-md hover:bg-red-700 transition duration-200"
           >
             Delete Account
           </button>
         </div>
-      </form>
+      </main>
+      <Footer />
     </div>
   );
 };
