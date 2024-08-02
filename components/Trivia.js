@@ -206,7 +206,7 @@ function Trivia() {
                 : "Wrong Answer, try again!"}
             </p>
           )}
-          {/* Condtional render this */}
+          {/* Conditional render this */}
           { session?.user?.isAdmin &&  (
            <>
               <button
