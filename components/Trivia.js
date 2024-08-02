@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "./Modal";
+import { useSession } from "next-auth/react";
 
 function Trivia() {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { data: session, status } = useSession();
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [correctAnswers, setCorrectAnswers] = useState({});
   const [score, setScore] = useState(null);
@@ -204,18 +206,24 @@ function Trivia() {
                 : "Wrong Answer, try again!"}
             </p>
           )}
-          <button
-            className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2"
-            onClick={() => handleEditQuestion(question)}
-          >
-            Edit
-          </button>
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => handleDeleteQuestion(question.id)}
-          >
-            Delete
-          </button>
+          {/* Condtional render this */}
+          { session?.user?.isAdmin &&  (
+           <>
+              <button
+                className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2"
+                onClick={() => handleEditQuestion(question)}
+              >
+                Edit
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => handleDeleteQuestion(question.id)}
+              >
+                Delete
+              </button>
+            </>
+          )}
+          {/*  */}
         </div>
       ))}
       {!allQuestionsAnswered() && (
