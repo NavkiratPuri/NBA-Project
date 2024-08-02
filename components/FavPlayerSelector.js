@@ -14,7 +14,11 @@ const FavPlayerSelector = ({ players, onSelectPlayer, label }) => {
         players.filter(player => {
           const fullName = player.Player.toLowerCase();
           const [firstName, lastName] = fullName.split(' ');
-          return fullName.startsWith(value) || firstName.startsWith(value) || lastName.startsWith(value);
+          return (
+            fullName.startsWith(value) ||
+            (firstName && firstName.startsWith(value)) ||
+            (lastName && lastName.startsWith(value))
+          );
         })
       );
     } else {
