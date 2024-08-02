@@ -6,9 +6,14 @@ import AddPlayer from "@/components/Addplayer";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import StatList from "@/components/StatList";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const PlayerStats = () => {
   const [players, setPlayers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +32,20 @@ const PlayerStats = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+    } else if (status === "authenticated") {
+      
+        setLoading(false);
+      
+    }
+  }, [status, router]);
+
+  if (status === "loading" || loading) {
+      return <p>Loading...</p>;
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
