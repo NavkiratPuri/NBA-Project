@@ -2,7 +2,7 @@ import client from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 
 
-// url: http://localhost:3000/api/education/
+// url: http://localhost:3000/api/team/
 
 // get function handles GET requests to return posts (used for search) 
 export const GET = async (request, { params }) => {
