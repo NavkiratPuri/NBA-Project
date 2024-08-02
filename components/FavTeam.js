@@ -74,12 +74,12 @@ const FavTeam = ({ teamId }) => {
   
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white rounded-lg shadow-md p-6 text-center">
       {error && <p className="text-red-500">{error}</p>}
       <FavTeamDisplay team={favTeam} />
       <h2 className="text-xl font-semibold">Select your favorite team:</h2>
       <TeamSelector teams={teams} onSelectTeam={handleSelectTeam} label="Change Favorite Team:" />
-      <button onClick={handleSave} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+      <button onClick={handleSave} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-200">
         Save    
       </button>
     </div>
