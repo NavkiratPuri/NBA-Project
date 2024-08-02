@@ -170,12 +170,10 @@ const Compare = () => {
     if (status === "unauthenticated") {
       router.push("/");
     } else if (status === "authenticated") {
-      
-        setLoading(false);
-      
+      setLoading(false);
     }
   }, [status, router]);
- 
+
   if (status === "loading" || loading) {
     return <p>Loading...</p>;
   }
@@ -238,7 +236,7 @@ const Compare = () => {
         <div>
           <button
             onClick={toggleSelectAllMode}
-            className="w-30 h-10 text-lg font-semibold bg-green-200 hover:bg-green-300 p-1 rounded-md ml-2 mb-2"
+            className="w-30 h-10 bg-orange-600 text-white py-2 px-4 hover:bg-orange-700 rounded ml-2 mb-2"
           >
             {selectAllMode ? "Compare Players" : "Select All Players"}
           </button>

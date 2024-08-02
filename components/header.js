@@ -25,7 +25,7 @@ const Header = () => {
 
   const chartItems = [
     { label: "Compare", href: "/compare" },
-    { label: "BPM - WS/48 (Advanced Analytics)", href: "/scatter" },
+    { label: "BPM - WS/48", href: "/scatter" },
   ];
 
   const gameItems = [
@@ -60,7 +60,9 @@ const Header = () => {
                   <li
                     key={index}
                     className={`relative px-3 py-2 rounded ${
-                      isGamesActive ? "bg-orange-500 text-white" : "hover:bg-gray-600"
+                      isGamesActive
+                        ? "bg-orange-500 text-white"
+                        : "hover:bg-gray-600"
                     } cursor-pointer`}
                     onMouseEnter={() =>
                       setDropdownOpen({ ...dropdownOpen, games: true })
@@ -93,7 +95,9 @@ const Header = () => {
                   <li
                     key={index}
                     className={`relative px-3 py-2 rounded ${
-                      isChartsActive ? "bg-orange-500 text-white" : "hover:bg-gray-600"
+                      isChartsActive
+                        ? "bg-orange-500 text-white"
+                        : "hover:bg-gray-600"
                     } cursor-pointer`}
                     onMouseEnter={() =>
                       setDropdownOpen({ ...dropdownOpen, charts: true })
@@ -126,7 +130,9 @@ const Header = () => {
                   <li
                     key={index}
                     className={`px-3 py-2 rounded ${
-                      pathname === link.href ? "bg-orange-500 text-white" : "hover:bg-gray-600"
+                      pathname === link.href
+                        ? "bg-orange-500 text-white"
+                        : "hover:bg-gray-600"
                     }`}
                   >
                     <Link href={link.href}>{link.label}</Link>
@@ -138,7 +144,9 @@ const Header = () => {
             {status === "authenticated" && session.user.isAdmin && (
               <li
                 className={`relative px-3 py-2 rounded ${
-                  isAdminActive ? "bg-orange-500 text-white" : "hover:bg-gray-600"
+                  isAdminActive
+                    ? "bg-orange-500 text-white"
+                    : "hover:bg-gray-600"
                 } cursor-pointer`}
                 onMouseEnter={() =>
                   setDropdownOpen({ ...dropdownOpen, admin: true })
@@ -169,7 +177,9 @@ const Header = () => {
             {/* Logout tab */}
             <li
               className={`px-3 py-2 rounded ${
-                pathname === "/logout" ? "bg-orange-500 text-white" : "hover:bg-gray-600"
+                pathname === "/logout"
+                  ? "bg-orange-500 text-white"
+                  : "hover:bg-gray-600"
               }`}
             >
               <Link href="/logout">Logout</Link>

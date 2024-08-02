@@ -12,7 +12,6 @@ import { Glossary } from "@/utils/glossary";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-
 const Trade = () => {
   const [players, setPlayers] = useState([]);
   const [teamAPlayers, setTeamAPlayers] = useState([]);
@@ -161,21 +160,84 @@ const Trade = () => {
     if (status === "unauthenticated") {
       router.push("/");
     } else if (status === "authenticated") {
-      
-        setLoading(false);
-      
+      setLoading(false);
     }
   }, [status, router]);
 
   if (status === "loading" || loading) {
-      return <p>Loading...</p>;
+    return <p>Loading...</p>;
   }
+
+  const demo = () => {
+    const teamAPlayersList = [
+      { name: "LeBron James", year: 2024, team: "LAL" },
+      { name: "Stephen Curry", year: 2024, team: "GSW" },
+      { name: "Anthony Davis", year: 2024, team: "LAL" },
+      { name: "Bam Adebayo", year: 2024, team: "MIA" },
+      { name: "Devin Booker", year: 2024, team: "PHO" },
+      { name: "Kevin Durant", year: 2024, team: "PHO" },
+      { name: "Anthony Edwards", year: 2024, team: "MIN" },
+      { name: "Joel Embiid", year: 2024, team: "PHI" },
+      { name: "Tyrese Haliburton", year: 2024, team: "IND" },
+      { name: "Jrue Holiday", year: 2024, team: "BOS" },
+      { name: "Jayson Tatum", year: 2024, team: "BOS" },
+      { name: "Derrick White", year: 2024, team: "BOS" },
+    ];
+
+    const teamBPlayersList = [
+      { name: "Charles Barkley", year: 1992, team: "PHI" },
+      { name: "Larry Bird", year: 1992, team: "BOS" },
+      { name: "Clyde Drexler", year: 1992, team: "POR" },
+      { name: "Patrick Ewing", year: 1992, team: "NYK" },
+      { name: "Magic Johnson", year: 1992, team: "LAL" },
+      { name: "Michael Jordan", year: 1992, team: "CHI" },
+      { name: "Karl Malone", year: 1992, team: "UTA" },
+      { name: "Chris Mullin", year: 1992, team: "GSW" },
+      { name: "Scottie Pippen", year: 1992, team: "CHI" },
+      { name: "David Robinson", year: 1992, team: "SAS" },
+      { name: "John Stockton", year: 1992, team: "UTA" },
+      { name: "Christian Laettner", year: 1992, team: "MIN" },
+    ];
+
+    const selectedTeamAPlayers = players.filter((player) =>
+      teamAPlayersList.some(
+        (p) =>
+          p.name === player.Player &&
+          p.year === parseInt(player.Year) &&
+          p.team === player.Tm
+      )
+    );
+
+    const selectedTeamBPlayers = players.filter((player) =>
+      teamBPlayersList.some(
+        (p) =>
+          p.name === player.Player &&
+          p.year === parseInt(player.Year) &&
+          p.team === player.Tm
+      )
+    );
+    selectPlayer(selectedTeamAPlayers, "A");
+    selectPlayer(selectedTeamBPlayers, "B");
+  };
+
+  const clearAll = () => {
+    setTeamAPlayers([]);
+    setTeamBPlayers([]);
+    setTeamASalary(0);
+    setTeamBSalary(0);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-700">
       <Header />
       <main className="flex-grow p-2">
         <div className="flex justify-center mb-4">
+          <button
+            className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded w-1/5 m-2"
+            onClick={demo}
+          >
+            Demonstrate
+          </button>
           <button
             className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded w-1/5 m-2"
             onClick={openModal}
@@ -194,11 +256,19 @@ const Trade = () => {
           >
             Glossary
           </button>
+          <button
+            className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded w-1/5 m-2"
+            onClick={clearAll}
+          >
+            Clear All
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 relative">
           <div className="pr-2 border-r-2 border-black">
-            <h2 className="text-center text-xl font-bold mb-2 text-white">Team A</h2>
+            <h2 className="text-center text-xl font-bold mb-2 text-white">
+              Team A
+            </h2>
             <PlayerSelector
               players={players}
               onSelectPlayer={(selectedPlayers) =>
@@ -234,7 +304,9 @@ const Trade = () => {
             </div>
           </div>
           <div className="">
-            <h2 className="text-center text-xl font-bold mb-2 text-white">Team B</h2>
+            <h2 className="text-center text-xl font-bold mb-2 text-white">
+              Team B
+            </h2>
             <PlayerSelector
               players={players}
               onSelectPlayer={(selectedPlayers) =>
@@ -307,7 +379,10 @@ const Trade = () => {
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 ">
                   {Object.keys(tempWeights).map((key) => (
-                    <div key={key} className="flex flex-col items-center text-white">
+                    <div
+                      key={key}
+                      className="flex flex-col items-center text-white"
+                    >
                       <label className="text-center mb-1 font-medium">
                         {key.toUpperCase()}
                       </label>

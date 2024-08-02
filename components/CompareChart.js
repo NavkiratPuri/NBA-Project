@@ -20,7 +20,7 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
           plugins: {
             legend: {
               labels: {
-                color: "white", // Legend text color
+                color: "white",
               },
             },
           },
@@ -44,7 +44,7 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
                 color: "white",
               },
               grid: {
-                color: "rgba(255, 255, 255, 0.2)", // Grid line color
+                color: "rgba(255, 255, 255, 0.2)",
               },
             },
             y: {
@@ -65,7 +65,7 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
                 color: "white",
               },
               grid: {
-                color: "rgba(255, 255, 255, 0.2)", // Grid line color
+                color: "rgba(255, 255, 255, 0.2)",
               },
             },
           },
@@ -73,7 +73,6 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
             line: {
               borderWidth: 8,
               borderCapStyle: "round",
-
             },
           },
         },
@@ -87,7 +86,7 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
         id="statHeader"
         value={category}
         onChange={statsFilter}
-        className="w-30 h-10 text-lg font-semibold bg-red-200 hover:bg-red-300 p-1 rounded-md ml-2 mb-2"
+        className="w-30 h-10 text-lg bg-orange-600 text-white py-2 px-4 hover:bg-orange-700 mb-2 rounded "
       >
         <option value="TotalValue">Total Value</option>
         <option value="Points">Points</option>
