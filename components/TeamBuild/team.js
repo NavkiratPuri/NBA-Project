@@ -233,8 +233,8 @@ const TeamBuilder = () => {
           <div className="flex flex-col mb-4">
             {/* Player Selection */}
             <div className="selected-players mb-8 border-t border-gray-300 flex flex-col">
-              <h2 className="text-lg font-bold m-4">Player Selection</h2>
-              <div className="bg-gray-800 text-white shadow-lg p-4">
+              <h2 className="text-lg font-bold m-4 text-white">Player Selection</h2>
+              <div className="bg-gray-800 text-white shadow-lg p-4 border-t border-gray-300">
                 {Object.keys(positionLabels).map((position) => (
                   <div key={position} className="flex items-center mb-4 bg-gray-700 p-2 rounded-lg">
                     <div className="w-1/3 font-semibold text-lg">
@@ -278,12 +278,12 @@ const TeamBuilder = () => {
         <div className="w-1/2 flex flex-col pl-4">
           <div className="flex flex-col mb-4">
             {/* Selected Players */}
-            <div className="selected-players p-4 border-t border-gray-300 flex flex-col">
-              <h2 className="text-lg font-bold mb-4">Selected Players</h2>
-              <div className="bg-gray-800 text-white shadow-lg">
+            <div className="selected-players border-t border-gray-300 flex flex-col">
+              <h2 className="text-lg font-bold mb-4 text-white mt-4">Selected Players</h2>
+              <div className="bg-gray-800 text-white shadow-lg border-t border-gray-300">
                 {Object.keys(selectedPlayers).map((position) => (
                   selectedPlayers[position] ? (
-                    <div key={position} className="flex items-center bg-gray-700 text-white p-5 m-4 rounded-lg">
+                    <div key={position} className="flex items-center bg-gray-700 text-white p-4 m-4 rounded-lg">
                       <div className="w-1/3 font-semibold text-lg">
                         {positionLabels[position]}
                       </div>
@@ -321,7 +321,7 @@ const TeamBuilder = () => {
             </div>
   
             {/* Available Teams */}
-            <div className="available-teams p-4 border-t border-gray-300 flex flex-col bg-gray-800 text-white m-4">
+            <div className="available-teams p-4 border-t border-gray-300 flex flex-col bg-gray-800 text-white mt-8">
               <h2 className="text-lg font-bold mb-4">Available Teams</h2>
               <div className="flex flex-wrap justify-between">
                 {availableTeams.map((team) => (
