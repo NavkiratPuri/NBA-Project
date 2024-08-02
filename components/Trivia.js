@@ -175,7 +175,7 @@ function Trivia() {
   }
 
   return (
-    <div className="p-5">
+    <div className="p-5 text-white">
       {questions.slice(currentIndex, currentIndex + 5).map((question) => (
         <div key={question.id} className="mb-4">
           <h3 className="text-lg font-bold">{question.question}</h3>
@@ -183,7 +183,7 @@ function Trivia() {
             {["optionA", "optionB", "optionC", "optionD"].map((option) => (
               <li
                 key={option}
-                className="cursor-pointer hover:bg-gray-200 p-2"
+                className="cursor-pointer hover:bg-gray-200 p-2 hover:text-black"
                 onClick={() =>
                   handleAnswerSelect(question.id, question[option])
                 }

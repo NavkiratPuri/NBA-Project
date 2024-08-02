@@ -73,6 +73,7 @@ const CompareChart = ({ chartData, category, statsFilter }) => {
             line: {
               borderWidth: 8,
               borderCapStyle: "round",
+
             },
           },
         },

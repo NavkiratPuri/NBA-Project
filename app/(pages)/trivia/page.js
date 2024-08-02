@@ -9,7 +9,7 @@ const TriviaPage = () => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div>
+    <div className="bg-gray-700">
       <Header />
       <Trivia />
       {showModal && (
@@ -17,7 +17,7 @@ const TriviaPage = () => {
       )}
       <div className="px-4 pb-4"> {/* Added padding around the button */}
         <button
-          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
+          className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded mb-4"
           onClick={() => setShowModal(true)}
         >
           Add a new trivia question
