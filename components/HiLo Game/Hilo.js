@@ -78,14 +78,10 @@ const HiLo = ({ onGameEnd }) => {
             setComparisonResult("Please select a category.");
             return;
         }
-    
+
         const statPlayer1 = player1[selectedCategory.value];
         const statPlayer2 = player2[selectedCategory.value];
-        
-        // //Testing Equals
-        // const statPlayer1 = 2;
-        // const statPlayer2 = 2;
-    
+
         let higherPlayer;
         if (statPlayer1 === statPlayer2) {
             setComparisonResult(`Both players have the same ${selectedCategory.label} of ${statPlayer1}.`);
@@ -102,54 +98,48 @@ const HiLo = ({ onGameEnd }) => {
             setComparisonResult(`${player2.Player} has a higher ${selectedCategory.label} with ${statPlayer2}.`);
         }
     };
-    
+
     const comparePlayersAndUpdate = (playerIndex) => {
         if (players.length > 0 && selectedCategory) {
             const otherPlayerIndex = playerIndex === 0 ? 1 : 0;
             const player1Stat = players[playerIndex][selectedCategory.value];
             const player2Stat = players[otherPlayerIndex][selectedCategory.value];
-            
-            // //Testing Equals
-            // const player1Stat = 2;
-            // const player2Stat = 2;
-    
+
             comparePlayers(players[playerIndex], players[otherPlayerIndex]);
-    
+
             if (comparisonResult.startsWith("Both players have the same")) {
-                // Handle the equal stats case here
-                // No additional update needed, as points are already updated in comparePlayers
-                // You can still call startNewTurn() to proceed to the next turn
                 setTimeout(() => {
                     startNewTurn();
                 }, 2000); // 2-second delay before starting a new turn
             } else {
-                // Update lives and points based on the comparison result
                 updateLivesAndPoints(player1Stat, player2Stat, playerIndex, otherPlayerIndex);
             }
         }
     };
-    
+
     const updateLivesAndPoints = (player1Stat, player2Stat, playerIndex, otherPlayerIndex) => {
         const correctPlayer = player1Stat >= player2Stat;
-    
+
         if (correctPlayer) {
             setPoints(points + 1);
             setCorrectPlayerIndex(playerIndex);
         } else {
-            setLives(lives - 1);
+            setLives(prevLives => {
+                const newLives = prevLives - 1;
+                if (newLives === 0) {
+                    setGameStatus("ended");
+                }
+                return newLives;
+            });
             setCorrectPlayerIndex(otherPlayerIndex);
         }
-    
-        if (lives - 1 === 0) {
-            setGameStatus("ended");
-        } else {
+
+        if (lives > 0) {
             setTimeout(() => {
                 startNewTurn();
             }, 2000); // 2-second delay before starting a new turn
         }
     };
-    
-    
 
     const handleHintButtonClick = (playerIndex) => {
         if (hintUsed || players.length === 0 || !selectedCategory) return;
