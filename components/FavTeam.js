@@ -11,6 +11,7 @@ const FavTeam = ({ teamId }) => {
   const [favTeam, setFavTeam] = useState(null);
   const [favTeamId, setFavTeamId] = useState(teamId);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); // New state for editing mode
 
   useEffect(() => {
     const getFavTeamData = async () => {
@@ -35,7 +36,7 @@ const FavTeam = ({ teamId }) => {
         const data = await teamsData();
         setTeams(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        setError(error.message);
       }
     };
     fetchTeams();
@@ -56,32 +57,47 @@ const FavTeam = ({ teamId }) => {
       const response = await axios.patch('/api/user', {
         favTeamId: teamId
       });
-      console.log('response:', response);
+      if (response.status === 200) {
+        alert('Favorite Team Updated');
+        setIsEditing(false); // Hide editor after saving
+      }
     } catch (error) {
-      console.error('Error updating favTeam:', error);
-      console.log('Error response:', error.response);
+      setError('Error updating favorite team');
     }
   }
-  
+
   const handleSave = () => {
     if (favTeamId) {
       updateFavTeam(favTeamId);
-      alert('Favorite Team Saved!');
     } else {
       alert('No team selected');
     }
   }
-  
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 text-center">
-      {error && <p className="text-red-500">{error}</p>}
+    <div className="bg-white rounded-lg shadow-md p-6">
+      {error && <div className="text-red-500">{error}</div>}
       <FavTeamDisplay team={favTeam} />
-      <h2 className="text-xl font-semibold">Select your favorite team:</h2>
-      <TeamSelector teams={teams} onSelectTeam={handleSelectTeam} label="Change Favorite Team:" />
-      <button onClick={handleSave} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-200">
-        Save    
-      </button>
+      <div className="mt-4 text-center">
+        <button
+          onClick={() => setIsEditing(!isEditing)}
+          className="px-2 py-1 bg-indigo-700 text-white text-sm rounded-lg hover:bg-indigo-900 transition duration-200"
+        >
+          {isEditing ? 'Cancel' : 'Edit Favorite Team'}
+        </button>
+      </div>
+      {isEditing && (
+        <div className='mt-4 text-center'>
+          <TeamSelector
+            teams={teams}
+            onSelectTeam={handleSelectTeam}
+            label="Change Favorite Team:"
+          />
+          <button onClick={handleSave} className="mt-4 px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-indigo-800 transition duration-200">
+            Save
+          </button>
+        </div>
+      )}
     </div>
   );
 };
