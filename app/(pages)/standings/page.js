@@ -6,7 +6,7 @@ import Footer from '@/components/footer';
 import StandingsDisplay from '@/components/StandingsDisplay';
 const Standings = () => {
     return (
-        <div>
+        <div className='bg-gray-700'>
             <Header />
             <StandingsDisplay />
             <Footer />

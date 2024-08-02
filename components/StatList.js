@@ -100,7 +100,7 @@ const StatList = ({ players }) => {
         <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 text-xs">
-              <thead className="bg-gray-50">
+              <thead className="bg-orange-400">
                 <tr>
                   {[
                     "Player",
@@ -134,7 +134,7 @@ const StatList = ({ players }) => {
                   ].map((key) => (
                     <th
                       key={key}
-                      className="px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                      className="px-2 py-1 text-left font-medium text-white uppercase tracking-wider cursor-pointer"
                       onClick={() => handleSort(key)}
                     >
                       {key} {getArrow(key)}
