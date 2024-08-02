@@ -18,7 +18,7 @@ const FavPlayerDisplay = ({ player, imgsrc }) => {
               />
             ) : (
               <div className="w-16 h-16 rounded-full border-2 border-gray-600 flex items-center justify-center">
-                <span className="text-sm text-gray-500">No Image</span>
+                <span className="text-sm text-white">No Image</span>
               </div>
             )}
             <p className="text-lg font-medium text-white">{player.Player}</p>
@@ -31,7 +31,7 @@ const FavPlayerDisplay = ({ player, imgsrc }) => {
           </div>
         </div>
       ) : (
-        <p className="text-center text-gray-500">No favorite player selected.</p>
+        <p className="text-center text-white">No Favorite Player Selected.</p>
       )}
     </div>
   );

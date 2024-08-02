@@ -24,7 +24,7 @@ const FavTeamDisplay = ({ team }) => {
           </div>
         </div>
       ) : (
-        <p className="text-center text-gray-500">No favorite team selected.</p>
+        <p className="text-center text-white">No Favorite Team Selected.</p>
       )}
     </div>
   );
