@@ -80,7 +80,7 @@ const FavTeam = ({ teamId }) => {
       <div className='p-2 rounded-lg mt-4'>
         <h2 className="mt-2 text-2xl font-semibold text-white">Select Your Favorite Team:</h2>
         <TeamSelector teams={teams} onSelectTeam={handleSelectTeam} />
-        <button onClick={handleSave} className="mt-4 px-4 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-lg">
+        <button onClick={handleSave} className="mt-4 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg">
           Save    
         </button>
       </div>

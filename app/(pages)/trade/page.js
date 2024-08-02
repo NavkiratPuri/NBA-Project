@@ -156,19 +156,19 @@ const Trade = () => {
       <main className="flex-grow p-2">
         <div className="flex justify-center mb-4">
           <button
-            className="bg-orange-400 text-white py-2 px-4 hover:bg-orange-500 rounded w-1/5 m-2"
+            className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded w-1/5 m-2"
             onClick={openModal}
           >
             Adjust Stat Weights
           </button>
           <button
-            className="bg-orange-400 text-white py-2 px-4 hover:bg-orange-500 rounded w-1/5 m-2"
+            className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded w-1/5 m-2"
             onClick={showAvgStats}
           >
             Show Average Stats
           </button>
           <button
-            className="bg-orange-400 text-white py-2 px-4 hover:bg-orange-500 rounded w-1/5 m-2"
+            className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded w-1/5 m-2"
             onClick={openGlossary}
           >
             Glossary

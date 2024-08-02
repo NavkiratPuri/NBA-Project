@@ -162,7 +162,7 @@ const StatList = ({ players }) => {
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="px-2 py-1 bg-orange-400 hover:bg-orange-500 text-white rounded-md disabled:bg-gray-400"
+            className="px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-md disabled:bg-gray-400"
           >
             Previous
           </button>
@@ -174,7 +174,7 @@ const StatList = ({ players }) => {
               )
             }
             disabled={currentPage * PAGE_SIZE >= filteredPlayers.length}
-            className="px-2 py-1 bg-orange-400 hover:bg-orange-500 text-white rounded-md disabled:bg-gray-400"
+            className="px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-md disabled:bg-gray-400"
           >
             Next
           </button>

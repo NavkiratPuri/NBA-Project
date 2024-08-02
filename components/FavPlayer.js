@@ -86,7 +86,7 @@ const FavPlayer = ({ playerId }) => {
         players={players}
         onSelectPlayer={handleSelectPlayer}
       />
-      <button onClick={handleSave} className="mt-4 px-4 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-lg">
+      <button onClick={handleSave} className="mt-4 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg">
         Save
       </button>
     </div>

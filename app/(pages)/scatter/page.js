@@ -116,6 +116,12 @@ const ScatterChartPage = () => {
         },
         align: "end",
         anchor: "end",
+        color: "white", // Data label color
+      },
+      legend: {
+        labels: {
+          color: "white", // Legend text color
+        },
       },
     },
     scales: {
@@ -124,9 +130,14 @@ const ScatterChartPage = () => {
         title: {
           display: true,
           text: "WS/48",
+          color: "white", // Axis title color
         },
         ticks: {
           stepSize: 0.025,
+          color: "white", // Tick color
+        },
+        grid: {
+          color: "rgba(255, 255, 255, 0.2)", // Grid line color
         },
       },
       y: {
@@ -134,20 +145,25 @@ const ScatterChartPage = () => {
         title: {
           display: true,
           text: "BPM",
+          color: "white", // Axis title color
         },
         ticks: {
           stepSize: 0.5,
+          color: "white", // Tick color
+        },
+        grid: {
+          color: "rgba(255, 255, 255, 0.2)", // Grid line color
         },
       },
     },
   };
 
   return (
-    <div>
+    <div className="bg-gray-700 "> {/* Make all text white */}
       <Header />
       <main className="flex flex-wrap m-2">
         <div className="w-full md:w-1/2 p-2">
-          <h2 className="text-xl font-bold mb-2">Team A</h2>
+          <h2 className="text-xl font-bold mb-2 text-white">Team A</h2>
           <PlayerSelector
             players={players}
             onSelectPlayer={(selectedPlayers) =>
@@ -155,13 +171,13 @@ const ScatterChartPage = () => {
             }
             multiSelect={true}
           />
-          <p>
+          <p className="text-white">
             Averages: BPM: {teamAAverages.bpm.toFixed(2)}, WS/48:{" "}
             {teamAAverages.wsfoureight.toFixed(2)}
           </p>
         </div>
         <div className="w-full md:w-1/2 p-2">
-          <h2 className="text-xl font-bold mb-2">Team B</h2>
+          <h2 className="text-xl font-bold mb-2 text-white">Team B</h2>
           <PlayerSelector
             players={players}
             onSelectPlayer={(selectedPlayers) =>
@@ -169,14 +185,14 @@ const ScatterChartPage = () => {
             }
             multiSelect={true}
           />
-          <p>
+          <p className="text-white">
             Averages: BPM: {teamBAverages.bpm.toFixed(2)}, WS/48:{" "}
             {teamBAverages.wsfoureight.toFixed(2)}
           </p>
         </div>
         <div className="w-full flex justify-center mt-4">
           <button
-            className="bg-green-500 text-white py-2 px-4 rounded"
+            className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded cursor-pointer"
             onClick={() => setIsGlossaryOpen(true)}
           >
             Open Glossary
