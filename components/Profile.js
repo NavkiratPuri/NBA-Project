@@ -46,7 +46,7 @@ const Profile = () => {
         
         
         {session.user.isAdmin && <p>Admin Status: Yes</p>}
-        <a href="/edit-account">Edit Account</a>
+        <a href="/edit-account" className="underline text-cyan-500"> Edit Account</a>
 
 
 
