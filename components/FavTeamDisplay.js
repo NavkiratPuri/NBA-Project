@@ -6,7 +6,7 @@ const FavTeamDisplay = ({ team }) => {
     <div className="mt-4 p-4 bg-gray-600 rounded-lg shadow-md border border-indigo-800">
       {team ? (
         <div className="space-y-2 text-center">
-          <h2 className="text-2xl font-semibold text-indigo-900">Favorite Team</h2>
+          <h2 className="text-2xl font-semibold text-orange-500">Favorite Team</h2>
           <div className="flex flex-col items-center space-y-2">
             <Image
                   src={team.logo}
