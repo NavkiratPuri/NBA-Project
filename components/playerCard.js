@@ -1,11 +1,21 @@
-import React from "react";
+const nameParts = fullName.split(" ");
 
-const PlayerCard = ({ playerName }) => {
-  return (
-    <div className="p-3 flex justify-center ml-10">
-      <h2 className="font-bold">{playerName}</h2>
-    </div>
-  );
+let firstName = nameParts[0];
+let lastName = nameParts.slice(1).join(" ");
+
+const suffixes = ["Jr", "Sr", "II", "III", "IV", "V"];
+if (suffixes.includes(nameParts[nameParts.length - 1])) {
+  lastName = nameParts.slice(1, nameParts.length - 1).join(" ");
+  lastName += ` ${nameParts[nameParts.length - 1]}`;
+}
+
+const cardClick = () => {
+  setView((prevView) => (prevView + 1) % 3);
 };
 
-export default PlayerCard;
+const formatDecimal = (number) => {
+  if (isNaN(number)) {
+    return number;
+  }
+  return parseFloat(number).toFixed(2);
+};

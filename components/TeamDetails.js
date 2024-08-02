@@ -1,7 +1,8 @@
+// TeamDetails.js
 "use client";
 import React, { useEffect, useState } from "react";
-import { fetchPlayers } from "@/utils/fetchPlayers"; // Ensure the correct path to fetchPlayers.js
-import Player from "./Player";
+import { fetchPlayerTeam } from "@/utils/fetchPlayerTeam";
+import PlayerStats from "./PlayerStats"; // Update the import to PlayerStats
 
 const TeamDetails = ({ team }) => {
   const [players, setPlayers] = useState([]);
@@ -12,8 +13,7 @@ const TeamDetails = ({ team }) => {
     const loadTeamDetails = async () => {
       setIsLoading(true);
       try {
-        const allPlayers = await fetchPlayers();
-        const teamPlayers = allPlayers.filter((player) => player.Tm === team);
+        const teamPlayers = await fetchPlayerTeam(team);
         setPlayers(teamPlayers);
         setError("");
       } catch (err) {
@@ -35,7 +35,7 @@ const TeamDetails = ({ team }) => {
       {error && <p className="text-red-500">{error}</p>}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {players.map((player) => (
-          <Player key={player.id} player={player} />
+          <PlayerStats key={player.id} player={player} /> // Use PlayerStats here
         ))}
       </div>
     </div>

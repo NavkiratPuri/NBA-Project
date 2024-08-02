@@ -33,8 +33,8 @@ const TeamList = () => {
           <button
             className={`${
               index % 2 === 0
-                ? "bg-gray-500 hover:bg-gray-700"
-                : "bg-orange-300 hover:bg-orange-400"
+                ? "bg-blue-900 hover:bg-gray-400"
+                : "bg-gray-700 hover:bg-orange-400"
             } text-white w-full h-48 rounded-lg transition-colors duration-300 flex justify-center items-center`}
             onClick={() => handleTeamClick(team)}
           >
