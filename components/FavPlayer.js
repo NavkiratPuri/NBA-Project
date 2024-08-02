@@ -91,7 +91,7 @@ const FavPlayer = ({ playerId }) => {
         </button>
       </div>
       {isEditing && (
-        <div className='mt-4 text-center'>
+        <div className='mt-4 text-center text-white'>
           <FavPlayerSelector
             players={players}
             onSelectPlayer={handleSelectPlayer}

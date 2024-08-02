@@ -75,7 +75,7 @@ const FavTeam = ({ teamId }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-gray-700 rounded-lg shadow-md p-6">
       {error && <div className="text-red-500">{error}</div>}
       <FavTeamDisplay team={favTeam} />
       <div className="mt-4 text-center">
@@ -87,7 +87,7 @@ const FavTeam = ({ teamId }) => {
         </button>
       </div>
       {isEditing && (
-        <div className='mt-4 text-center'>
+        <div className='mt-4 text-center text-white'>
           <TeamSelector
             teams={teams}
             onSelectTeam={handleSelectTeam}

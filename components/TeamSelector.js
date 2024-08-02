@@ -47,7 +47,7 @@ const TeamSelector = ({ teams, onSelectTeam, label }) => {
   return (
     <div className="team-selector-container mb-4 relative" ref={dropdown}>
       <label htmlFor="team-select" className="block mb-2 font-medium">{label}</label>
-      <div className="relative">
+      <div className="relative text-black">
         <input
           id="team-input"
           type="text"

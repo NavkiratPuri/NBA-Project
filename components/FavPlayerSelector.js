@@ -47,7 +47,7 @@ const FavPlayerSelector = ({ players, onSelectPlayer, label }) => {
   return (
     <div className="player-selector-container mb-4 relative" ref={dropdown}>
       <label htmlFor="player-select" className="block mb-2 font-medium">{label}</label>
-      <div className="relative">
+      <div className="relative text-black">
         <input
           id="player-input"
           type="text"
