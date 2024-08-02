@@ -8,22 +8,110 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [playerToEdit, setPlayerToEdit] = useState({ ...player });
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [error, setError] = useState(null); // Define the error state
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    // function to handle input field changes
+    const positions = ["PG", "SG", "SF", "PF", "C", "PF-C", "SG-SF", "PG-SG", "SF-PF"];
+    const teams = {
+        ATL: "ATL",
+        BOS: "BOS",
+        BKN: "BKN",
+        CHA: "CHA",
+        CHI: "CHI",
+        CLE: "CLE",
+        DAL: "DAL",
+        DEN: "DEN",
+        DET: "DET",
+        GSW: "GSW",
+        HOU: "HOU",
+        IND: "IND",
+        LAC: "LAC",
+        LAL: "LAL",
+        MEM: "MEM",
+        MIA: "MIA",
+        MIL: "MIL",
+        MIN: "MIN",
+        NOP: "NOP",
+        NYK: "NYK",
+        OKC: "OKC",
+        ORL: "ORL",
+        PHI: "PHI",
+        PHX: "PHX",
+        POR: "POR",
+        SAC: "SAC",
+        SAS: "SAS",
+        TOR: "TOR",
+        UTA: "UTA",
+        WAS: "WAS",
+        TOT: "TOT",
+    };
+
+    const wholeNumberFields = ["Rk", "Age", "G", "GS"];
+    const percentageFields = ["FGPercent", "threePPercent", "twoPPercent", "eFGPercent", "FTPercent"];
+    const numericFields = [
+        "Rk",
+        "Age",
+        "G",
+        "GS",
+        "MP",
+        "FG",
+        "FGA",
+        "FGPercent",
+        "threeP",
+        "threePA",
+        "threePPercent",
+        "twoP",
+        "twoPA",
+        "twoPPercent",
+        "eFGPercent",
+        "FT",
+        "FTA",
+        "FTPercent",
+        "ORB",
+        "DRB",
+        "TRB",
+        "AST",
+        "STL",
+        "BLK",
+        "TOV",
+        "PF",
+        "PTS",
+    ];
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const numericFields = ['Age', 'G', 'GS', 'MP', 'FG', 'FGA', 'FGPercent', 'threeP', 'threePA', 'threePPercent', 'twoP', 'twoPA', 'twoPPercent', 'eFGPercent', 'FT', 'FTA', 'FTPercent', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS'];
-        setPlayerToEdit(prev => ({
+        const numericValue = parseFloat(value);
+
+        if (name === "Player" && /\d/.test(value)) {
+            setError("Player name should not contain numbers.");
+            return;
+        } else if (percentageFields.includes(name) && (numericValue > 1 || numericValue < 0)) {
+            setError(`${name} should be between 0 and 1.`);
+            return;
+        } else if (numericFields.includes(name) && numericValue < 0) {
+            setError(`${name} cannot be negative.`);
+            return;
+        } else {
+            setError("");
+        }
+
+        setPlayerToEdit((prev) => ({
             ...prev,
-            [name]: numericFields.includes(name) ? parseFloat(value) : value
+            [name]: numericFields.includes(name) ? (numericValue || numericValue === 0 ? numericValue : "") : value,
         }));
     };
 
-    // function to handle form submission
     const handleEditSubmit = (e) => {
         e.preventDefault();
+
+        // Check if all fields are filled
+        for (const key in playerToEdit) {
+            if (playerToEdit[key] === "") {
+                setError("All fields must be filled.");
+                return;
+            }
+        }
+
         setIsLoading(true);
         axios.patch(`/api/player/${player.id}`, playerToEdit)
             .then((res) => {
@@ -36,11 +124,11 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
             })
             .finally(() => {
                 setShowEditModal(false);
+                setIsLoading(false);
                 Router.refresh();
             });
     };
 
-    // function to handle player deletion using player id
     const handleDeletePlayer = () => {
         axios.delete(`/api/player/${player.id}`)
             .then((res) => {
@@ -55,6 +143,7 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
                 Router.refresh();
             });
     };
+
     return (
         <>
             <tr>
@@ -97,18 +186,67 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
             {showEditModal && (
                 <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
                     <form onSubmit={handleEditSubmit} className="w-full px-5 pb-6">
-                        {Object.keys(playerToEdit).map(key => (
-                            <input
-                                key={key}
-                                type={typeof playerToEdit[key] === 'number' ? 'number' : 'text'}
-                                placeholder={key}
-                                name={key}
-                                className="w-full p-2 mb-3"
-                                value={playerToEdit[key] || ''}
-                                onChange={handleChange}
-                                step="0.1"
-                            />
-                        ))}
+                        {Object.keys(playerToEdit).map(key => {
+                            if (key === "Pos") {
+                                return (
+                                    <div key={key} className="flex flex-col space-y-2">
+                                        <label htmlFor={key} className="text-sm font-medium text-gray-700">{key}</label>
+                                        <select
+                                            id={key}
+                                            name={key}
+                                            value={playerToEdit[key]}
+                                            onChange={handleChange}
+                                            className="w-full p-2 border border-gray-300 rounded-md"
+                                        >
+                                            <option value="">Select Position</option>
+                                            {positions.map((position) => (
+                                                <option key={position} value={position}>
+                                                    {position}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                );
+                            } else if (key === "Tm") {
+                                return (
+                                    <div key={key} className="flex flex-col space-y-2">
+                                        <label htmlFor={key} className="text-sm font-medium text-gray-700">{key}</label>
+                                        <select
+                                            id={key}
+                                            name={key}
+                                            value={playerToEdit[key]}
+                                            onChange={handleChange}
+                                            className="w-full p-2 border border-gray-300 rounded-md"
+                                        >
+                                            <option value="">Select Team</option>
+                                            {Object.keys(teams).map((team) => (
+                                                <option key={team} value={team}>
+                                                    {team}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                );
+                            } else {
+                                return (
+                                    <div key={key} className="flex flex-col space-y-2">
+                                        <label htmlFor={key} className="text-sm font-medium text-gray-700">{key}</label>
+                                        <input
+                                            id={key}
+                                            type={numericFields.includes(key) ? "number" : "text"}
+                                            name={key}
+                                            placeholder={key}
+                                            value={playerToEdit[key] || ""}
+                                            onChange={handleChange}
+                                            className="w-full p-2 border border-gray-300 rounded-md"
+                                            step={percentageFields.includes(key) ? "0.001" : wholeNumberFields.includes(key) ? "1" : "0.1"}
+                                            min="0"
+                                        />
+                                    </div>
+                                );
+                            }
+                        })}
+                        {error && <p className="text-red-500">{error}</p>}
                         <button type="submit" disabled={isLoading} className="bg-blue-700 text-white px-5 py-2">Update Player</button>
                     </form>
                 </Modal>
@@ -117,12 +255,13 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
                 <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
                     <div>
                         <p className="text-lg text-grey-600 font-semibold my-2">Are you sure you want to delete this player?</p>
-                        <button onClick={handleDeletePlayer} className="bg-red-700 text-white mr-2 font-bold">Yes</button>
-                        <button onClick={() => setShowDeleteModal(false)} className="bg-blue-800 text-white font-bold">No</button>
+                        <div className="flex justify-end mt-4">
+                            <button onClick={handleDeletePlayer} className="bg-red-700 text-white px-8 py-4 mr-4 font-bold text-xl">Yes</button>
+                            <button onClick={() => setShowDeleteModal(false)} className="bg-blue-800 text-white px-8 py-4 font-bold text-xl">No</button>
+                        </div>
                     </div>
                 </Modal>
             )}
-            {error && <p className="text-red-500">{error}</p>}
         </>
     );
 };
