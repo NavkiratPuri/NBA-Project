@@ -3,7 +3,7 @@ import React from 'react';
 
 const LeaderboardTrivia = ({ highScores }) => {
   return (
-    <div className="p-4 bg-gray-800 text-white min-h-screen">
+    <div className="p-4 bg-gray-700 text-white min-h-screen">
       <h1 className="text-3xl font-bold text-center mb-4">Trivia</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-gray-900 shadow-md rounded-lg">

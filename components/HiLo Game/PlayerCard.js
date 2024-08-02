@@ -56,7 +56,7 @@ const PlayerCard = ({
       {!hintUsed && (
         <button
           onClick={() => handleHintButtonClick(index)}
-          className="absolute bottom-10 bg-green-500 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded mt-4"
+          className="absolute bottom-10 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded mt-4"
         >
           Hint
         </button>

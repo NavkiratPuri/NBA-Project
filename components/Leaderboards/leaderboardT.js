@@ -3,7 +3,7 @@ import React from 'react';
 
 const LeaderboardT = ({ highScores }) => {
   return (
-    <div className="p-4 bg-gray-800 text-white min-h-screen">
+    <div className="p-4 bg-gray-700 text-white min-h-screen">
       <h1 className="text-3xl font-bold text-center mb-4">Team Builder</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-gray-900 shadow-md rounded-lg">
@@ -16,7 +16,7 @@ const LeaderboardT = ({ highScores }) => {
           </thead>
           <tbody>
             {highScores.map((user, index) => {
-              let rowClass = 'bg-gray-600'; // Default background color
+              let rowClass = 'bg-gray-800'; // Default background color
 
               //Top 3
               if (index === 0) rowClass = 'bg-gradient-to-r from-orange-500 to-yellow-500';

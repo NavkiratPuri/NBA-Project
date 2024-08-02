@@ -24,7 +24,7 @@ const Hilo = () => {
   }, [status, router]);
 
   return (
-    <div className="flex flex-col min-h-screen w-full">
+    <div className="flex flex-col min-h-screen w-full bg-gray-500">
       <Header />
       <main className="flex-grow">
       {/* <main className="flex-grow justify-content content-center"> */}
