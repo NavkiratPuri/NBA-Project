@@ -43,8 +43,13 @@ const Profile = () => {
         <h1 className="text-2xl font-semibold">
           Profile</h1>
         <p>Name: {profile.name}</p>
-        <p>Email: {profile.email}</p>
+        
+        
         {session.user.isAdmin && <p>Admin Status: Yes</p>}
+        <a href="/edit-account">Edit Account</a>
+
+
+
         {/* {!session.user.isAdmin && <p>Admin Status: No</p>} */}
         {/* <p>Favorite Player: {profile.favPlayerId}</p>
         <p>Favorite Team: {profile.favTeamId}</p>
