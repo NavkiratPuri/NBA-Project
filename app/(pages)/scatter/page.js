@@ -17,6 +17,9 @@ import {
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 // Register necessary components
 ChartJS.register(
   CategoryScale,
@@ -57,6 +60,11 @@ const ScatterChartPage = () => {
     wsfoureight: 0,
   });
   const [isGlossaryOpen, setIsGlossaryOpen] = useState(false); // State to control glossary modal
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -157,6 +165,20 @@ const ScatterChartPage = () => {
       },
     },
   };
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+    } else if (status === "authenticated") {
+      
+        setLoading(false);
+      
+    }
+  }, [status, router]);
+
+  if (status === "loading" || loading) {
+      return <p>Loading...</p>;
+  }
 
   return (
     <div className="bg-gray-700 "> {/* Make all text white */}

@@ -9,11 +9,15 @@ import { calculatePlayerValue } from "@/utils/calculateValue";
 import DraftPicks from "@/components/DraftPicks";
 import { avgStats, AvgModal } from "@/utils/avgStats";
 import { Glossary } from "@/utils/glossary";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 
 const Trade = () => {
   const [players, setPlayers] = useState([]);
   const [teamAPlayers, setTeamAPlayers] = useState([]);
   const [teamBPlayers, setTeamBPlayers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [weights, setWeights] = useState({
     ppg: 1,
@@ -45,6 +49,9 @@ const Trade = () => {
   const [isGlossaryOpen, setGlossaryOpen] = useState(false);
   const openGlossary = () => setGlossaryOpen(true);
   const closeGlossary = () => setGlossaryOpen(false);
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -149,6 +156,20 @@ const Trade = () => {
     setTeamBStats(avgStatsB);
     setIsAvgStatsModalOpen(true);
   };
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+    } else if (status === "authenticated") {
+      
+        setLoading(false);
+      
+    }
+  }, [status, router]);
+
+  if (status === "loading" || loading) {
+      return <p>Loading...</p>;
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-700">

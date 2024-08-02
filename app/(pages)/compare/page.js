@@ -7,6 +7,8 @@ import Footer from "@/components/footer";
 import playerData from "@/utils/playerData";
 import { allAvgStats } from "@/utils/allAvg";
 import { calculatePlayerValue } from "@/utils/calculateValue";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const processPlayerData = (data, playerName) => {
   const playerData = data.filter((player) => player.Player === playerName);
@@ -40,6 +42,9 @@ const Compare = () => {
   const [category, setCategory] = useState("TotalValue");
   const [allPlayersAverages, setAllPlayersAverages] = useState(null);
   const [selectAllMode, setSelectAllMode] = useState(false);
+  const { data: session, status } = useSession();
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -160,6 +165,20 @@ const Compare = () => {
       createChart(player1, player2, category);
     }
   }, [selectAllMode, category, player1, player2]);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+    } else if (status === "authenticated") {
+      
+        setLoading(false);
+      
+    }
+  }, [status, router]);
+ 
+  if (status === "loading" || loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="bg-gray-700">
