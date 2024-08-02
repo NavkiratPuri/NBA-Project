@@ -35,7 +35,7 @@ const Add = () => {
       </h1>
       <div className="flex-grow">
         <PlayerList players={players} />
-        <div className="">
+        <div className="text-center">
           <AddPlayer />
         </div>
       </div>
