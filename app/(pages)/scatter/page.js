@@ -5,7 +5,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Scatter } from "react-chartjs-2";
 import playerData from "@/utils/playerData";
-import { GlossaryWS } from "@/utils/glossaryWs"; // Import the GlossaryWS component
+import { GlossaryWS } from "@/utils/glossaryWs";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,7 +16,6 @@ import {
   Legend,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -59,12 +58,11 @@ const ScatterChartPage = () => {
     bpm: 0,
     wsfoureight: 0,
   });
-  const [isGlossaryOpen, setIsGlossaryOpen] = useState(false); // State to control glossary modal
+  const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
 
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
     const fetchPlayers = async () => {
@@ -100,7 +98,7 @@ const ScatterChartPage = () => {
           y: player.BPM,
           name: player.Player,
         })),
-        backgroundColor: "red",
+        backgroundColor: "rgb(252 211 77)",
         pointRadius: 5,
       },
       {
@@ -110,7 +108,7 @@ const ScatterChartPage = () => {
           y: player.BPM,
           name: player.Player,
         })),
-        backgroundColor: "blue",
+        backgroundColor: "rgb(2 132 199)",
         pointRadius: 5,
       },
     ],
@@ -124,11 +122,11 @@ const ScatterChartPage = () => {
         },
         align: "end",
         anchor: "end",
-        color: "white", // Data label color
+        color: "white",
       },
       legend: {
         labels: {
-          color: "white", // Legend text color
+          color: "white",
         },
       },
     },
@@ -138,14 +136,14 @@ const ScatterChartPage = () => {
         title: {
           display: true,
           text: "WS/48",
-          color: "white", // Axis title color
+          color: "white",
         },
         ticks: {
           stepSize: 0.025,
-          color: "white", // Tick color
+          color: "white",
         },
         grid: {
-          color: "rgba(255, 255, 255, 0.2)", // Grid line color
+          color: "rgba(255, 255, 255, 0.2)",
         },
       },
       y: {
@@ -153,14 +151,14 @@ const ScatterChartPage = () => {
         title: {
           display: true,
           text: "BPM",
-          color: "white", // Axis title color
+          color: "white",
         },
         ticks: {
           stepSize: 0.5,
-          color: "white", // Tick color
+          color: "white",
         },
         grid: {
-          color: "rgba(255, 255, 255, 0.2)", // Grid line color
+          color: "rgba(255, 255, 255, 0.2)",
         },
       },
     },
@@ -170,22 +168,99 @@ const ScatterChartPage = () => {
     if (status === "unauthenticated") {
       router.push("/");
     } else if (status === "authenticated") {
-      
-        setLoading(false);
-      
+      setLoading(false);
     }
   }, [status, router]);
 
   if (status === "loading" || loading) {
-      return <p>Loading...</p>;
+    return <p>Loading...</p>;
   }
 
+  const demo = () => {
+    const teamAPlayersList = [
+      { name: "LeBron James", year: 2024, team: "LAL" },
+      { name: "Stephen Curry", year: 2024, team: "GSW" },
+      { name: "Anthony Davis", year: 2024, team: "LAL" },
+      { name: "Bam Adebayo", year: 2024, team: "MIA" },
+      { name: "Devin Booker", year: 2024, team: "PHO" },
+      { name: "Kevin Durant", year: 2024, team: "PHO" },
+      { name: "Anthony Edwards", year: 2024, team: "MIN" },
+      { name: "Joel Embiid", year: 2024, team: "PHI" },
+      { name: "Tyrese Haliburton", year: 2024, team: "IND" },
+      { name: "Jrue Holiday", year: 2024, team: "BOS" },
+      { name: "Jayson Tatum", year: 2024, team: "BOS" },
+      { name: "Derrick White", year: 2024, team: "BOS" },
+    ];
+
+    const teamBPlayersList = [
+      { name: "Charles Barkley", year: 1992, team: "PHI" },
+      { name: "Larry Bird", year: 1992, team: "BOS" },
+      { name: "Clyde Drexler", year: 1992, team: "POR" },
+      { name: "Patrick Ewing", year: 1992, team: "NYK" },
+      { name: "Magic Johnson", year: 1992, team: "LAL" },
+      { name: "Michael Jordan", year: 1992, team: "CHI" },
+      { name: "Karl Malone", year: 1992, team: "UTA" },
+      { name: "Chris Mullin", year: 1992, team: "GSW" },
+      { name: "Scottie Pippen", year: 1992, team: "CHI" },
+      { name: "David Robinson", year: 1992, team: "SAS" },
+      { name: "John Stockton", year: 1992, team: "UTA" },
+      { name: "Christian Laettner", year: 1992, team: "MIN" },
+    ];
+
+    const selectedTeamAPlayers = players.filter((player) =>
+      teamAPlayersList.some(
+        (p) =>
+          p.name === player.Player &&
+          p.year === parseInt(player.Year) &&
+          p.team === player.Tm
+      )
+    );
+
+    const selectedTeamBPlayers = players.filter((player) =>
+      teamBPlayersList.some(
+        (p) =>
+          p.name === player.Player &&
+          p.year === parseInt(player.Year) &&
+          p.team === player.Tm
+      )
+    );
+
+    selectPlayers(selectedTeamAPlayers, "A");
+    selectPlayers(selectedTeamBPlayers, "B");
+  };
+
+  const clearAll = () => {
+    setTeamAPlayers([]);
+    setTeamBPlayers([]);
+  };
   return (
-    <div className="bg-gray-700 "> {/* Make all text white */}
+    <div className="bg-gray-700 ">
       <Header />
+      <div className="w-full flex justify-center mt-4">
+        <button
+          className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded w-1/5 m-2"
+          onClick={demo}
+        >
+          Demonstrate
+        </button>
+        <button
+          className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded w-1/5 m-2 cursor-pointer"
+          onClick={() => setIsGlossaryOpen(true)}
+        >
+          Glossary
+        </button>
+        <button
+          className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded w-1/5 m-2"
+          onClick={clearAll}
+        >
+          Clear All
+        </button>
+      </div>
       <main className="flex flex-wrap m-2">
         <div className="w-full md:w-1/2 p-2">
-          <h2 className="text-xl font-bold mb-2 text-white">Team A</h2>
+          <h2 className="text-xl font-bold mb-2 text-amber-300 text-center">
+            Team A
+          </h2>
           <PlayerSelector
             players={players}
             onSelectPlayer={(selectedPlayers) =>
@@ -193,13 +268,15 @@ const ScatterChartPage = () => {
             }
             multiSelect={true}
           />
-          <p className="text-white">
-            Averages: BPM: {teamAAverages.bpm.toFixed(2)}, WS/48:{" "}
+          <p className="text-amber-300 text-center font-bold text-2xl mt-8">
+            BPM: {teamAAverages.bpm.toFixed(2)} - WS/48:{" "}
             {teamAAverages.wsfoureight.toFixed(2)}
           </p>
         </div>
         <div className="w-full md:w-1/2 p-2">
-          <h2 className="text-xl font-bold mb-2 text-white">Team B</h2>
+          <h2 className="text-xl font-bold mb-2 text--500 text-sky-300 text-center">
+            Team B
+          </h2>
           <PlayerSelector
             players={players}
             onSelectPlayer={(selectedPlayers) =>
@@ -207,25 +284,21 @@ const ScatterChartPage = () => {
             }
             multiSelect={true}
           />
-          <p className="text-white">
-            Averages: BPM: {teamBAverages.bpm.toFixed(2)}, WS/48:{" "}
+          <p className="text-sky-300 text-center font-bold text-2xl mt-8">
+            BPM: {teamBAverages.bpm.toFixed(2)} - WS/48:{" "}
             {teamBAverages.wsfoureight.toFixed(2)}
           </p>
         </div>
-        <div className="w-full flex justify-center mt-4">
-          <button
-            className="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600 rounded cursor-pointer"
-            onClick={() => setIsGlossaryOpen(true)}
-          >
-            Open Glossary
-          </button>
-        </div>
+
         <div className="w-full mt-4">
           <Scatter data={scatterData} options={options} />
         </div>
       </main>
       <Footer />
-      <GlossaryWS isOpen={isGlossaryOpen} onClose={() => setIsGlossaryOpen(false)} />
+      <GlossaryWS
+        isOpen={isGlossaryOpen}
+        onClose={() => setIsGlossaryOpen(false)}
+      />
     </div>
   );
 };
