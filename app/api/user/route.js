@@ -58,7 +58,7 @@ export const PATCH = async (req) => {
     if (name) updateData.name = name;
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
-      updateData.password = hashedPassword;
+      updateData.hashedPassword = hashedPassword;
     }
 
     if (gameType) {

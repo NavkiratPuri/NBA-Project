@@ -40,7 +40,7 @@ const EditAccount = () => {
     axios
       .patch("/api/user", profile)
       .then(() => {
-        setMessage("Profile updated successfully.");
+        setMessage("Profile updated successfully. Please log in again for all changes to take place.");
       })
       .catch((error) => {
         setError(error.response?.data.message || "An error occurred. Please try again later.");
@@ -76,6 +76,7 @@ const EditAccount = () => {
   }
 
   if (status === "unauthenticated") {
+    router.push("/");
     return <div>You need to be authenticated to edit your account.</div>;
   }
 
