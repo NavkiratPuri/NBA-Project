@@ -71,11 +71,11 @@ const Request = () => {
 
   if (isAdmin) {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-gray-700">
         <Header />
         <main className="flex-grow">
           <div className="mt-4 p-4 rounded-lg text-center">
-            <h1 className="text-2xl font-semibold">You are already an Admin</h1>
+            <h1 className="text-2xl font-semibold text-white">You are already an Admin!</h1>
           </div>
         </main>
         <Footer />
@@ -85,16 +85,16 @@ const Request = () => {
 
   if (status === "authenticated") {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-gray-700">
         <Header />
         <main className="flex-grow">
-          <div className="max-w-md mx-auto mt-10 p-4 border rounded-md shadow-md">
-            <h2 className="text-xl font-bold mb-4">Request Admin Privileges</h2>
+          <div className="max-w-md mx-auto mt-10 p-4 border rounded-md shadow-md border-indigo-700 bg-gray-800">
+            <h2 className="text-xl font-bold mb-4 text-white">Request Admin Privileges</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label
                   htmlFor="message"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-white"
                 >
                   Why do you want to be an admin?
                 </label>
@@ -108,13 +108,13 @@ const Request = () => {
                   }}
                   maxLength="125"
                   rows="3"
-                  className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-indigo-200"
+                  className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-indigo-200 text-black"
                   placeholder="Explain in 125 characters or less..."
                   required
                 ></textarea>
                 <p
                   className={`text-sm mt-1 ${
-                    message.length > 125 ? "text-red-600" : "text-gray-600"
+                    message.length > 125 ? "text-red-600" : "text-white"
                   }`}
                 >
                   {message.length}/125

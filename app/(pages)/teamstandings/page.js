@@ -21,7 +21,7 @@ const Teams = () => {
     }
 
     return (
-        <div>
+        <div className='bg-gray-700'>
             <Header />
             <TeamStandings />
             <Footer />
