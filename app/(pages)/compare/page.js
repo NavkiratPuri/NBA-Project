@@ -170,10 +170,9 @@ const Compare = () => {
     if (status === "unauthenticated") {
       router.push("/");
     } else if (status === "authenticated") {
-      fetchNbaNews().then((data) => {
-        setArticles(data);
+      
         setLoading(false);
-      });
+      
     }
   }, [status, router]);
  
