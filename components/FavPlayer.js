@@ -85,7 +85,7 @@ const FavPlayer = ({ playerId }) => {
       <div className="mt-4 text-center">
         <button
           onClick={() => setIsEditing(!isEditing)}
-          className="px-2 py-1 bg-indigo-700 text-white rounded-lg hover:bg-indigo-900 transition duration-200"
+          className="px-2 py-1 bg-indigo-700 text-white  text-sm rounded-lg hover:bg-indigo-900 transition duration-200"
         >
           {isEditing ? 'Cancel' : 'Edit Favorite Player'}
         </button>
@@ -97,7 +97,7 @@ const FavPlayer = ({ playerId }) => {
             onSelectPlayer={handleSelectPlayer}
             label="Change Favorite Player:"
           />
-          <button onClick={handleSave} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-200">
+          <button onClick={handleSave} className="mt-4 px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-indigo-800 transition duration-200">
             Save
           </button>
         </div>
