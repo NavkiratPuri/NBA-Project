@@ -21,7 +21,7 @@ const DraftPicks = ({
   return (
     <div>
       <div className="flex flex-col-">
-        <p className="grid items-start mt-4 mr-4 text-md font-semibold">
+        <p className="grid items-start mt-4 mr-4 text-md font-semibold text-white">
           Add Draft Pick:
         </p>
         {availableDraftPicks.map((pick, index) => (
