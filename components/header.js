@@ -21,6 +21,7 @@ const Header = () => {
     { label: "Trade", href: "/trade" },
     { label: "Charts", href: "#" },
     { label: "Standings", href: "/standings" },
+    { label: "Teams", href: "/teams" },
     { label: "Games", href: "#" },
   ];
 
