@@ -189,26 +189,26 @@ const AddPlayer = () => {
     <div>
       <button
         onClick={() => setShowModal(true)}
-        className="bg-blue-700 text-white px-2 py-1 rounded-md hover:bg-blue-800"
+        className="bg-orange-500 text-white px-2 py-1 rounded-md hover:bg-orange-600"
       >
         Add New Player
       </button>
       {showModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 relative w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg shadow-lg p-6 relative w-full max-w-md max-h-[90vh] overflow-y-auto">
             <button
               className="absolute top-0 right-0 mt-2 mr-2 text-gray-700 text-2xl"
               onClick={() => setShowModal(false)}
             >
               ×
             </button>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <h2 className="text-xl font-bold mb-4">Add a New Player</h2>
+            <form onSubmit={handleSubmit} className="space-y-4 bg-gray-700 p-4 rounded-lg">
+              <h2 className="text-xl font-bold mb-4 text-white">Add a New Player</h2>
               {Object.keys(input).map((key) => {
                 if (key === "Pos") {
                   return (
                     <div key={key} className="flex flex-col space-y-2">
-                      <label htmlFor={key} className="text-sm font-medium text-gray-700">
+                      <label htmlFor={key} className="text-sm font-medium text-white">
                         {key}
                       </label>
                       <select
@@ -230,7 +230,7 @@ const AddPlayer = () => {
                 } else if (key === "Tm") {
                   return (
                     <div key={key} className="flex flex-col space-y-2">
-                      <label htmlFor={key} className="text-sm font-medium text-gray-700">
+                      <label htmlFor={key} className="text-sm font-medium text-white">
                         {key}
                       </label>
                       <select
@@ -252,7 +252,7 @@ const AddPlayer = () => {
                 } else {
                   return (
                     <div key={key} className="flex flex-col space-y-2">
-                      <label htmlFor={key} className="text-sm font-medium text-gray-700">
+                      <label htmlFor={key} className="text-sm font-medium text-white">
                         {key}
                       </label>
                       <input
@@ -273,7 +273,7 @@ const AddPlayer = () => {
               {error && <p className="text-red-500">{error}</p>}
               <button
                 type="submit"
-                className="w-full mt-4 bg-blue-700 text-white px-5 py-2 rounded-md hover:bg-blue-800"
+                className="w-full mt-4 bg-orange-500 text-white px-5 py-2 rounded-md hover:bg-orange-600"
               >
                 Submit
               </button>

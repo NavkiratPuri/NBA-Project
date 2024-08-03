@@ -33,6 +33,8 @@ const HiLo = ({ onGameEnd }) => {
     const [hintUsed, setHintUsed] = useState(false);
     const [player1Name, setPlayer1Name] = useState("");
     const [player2Name, setPlayer2Name] = useState("");
+    const [player1Image, setPlayer1Image] = useState("");
+    const [player2Image, setPlayer2Image] = useState("");
 
     useEffect(() => {
         startNewTurn();
@@ -50,21 +52,36 @@ const HiLo = ({ onGameEnd }) => {
             setPoints(0);
         }
 
-        const shuffledCategories = shuffle([...categories]);
-        const randomCategory = shuffledCategories[0];
-        setSelectedCategory(randomCategory);
-        setDisplayCategory(randomCategory.label);
+        // Clear the current images
+        setPlayer1Image("");
+        setPlayer2Image("");
 
-        const playerData = await fetchPlayer();
-        if (playerData && playerData.length >= 2) {
-            const shuffledPlayers = shuffle(playerData).slice(0, 2);
-            setPlayers(shuffledPlayers);
-            setComparisonResult("");
+        setTimeout(async () => {
+            const shuffledCategories = shuffle([...categories]);
+            const randomCategory = shuffledCategories[0];
+            setSelectedCategory(randomCategory);
+            setDisplayCategory(randomCategory.label);
 
-            // Update player names
-            setPlayer1Name(shuffledPlayers[0].Player);
-            setPlayer2Name(shuffledPlayers[1].Player);
-        }
+            const playerData = await fetchPlayer();
+            if (playerData && playerData.length >= 2) {
+                const shuffledPlayers = shuffle(playerData).slice(0, 2);
+                setPlayers(shuffledPlayers);
+                setComparisonResult("");
+
+                // Update player names
+                setPlayer1Name(shuffledPlayers[0].Player);
+                setPlayer2Name(shuffledPlayers[1].Player);
+
+                // Fetch and set images
+                const [image1, image2] = await Promise.all([
+                    fetchPlayerImage(shuffledPlayers[0].Player),
+                    fetchPlayerImage(shuffledPlayers[1].Player)
+                ]);
+
+                setPlayer1Image(image1);
+                setPlayer2Image(image2);
+            }
+        }, 500); // Delay to clear the images before fetching new ones
     };
 
     const handlePlayerButtonClick = (playerIndex) => {
@@ -183,6 +200,7 @@ const HiLo = ({ onGameEnd }) => {
                                         selectedCategory={selectedCategory} // Pass selectedCategory to PlayerCard
                                         handlePlayerButtonClick={handlePlayerButtonClick}
                                         handleHintButtonClick={handleHintButtonClick}
+                                        image={index === 0 ? player1Image : player2Image}
                                     />
                                 ))}
                             </div>

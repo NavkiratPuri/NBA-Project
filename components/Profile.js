@@ -45,7 +45,7 @@ const Profile = () => {
   return (
     <div className="p-4 bg-gray-50 rounded-lg shadow-md bg-gray-800">
       <h2 className="text-2xl font-semibold mb-4 text-center text-white">{profile.name}</h2>
-      {session.user.isAdmin && <p className="text-lg mb-2 text-center"><span className="font-semibold">App Admin</span></p>}
+      {session.user.isAdmin && <p className="text-lg mb-2 text-center"><span className="font-semibold text-orange-400">App Admin</span></p>}
       <div className="text-center mb-4">
         <a
           href="/edit-account"
