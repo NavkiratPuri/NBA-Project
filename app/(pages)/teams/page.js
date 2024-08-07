@@ -76,11 +76,14 @@ const TeamPlayers = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-gray-600">
       <Header />
       <main className="flex-grow p-4">
         <div className="mb-4">
-          <label htmlFor="team" className="block text-lg font-bold mb-2">
+          <label
+            htmlFor="team"
+            className="block text-lg font-bold mb-2 text-white"
+          >
             Select Team:
           </label>
           <select
@@ -98,7 +101,10 @@ const TeamPlayers = () => {
           </select>
         </div>
         <div className="mb-4">
-          <label htmlFor="year" className="block text-lg font-bold mb-2">
+          <label
+            htmlFor="year"
+            className="block text-lg font-bold mb-2 text-white"
+          >
             Select Year:
           </label>
           <select

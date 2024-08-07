@@ -37,9 +37,11 @@ const TeamPlayers = () => {
   }
 
   return (
-    <div className="container mx-auto">
-      <h1 className="text-3xl font-bold text-center my-8">{team} Players</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="flex flex-col min-h-screen bg-gray-600">
+      <h1 className="text-3xl font-bold text-center text-white my-8">
+        {team} Players
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mx-4">
         {players.map((player) => (
           <div key={player.id} className="p-4 bg-gray-100 rounded-lg shadow-md">
             <h2 className="text-xl font-bold">{player.name}</h2>
