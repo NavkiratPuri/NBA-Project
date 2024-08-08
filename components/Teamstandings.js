@@ -20,8 +20,9 @@ const TeamStandings = () => {
     const fetchStandings = async () => {
         try {
             const response = await axios.get('/api/team');
-            setStandings(response.data);
-            setFilteredStandings(response.data);
+            const rankedStandings = response.data.map((team, index) => ({ ...team, rank: index + 1 }));
+            setStandings(rankedStandings);
+            setFilteredStandings(rankedStandings);
         } catch (error) {
             console.error('Error fetching standings:', error);
             setError('Error fetching standings.');
