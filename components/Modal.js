@@ -8,7 +8,7 @@ const Modal = ({ children, showModal, setShowModal }) => {
             {showModal && (
                 <div className="bg-black/50 fixed inset-0 z-50 overflow-y-auto"> {/* Added overflow-y-auto for overall modal */}
                     <div className="flex justify-center items-center min-h-screen">
-                        <div className="relative p-5 bg-slate-300 w-1/2 max-w-4xl mx-auto"> {/* Added max-w-4xl for responsiveness */}
+                        <div className="relative p-5 bg-gray-800 w-1/2 max-w-4xl mx-auto rounded-lg"> {/* Added max-w-4xl for responsiveness */}
                             <button
                                 onClick={() => setShowModal(false)}
                                 className="absolute top-0 right-0 text-2xl p-2"

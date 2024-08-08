@@ -30,7 +30,7 @@ const Home = () => {
   }
  
   return (
-    <div className="flex flex-col min-h-screen bg-gray-600">
+    <div className="flex flex-col min-h-screen bg-gray-700">
       <Header />
       <main className="flex-grow">
         <div className="container mx-auto px-4 py-8 ">
