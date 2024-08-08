@@ -48,7 +48,7 @@ const PlayerStats = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-700">
+    <div className="flex flex-col min-h-screen bg-gray-600">
       <Header />
       <h1 className="text-3xl font-bold text-center text-white mt-4 mb-4 ">
         Player Stats

@@ -45,16 +45,16 @@ const Add = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-700">
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <h1 className="text-3xl font-bold text-center text-gray-800 mt-4 mb-4 text-white">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mt-4 mb-4">
         Modify Player
       </h1>
-      <div className="text-center justify-center">
-          <AddPlayer />
-        </div>
       <div className="flex-grow">
         <PlayerList players={players} />
+        <div className="text-center">
+          <AddPlayer />
+        </div>
       </div>
       <Footer />
     </div>

@@ -103,7 +103,7 @@ const PlayerList = ({ players }) => {
         <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 text-xs">
-              <thead className="bg-orange-400">
+              <thead className="bg-gray-50">
                 <tr>
                   {[
                     "Rk",
@@ -138,13 +138,13 @@ const PlayerList = ({ players }) => {
                   ].map((key) => (
                     <th
                       key={key}
-                      className="px-2 py-1 text-left font-medium text-white uppercase tracking-wider cursor-pointer"
+                      className="px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                       onClick={() => handleSort(key)}
                     >
                       {key} {getArrow(key)}
                     </th>
                   ))}
-                  <th className="px-2 py-1 text-left font-medium text-black uppercase tracking-wider">
+                  <th className="px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -185,11 +185,11 @@ const PlayerList = ({ players }) => {
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-md disabled:bg-gray-600"
+            className="px-2 py-1 bg-blue-700 text-white rounded-md disabled:bg-gray-400"
           >
             Previous
           </button>
-          <span className="p-2 bg-gray-800 text-white rounded-lg">Page {currentPage}</span>
+          <span className="px-2 py-1">{currentPage}</span>
           <button
             onClick={() =>
               setCurrentPage((prev) =>
@@ -197,7 +197,7 @@ const PlayerList = ({ players }) => {
               )
             }
             disabled={currentPage * PAGE_SIZE >= filteredPlayers.length}
-            className="px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-md disabled:bg-gray-600"
+            className="px-2 py-1 bg-blue-700 text-white rounded-md disabled:bg-gray-400"
           >
             Next
           </button>
@@ -209,14 +209,14 @@ const PlayerList = ({ players }) => {
           setShowModal={(show) => setModalInfo({ ...modalInfo, show })}
         >
           {modalInfo.type === "edit" && (
-            <form onSubmit={handleEditSubmit} className="w-full px-5 pb-6 bg-gray-700">
+            <form onSubmit={handleEditSubmit} className="w-full px-5 pb-6">
               {Object.keys(modalInfo.player).map((key) => (
                 <input
                   key={key}
                   type={typeof modalInfo.player[key] === "number" ? "number" : "text"}
                   placeholder={key}
                   name={key}
-                  className="w-full p-2 mb-3 "
+                  className="w-full p-2 mb-3"
                   value={modalInfo.player[key] || ""}
                   onChange={handleChange}
                   step="0.1"
@@ -225,7 +225,7 @@ const PlayerList = ({ players }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 "
+                className="bg-blue-700 text-white px-5 py-2"
               >
                 Update Player
               </button>

@@ -9,7 +9,7 @@ const Footer = () => {
                     © NBA Player App. All rights reserved.
                 </p>
                 <div className="flex justify-center space-x-4 mt-2">
-                    <a href="/request" className="hover:text-orange-400 text-xs">Request Admin</a>
+                    <a href="/request" className="hover:text-gray-400 text-xs">Request Admin</a>
                 </div>
             </div>
         </footer>

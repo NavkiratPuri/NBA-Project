@@ -147,51 +147,50 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
     return (
         <>
             <tr>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.Rk}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.Player}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.Pos}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.Tm}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.G}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.GS}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.MP}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.FG}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.FGA}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.FGPercent}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.threeP}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.threePA}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.threePPercent}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.twoP}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.twoPA}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.twoPPercent}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.eFGPercent}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.FT}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.FTA}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.FTPercent}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.ORB}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.DRB}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.TRB}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.AST}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.STL}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.BLK}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.TOV}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.PF}</td>
-                <td className="px-4 py-2 hover:bg-gray-400 hover:text-white">{player.PTS}</td>
+                <td className="px-4 py-2">{player.Rk}</td>
+                <td className="px-4 py-2">{player.Player}</td>
+                <td className="px-4 py-2">{player.Pos}</td>
+                <td className="px-4 py-2">{player.Tm}</td>
+                <td className="px-4 py-2">{player.G}</td>
+                <td className="px-4 py-2">{player.GS}</td>
+                <td className="px-4 py-2">{player.MP}</td>
+                <td className="px-4 py-2">{player.FG}</td>
+                <td className="px-4 py-2">{player.FGA}</td>
+                <td className="px-4 py-2">{player.FGPercent}</td>
+                <td className="px-4 py-2">{player.threeP}</td>
+                <td className="px-4 py-2">{player.threePA}</td>
+                <td className="px-4 py-2">{player.threePPercent}</td>
+                <td className="px-4 py-2">{player.twoP}</td>
+                <td className="px-4 py-2">{player.twoPA}</td>
+                <td className="px-4 py-2">{player.twoPPercent}</td>
+                <td className="px-4 py-2">{player.eFGPercent}</td>
+                <td className="px-4 py-2">{player.FT}</td>
+                <td className="px-4 py-2">{player.FTA}</td>
+                <td className="px-4 py-2">{player.FTPercent}</td>
+                <td className="px-4 py-2">{player.ORB}</td>
+                <td className="px-4 py-2">{player.DRB}</td>
+                <td className="px-4 py-2">{player.TRB}</td>
+                <td className="px-4 py-2">{player.AST}</td>
+                <td className="px-4 py-2">{player.STL}</td>
+                <td className="px-4 py-2">{player.BLK}</td>
+                <td className="px-4 py-2">{player.TOV}</td>
+                <td className="px-4 py-2">{player.PF}</td>
+                <td className="px-4 py-2">{player.PTS}</td>
                 <td>
-                    <div className="flex">
-                        <button onClick={() => setShowEditModal(true)} className="bg-green-600 text-white mr-2 rounded-lg p-2">Edit</button>
-                        <button onClick={() => setShowDeleteModal(true)} className="bg-red-600 text-white rounded-lg p-2">Delete</button>
+                    <div>
+                        <button onClick={() => setShowEditModal(true)} className="bg-green-600 text-white mr-2">Edit</button>
+                        <button onClick={() => setShowDeleteModal(true)} className="bg-red-600 text-white">Delete</button>
                     </div>
                 </td>
             </tr>
             {showEditModal && (
                 <Modal showModal={showEditModal} setShowModal={setShowEditModal}>
-                    <form onSubmit={handleEditSubmit} className="w-full px-5 pb-6 bg-gray-700">
-                        <h1 className="text-white text-2xl text-center mt-2 mb-2 pt-2">Edit Player</h1>
+                    <form onSubmit={handleEditSubmit} className="w-full px-5 pb-6">
                         {Object.keys(playerToEdit).map(key => {
                             if (key === "Pos") {
                                 return (
                                     <div key={key} className="flex flex-col space-y-2">
-                                        <label htmlFor={key} className="text-sm font-medium text-white">{key}</label>
+                                        <label htmlFor={key} className="text-sm font-medium text-gray-700">{key}</label>
                                         <select
                                             id={key}
                                             name={key}
@@ -211,7 +210,7 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
                             } else if (key === "Tm") {
                                 return (
                                     <div key={key} className="flex flex-col space-y-2">
-                                        <label htmlFor={key} className="text-sm font-medium text-white">{key}</label>
+                                        <label htmlFor={key} className="text-sm font-medium text-gray-700">{key}</label>
                                         <select
                                             id={key}
                                             name={key}
@@ -231,7 +230,7 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
                             } else {
                                 return (
                                     <div key={key} className="flex flex-col space-y-2">
-                                        <label htmlFor={key} className="text-sm font-medium text-white">{key}</label>
+                                        <label htmlFor={key} className="text-sm font-medium text-gray-700">{key}</label>
                                         <input
                                             id={key}
                                             type={numericFields.includes(key) ? "number" : "text"}
@@ -248,17 +247,17 @@ const Player = ({ player, onPlayerUpdate, onPlayerDelete }) => {
                             }
                         })}
                         {error && <p className="text-red-500">{error}</p>}
-                        <button type="submit" disabled={isLoading} className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 mt-2 rounded-lg">Update Player</button>
+                        <button type="submit" disabled={isLoading} className="bg-blue-700 text-white px-5 py-2">Update Player</button>
                     </form>
                 </Modal>
             )}
             {showDeleteModal && (
                 <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
-                    <div className="bg-gray-700 p-6 rounded-lg h-full">
-                        <p className="text-lg text-white font-semibold my-2 text-center mb-15 mt-20">Are you sure you want to delete this player?</p>
-                        <div className="flex justify-center mt-4 items-center">
-                            <button onClick={handleDeletePlayer} className="bg-red-700 hover:bg-red-700 text-white px-8 py-4 mr-4 font-bold text-xl rounded-lg">Yes</button>
-                            <button onClick={() => setShowDeleteModal(false)} className="bg-blue-800 hover:bg-blue-700 text-white px-8 py-4 font-bold text-xl rounded-lg">No</button>
+                    <div>
+                        <p className="text-lg text-grey-600 font-semibold my-2">Are you sure you want to delete this player?</p>
+                        <div className="flex justify-end mt-4">
+                            <button onClick={handleDeletePlayer} className="bg-red-700 text-white px-8 py-4 mr-4 font-bold text-xl">Yes</button>
+                            <button onClick={() => setShowDeleteModal(false)} className="bg-blue-800 text-white px-8 py-4 font-bold text-xl">No</button>
                         </div>
                     </div>
                 </Modal>
