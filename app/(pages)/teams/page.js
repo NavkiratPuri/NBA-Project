@@ -9,7 +9,7 @@ const teamMapping = {
   ATL: "Atlanta Hawks",
   BOS: "Boston Celtics",
   BRK: "Brooklyn Nets",
-  CHA: "Charlotte Hornets",
+  CHO: "Charlotte Hornets",
   CHI: "Chicago Bulls",
   CLE: "Cleveland Cavaliers",
   DAL: "Dallas Mavericks",
@@ -40,7 +40,7 @@ const teamMapping = {
 
 const years = Array.from({ length: 2024 - 1992 + 1 }, (_, i) => 1992 + i);
 
-const TeamPlayers = () => {
+const Team = () => {
   const [team, setTeam] = useState("");
   const [year, setYear] = useState("");
   const [players, setPlayers] = useState([]);
@@ -76,54 +76,61 @@ const TeamPlayers = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-600">
+    <div className="flex flex-col min-h-screen bg-gray-700">
       <Header />
-      <main className="flex-grow p-4">
-        <div className="mb-4">
-          <label
-            htmlFor="team"
-            className="block text-lg font-bold mb-2 text-white"
-          >
-            Select Team:
-          </label>
-          <select
-            id="team"
-            value={team}
-            onChange={handleTeamChange}
-            className="p-2 border rounded w-full"
-          >
-            <option value="">Select a team</option>
-            {Object.entries(teamMapping).map(([key, name]) => (
-              <option key={key} value={key}>
-                {name}
-              </option>
-            ))}
-          </select>
+      <main className="mt-2">
+        <div className="flex flex-wrap mb-4">
+          <div className="flex-1 mr-4">
+            <label
+              htmlFor="team"
+              className="block text-lg text-white font-bold mb-2"
+            >
+              Select Team:
+            </label>
+            <select
+              id="team"
+              value={team}
+              onChange={handleTeamChange}
+              className="p-2 border rounded w-full"
+            >
+              <option value="">Select a team</option>
+              {Object.entries(teamMapping).map(([key, name]) => (
+                <option key={key} value={key}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex-1">
+            <label
+              htmlFor="year"
+              className="block text-lg text-white font-bold mb-2"
+            >
+              Select Year:
+            </label>
+            <select
+              id="year"
+              value={year}
+              onChange={handleYearChange}
+              className="p-2 border rounded w-full"
+            >
+              <option value="">Select a year</option>
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="mb-4">
-          <label
-            htmlFor="year"
-            className="block text-lg font-bold mb-2 text-white"
-          >
-            Select Year:
-          </label>
-          <select
-            id="year"
-            value={year}
-            onChange={handleYearChange}
-            className="p-2 border rounded w-full"
-          >
-            <option value="">Select a year</option>
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4">
           {filteredPlayers.map((player, index) => (
-            <PlayerDisplay key={index} player={player} weights={{}} />
+            <PlayerDisplay
+              className="gap-1"
+              key={index}
+              player={player}
+              weights={{}}
+            />
           ))}
         </div>
       </main>
@@ -132,4 +139,4 @@ const TeamPlayers = () => {
   );
 };
 
-export default TeamPlayers;
+export default Team;
