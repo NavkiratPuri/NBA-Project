@@ -2,11 +2,46 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PlayerSelector from "@/components/PlayerSelector";
-import fetchCSV from "@/utils/fetchCsv";
+import playerData from "@/utils/playerData";
 import { calculatePlayerValue } from "@/utils/calculateValue";
 
+const teamMapping = {
+  ATL: "Atlanta Hawks",
+  BOS: "Boston Celtics",
+  BRK: "Brooklyn Nets",
+  CHO: "Charlotte Hornets",
+  CHI: "Chicago Bulls",
+  CLE: "Cleveland Cavaliers",
+  DAL: "Dallas Mavericks",
+  DEN: "Denver Nuggets",
+  DET: "Detroit Pistons",
+  GSW: "Golden State Warriors",
+  HOU: "Houston Rockets",
+  IND: "Indiana Pacers",
+  LAC: "Los Angeles Clippers",
+  LAL: "Los Angeles Lakers",
+  MEM: "Memphis Grizzlies",
+  MIA: "Miami Heat",
+  MIL: "Milwaukee Bucks",
+  MIN: "Minnesota Timberwolves",
+  NOP: "New Orleans Pelicans",
+  NYK: "New York Knicks",
+  OKC: "Oklahoma City Thunder",
+  ORL: "Orlando Magic",
+  PHI: "Philadelphia 76ers",
+  PHO: "Phoenix Suns",
+  POR: "Portland Trail Blazers",
+  SAC: "Sacramento Kings",
+  SAS: "San Antonio Spurs",
+  TOR: "Toronto Raptors",
+  UTA: "Utah Jazz",
+  WAS: "Washington Wizards",
+};
+
 const getRandomTeams = (players, numTeams = 5) => {
-  const teams = [...new Set(players.map((player) => player.Tm))];
+  const teams = [...new Set(players.map((player) => player.Tm))].filter(
+    (team) => team in teamMapping,
+  );
   const shuffledTeams = teams.sort(() => 0.5 - Math.random());
   return shuffledTeams.slice(0, numTeams);
 };
@@ -21,7 +56,7 @@ const categorizePlayersByPosition = (players) => {
 
   positions.forEach((position) => {
     categorized[position] = players.filter((player) =>
-      player.Pos.includes(position)
+      player.Pos.includes(position),
     );
   });
 
@@ -91,7 +126,7 @@ const TeamBuilder = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchCSV();
+        const data = await playerData();
         const playersData = data.map((player) => ({
           id: player.Rk,
           Player: player.Player,
@@ -112,6 +147,7 @@ const TeamBuilder = () => {
           DRB: player.DRB,
           PF: player.PF,
           MP: player.MP,
+          image: player.image,
         }));
 
         setPlayers(playersData);
@@ -143,7 +179,7 @@ const TeamBuilder = () => {
     }));
 
     setAvailableTeams((prevTeams) =>
-      prevTeams.filter((team) => team !== player.Tm)
+      prevTeams.filter((team) => team !== player.Tm),
     );
     setUsedPositions((prevState) => [...prevState, position]);
   };
@@ -157,14 +193,14 @@ const TeamBuilder = () => {
         [position]: null,
       }));
       setUsedPositions((prevState) =>
-        prevState.filter((pos) => pos !== position)
+        prevState.filter((pos) => pos !== position),
       );
     }
   };
 
   const handleReset = async () => {
     try {
-      const data = await fetchCSV();
+      const data = await playerData();
       const playersData = data.map((player) => ({
         id: player.Rk,
         Player: player.Player,
@@ -185,6 +221,7 @@ const TeamBuilder = () => {
         DRB: player.DRB,
         PF: player.PF,
         MP: player.MP,
+        image: player.image,
       }));
 
       setSelectedPlayers({
@@ -212,7 +249,7 @@ const TeamBuilder = () => {
         }
         return acc;
       },
-      { totalValue: 0 }
+      { totalValue: 0 },
     );
     setTotalValue(calculatedValues.totalValue);
   };
@@ -220,7 +257,7 @@ const TeamBuilder = () => {
   const filteredPlayersByPosition = (position) => {
     return (
       categorizedPlayers[position]?.filter((player) =>
-        availableTeams.includes(player.Tm)
+        availableTeams.includes(player.Tm),
       ) || []
     );
   };
@@ -233,20 +270,29 @@ const TeamBuilder = () => {
           <div className="flex flex-col mb-4">
             {/* Player Selection */}
             <div className="selected-players mb-8 border-t border-gray-300 flex flex-col">
-              <h2 className="text-lg font-bold m-4 text-white">Player Selection</h2>
+              <h2 className="text-lg font-bold m-4 text-white">
+                Player Selection
+              </h2>
               <div className="bg-gray-800 text-white shadow-lg p-4 border-t border-gray-300">
                 {Object.keys(positionLabels).map((position) => (
-                  <div key={position} className="flex items-center mb-4 bg-gray-700 p-2 rounded-lg">
+                  <div
+                    key={position}
+                    className="flex items-center mb-4 bg-gray-700 p-2 rounded-lg"
+                  >
                     <div className="w-1/3 font-semibold text-lg">
                       {positionLabels[position]}
                     </div>
                     <div className="text-black w-2/3">
                       {selectedPlayers[position] ? (
-                        <h1 className="bg-gray-700 text-white p-5 rounded-lg">Already Picked.</h1>
+                        <h1 className="bg-gray-700 text-white p-5 rounded-lg">
+                          Already Picked.
+                        </h1>
                       ) : (
                         <PlayerSelector
                           players={filteredPlayersByPosition(position)}
-                          onSelectPlayer={(player) => handleSelectPlayer(position, player)}
+                          onSelectPlayer={(player) =>
+                            handleSelectPlayer(position, player)
+                          }
                           teams={availableTeams}
                         />
                       )}
@@ -255,11 +301,11 @@ const TeamBuilder = () => {
                 ))}
               </div>
             </div>
-  
+
             {/* Total Value */}
             <div className="total-value p-4 border-t border-gray-300 flex flex-col items-center bg-gray-800 text-white shadow-lg py-3">
               <h2 className="text-lg font-bold mb-4">Total Score</h2>
-              <div className="w-full bg-gray-700 text-white rounded-lg text-center">              
+              <div className="w-full bg-gray-700 text-white rounded-lg text-center">
                 <p className="text-xl font-semibold m-2">
                   {totalValue.toFixed(2)}
                 </p>
@@ -273,41 +319,51 @@ const TeamBuilder = () => {
             </div>
           </div>
         </div>
-  
+
         {/* Right Section: Selected Players and Available Teams */}
         <div className="w-1/2 flex flex-col pl-4">
           <div className="flex flex-col mb-4">
             {/* Selected Players */}
             <div className="selected-players border-t border-gray-300 flex flex-col">
-              <h2 className="text-lg font-bold mb-4 text-white mt-4">Selected Players</h2>
+              <h2 className="text-lg font-bold mb-4 text-white mt-4">
+                Selected Players
+              </h2>
               <div className="bg-gray-800 text-white shadow-lg border-t border-gray-300">
-                {Object.keys(selectedPlayers).map((position) => (
+                {Object.keys(selectedPlayers).map((position) =>
                   selectedPlayers[position] ? (
-                    <div key={position} className="flex items-center bg-gray-700 text-white p-4 m-4 rounded-lg">
-                      <div className="w-1/3 font-semibold text-lg">
+                    <div
+                      key={position}
+                      className="flex items-center bg-gray-700 text-white p-3 m-4 rounded-lg"
+                    >
+                      <div className="w-1/4 font-semibold text-lg">
                         {positionLabels[position]}
                       </div>
-                      <div className="flex items-center w-2/3 justify-between">
+                      <div className="flex items-center justify-between">
+                        <img
+                          src={selectedPlayers[position]?.image}
+                          alt={
+                            "https://cdn.nba.com/headshots/nba/latest/1040x760/1642351.png"
+                          }
+                          className="h-16 w-16 mr-3 ml-3 rounded-full"
+                        />
                         <p className="mr-2">
                           {selectedPlayers[position].Player}
                         </p>
-                        <p className="mr-2">
-                          {selectedPlayers[position].Tm}
-                        </p>
-                        <p className="mr-4">
-                          {selectedPlayers[position].Year}
-                        </p>
-                        
+                        <p className="mr-2">{selectedPlayers[position].Tm}</p>
+                        <p className="mr-2">{selectedPlayers[position].Year}</p>
                       </div>
                       <button
-                          onClick={() => handleDeselectPlayer(position)}
-                          className="p-2 bg-orange-500 text-white rounded hover:bg-orange-400 ml-auto mt-2"
-                        >
-                          Deselect
-                        </button>
+                        onClick={() => handleDeselectPlayer(position)}
+                        className="p-2 bg-orange-500 text-white rounded hover:bg-orange-400 ml-auto mt-2"
+                      >
+                        Deselect
+                      </button>
                     </div>
                   ) : (
-                    <div key={position} className="flex items-center mb-4 bg-gray-700 text-white p-6 m-4 rounded-lg mb-6">
+                    <div
+                      key={position}
+                      className="flex items-center mb-4 bg-gray-700 text-white p-6 m-4 rounded-lg mb-6"
+                    >
                       <div className="w-1/3 font-semibold text-lg">
                         {positionLabels[position]}
                       </div>
@@ -315,17 +371,20 @@ const TeamBuilder = () => {
                         <h1>Not Picked Yet.</h1>
                       </div>
                     </div>
-                  )
-                ))}
+                  ),
+                )}
               </div>
             </div>
-  
+
             {/* Available Teams */}
             <div className="available-teams p-4 border-t border-gray-300 flex flex-col bg-gray-800 text-white mt-8">
               <h2 className="text-lg font-bold mb-4">Available Teams</h2>
               <div className="flex flex-wrap justify-between">
                 {availableTeams.map((team) => (
-                  <div key={team} className="w-1/5 p-2 bg-gray-700 text-white rounded text-center border border-gray-800">
+                  <div
+                    key={team}
+                    className="w-1/5 p-2 bg-gray-700 text-white rounded text-center border border-gray-800"
+                  >
                     {team}
                   </div>
                 ))}
@@ -341,6 +400,6 @@ const TeamBuilder = () => {
         </div>
       </div>
     </div>
-  );  
-}  
+  );
+};
 export default TeamBuilder;
