@@ -4,13 +4,12 @@ const PlayerSelector = ({
   players,
   onSelectPlayer,
   label,
-  teams,
   multiSelect = false,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredPlayers, setFilteredPlayers] = useState([]);
   const [selectedYear, setSelectedYear] = useState("2024");
-  const [selectedTeam, setSelectedTeam] = useState("BOS");
+  const [selectedTeam, setSelectedTeam] = useState("");
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const dropdown = useRef(null);
 
@@ -20,20 +19,16 @@ const PlayerSelector = ({
       const [firstName, lastName] = fullName
         .split(" ")
         .map((name) => name.toLowerCase());
-      return (
+      const matchesName =
         fullName.startsWith(value) ||
         (firstName && firstName.startsWith(value)) ||
-        (lastName && lastName.startsWith(value))
-      );
+        (lastName && lastName.startsWith(value));
+
+      const matchesYear = year ? player.Year === year : true;
+      const matchesTeam = team ? player.Tm === team : true;
+
+      return matchesName && matchesYear && matchesTeam;
     });
-
-    if (year) {
-      filtered = filtered.filter((player) => player.Year === year);
-    }
-
-    if (team) {
-      filtered = filtered.filter((player) => player.Tm === team);
-    }
 
     setFilteredPlayers(filtered);
   };
@@ -103,7 +98,13 @@ const PlayerSelector = ({
   }, []);
 
   const uniqueYears = [...new Set(players.map((player) => player.Year))];
-  const uniqueTeams = [...new Set(players.map((player) => player.Tm))];
+  const uniqueTeams = [
+    ...new Set(
+      players
+        .filter((player) => player.Year === selectedYear)
+        .map((player) => player.Tm),
+    ),
+  ];
 
   return (
     <div className="player-selector-container" ref={dropdown}>
