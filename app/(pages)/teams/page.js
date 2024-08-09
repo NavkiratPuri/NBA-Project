@@ -36,6 +36,8 @@ const teamMapping = {
   TOR: "Toronto Raptors",
   UTA: "Utah Jazz",
   WAS: "Washington Wizards",
+  WSB: "Washington Wizards",
+  SEA: "Oklahoma City Thunder",
 };
 
 const years = Array.from({ length: 2024 - 1992 + 1 }, (_, i) => 1992 + i);
@@ -60,8 +62,13 @@ const Team = () => {
 
   useEffect(() => {
     if (team && year) {
+      const activeTeam = teamMapping[team]
+        ? team
+        : Object.keys(teamMapping).find(
+            (key) => teamMapping[key] === teamMapping[team]
+          );
       const filtered = players.filter(
-        (player) => player.Tm === team && player.Year === year
+        (player) => player.Tm === activeTeam && player.Year === year
       );
       setFilteredPlayers(filtered);
     }
@@ -80,7 +87,7 @@ const Team = () => {
       <Header />
       <main className="mt-2 flex-grow">
         <div className="flex flex-wrap mb-4">
-          <div className="flex-1 mr-4">
+          <div className="flex-1 m-4">
             <label
               htmlFor="team"
               className="block text-lg text-white font-bold mb-2"
@@ -101,7 +108,7 @@ const Team = () => {
               ))}
             </select>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 m-4">
             <label
               htmlFor="year"
               className="block text-lg text-white font-bold mb-2"
@@ -123,21 +130,14 @@ const Team = () => {
             </select>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4">
+        <div className="grid grid-cols-5 gap-2">
           {filteredPlayers.map((player, index) => (
-            <PlayerDisplay
-              className="gap-1"
-              key={index}
-              player={player}
-              weights={{}}
-            />
+            <PlayerDisplay key={index} player={player} />
           ))}
         </div>
-        
       </main>
-      <Footer/>
+      <Footer />
     </div>
-    
   );
 };
 
