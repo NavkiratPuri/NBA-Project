@@ -11,7 +11,7 @@ const TeamStandings = () => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedConference, setSelectedConference] = useState(''); // State to keep track of the selected conference
+    const [selectedConference, setSelectedConference] = useState('');
 
     useEffect(() => {
         fetchStandings();
@@ -20,8 +20,9 @@ const TeamStandings = () => {
     const fetchStandings = async () => {
         try {
             const response = await axios.get('/api/team');
-            setStandings(response.data);
-            setFilteredStandings(response.data);
+            const rankedStandings = response.data.map((team, index) => ({ ...team, rank: index + 1 }));
+            setStandings(rankedStandings);
+            setFilteredStandings(rankedStandings);
         } catch (error) {
             console.error('Error fetching standings:', error);
             setError('Error fetching standings.');
@@ -29,7 +30,7 @@ const TeamStandings = () => {
     };
 
     const handleConferenceFilter = (conference) => {
-        setSelectedConference(conference); // Update the selected conference state
+        setSelectedConference(conference);
 
         let filtered = [];
         if (conference === 'E' || conference === 'W') {
@@ -40,6 +41,28 @@ const TeamStandings = () => {
         filtered = filtered.map((team, index) => ({ ...team, rank: index + 1 }));
         setFilteredStandings(filtered);
         setShowConference(conference === '');
+    };
+
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        console.log('Submitting PATCH request with data:', teamToEdit);
+        try {
+            await axios.patch(`/api/team/${teamToEdit.id}`, teamToEdit);
+            fetchStandings(); // Refresh data
+            setShowEditModal(false); // Close modal after submission
+        } catch (error) {
+            console.error('Failed to update team:', error);
+            setError('Failed to update team details.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const editTeam = (team) => {
+        console.log('Editing team:', team);
+        setTeamToEdit({ ...team });
+        setShowEditModal(true);
     };
 
     const handleSort = (key) => {
@@ -78,30 +101,10 @@ const TeamStandings = () => {
     };
 
     const getButtonClass = (conference) => (
-        conference === selectedConference 
+        conference === selectedConference
             ? 'bg-orange-500 text-white px-4 py-2 rounded-lg'
             : 'bg-gray-500 text-white px-4 py-2 rounded-lg'
     );
-
-    const handleEditClick = (team) => {
-        setTeamToEdit(team);
-        setShowEditModal(true);
-    };
-
-    const handleEditSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        try {
-            await axios.put(`/api/team/${teamToEdit.id}`, teamToEdit);
-            fetchStandings(); // Refresh standings after update
-            setShowEditModal(false);
-        } catch (error) {
-            console.error('Error updating team:', error);
-            setError('Error updating team.');
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     const handleModalClose = () => {
         setShowEditModal(false);
@@ -131,12 +134,13 @@ const TeamStandings = () => {
                                     <th onClick={() => handleSort('eastLosses')} className="cursor-pointer px-2 py-1 text-left font-medium text-white uppercase tracking-wider">Eastern Conference Losses {getSortDirectionIcon('eastLosses')}</th>
                                     <th onClick={() => handleSort('westWins')} className="cursor-pointer px-2 py-1 text-left font-medium text-white uppercase tracking-wider">Western Conference Wins {getSortDirectionIcon('westWins')}</th>
                                     <th onClick={() => handleSort('westLosses')} className="cursor-pointer px-2 py-1 text-left font-medium text-white uppercase tracking-wider">Western Conference Losses {getSortDirectionIcon('westLosses')}</th>
+                                    <th className="px-2 py-1 text-left font-medium text-white uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {filteredStandings.length > 0 ? (
                                     filteredStandings.map((team, index) => (
-                                        <tr key={index} className="text-center border-b hover:bg-gray-400 hover:text-white cursor-pointer" onClick={() => handleEditClick(team)}>
+                                        <tr key={index} className="text-center border-b hover:bg-gray-400 hover:text-white cursor-pointer" onClick={() => editTeam(team)}>
                                             <td className="px-4 py-2">{team.rank}</td>
                                             <td className="px-4 py-2">{team.team}</td>
                                             {showConference && <td className="px-4 py-2">{team.conference}</td>}
@@ -146,11 +150,14 @@ const TeamStandings = () => {
                                             <td className="px-4 py-2">{team.eastLosses}</td>
                                             <td className="px-4 py-2">{team.westWins}</td>
                                             <td className="px-4 py-2">{team.westLosses}</td>
+                                            <td className="px-4 py-2">
+                                                <button onClick={() => editTeam(team)} className="bg-green-600 text-white mr-2 px-3 py-1 rounded-lg shadow-md hover:bg-green-700">Edit</button>
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="9" className="text-center py-4">No teams found</td>
+                                        <td colSpan="11" className="text-center py-4">No teams found</td>
                                     </tr>
                                 )}
                             </tbody>
@@ -168,7 +175,7 @@ const TeamStandings = () => {
                                 type="number"
                                 placeholder="Rank"
                                 name="rk"
-                                className="border rounded-lg px-2 py-1 w-full "
+                                className="border rounded-lg px-2 py-1 w-full"
                                 value={teamToEdit.rk || ''}
                                 onChange={(e) => setTeamToEdit({ ...teamToEdit, rk: parseInt(e.target.value) })}
                             />
