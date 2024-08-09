@@ -78,7 +78,7 @@ const TeamStandings = () => {
     };
 
     const getButtonClass = (conference) => (
-        conference === selectedConference 
+        conference === selectedConference
             ? 'bg-orange-500 text-white px-4 py-2 rounded-lg'
             : 'bg-gray-500 text-white px-4 py-2 rounded-lg'
     );
@@ -92,7 +92,7 @@ const TeamStandings = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            await axios.put(`/api/team/${teamToEdit.id}`, teamToEdit);
+            await axios.patch(`/api/team/${teamToEdit.id}`, teamToEdit);
             fetchStandings(); // Refresh standings after update
             setShowEditModal(false);
         } catch (error) {
