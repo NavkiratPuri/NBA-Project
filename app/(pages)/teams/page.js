@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Header from "@/components/header";
-import Footer from "@/components/footer";
 import PlayerDisplay from "@/components/PlayerDisplay";
 import playerData from "@/utils/playerData";
 
@@ -134,7 +133,6 @@ const Team = () => {
           ))}
         </div>
       </main>
-      <Footer />
     </div>
   );
 };
