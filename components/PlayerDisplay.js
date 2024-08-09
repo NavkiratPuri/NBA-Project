@@ -47,19 +47,21 @@ const PlayerDisplay = ({ player, onRemove, customClasses, weights }) => {
     <div
       className={`mt-2 p-2 bg-gray-300 rounded-lg shadow-lg relative max-w-xs hover:bg-gray-200 ${customClasses}`}
     >
-      <button
-        className="absolute top-2 right-2 text-gray-400 hover:text-white"
-        onClick={onRemove}
-      >
-        x
-      </button>
+      {onRemove && (
+        <button
+          className="absolute top-2 right-2 text-gray-400 hover:text-white"
+          onClick={onRemove}
+        >
+          x
+        </button>
+      )}
       <div onClick={cardClick} className="cursor-pointer">
         {view === 0 && (
           <div>
             <div className="flex items-center space-x-4">
               <img
                 src={player.image}
-                alt={player.Player}
+                alt="."
                 className="w-16 h-16 rounded-full border-2 border-gray-600"
               />
               <div className="flex-1 min-w-0">
