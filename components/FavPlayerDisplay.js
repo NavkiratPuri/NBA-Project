@@ -6,10 +6,10 @@ const FavPlayerDisplay = ({ player, imgsrc }) => {
     <div className="mt-4 p-4 bg-gray-600 rounded-lg shadow-md border border-indigo-800">
       {player ? (
         <div className="space-y-2 text-center">
-          <h2 className="text-2xl font-semibold text-indigo-900">Favorite Player</h2>
+          <h2 className="text-2xl font-semibold text-orange-500">Favorite Player</h2>
           <div className="flex flex-col items-center space-y-2">
             {imgsrc ? (
-              <Image
+              <img
                 src={imgsrc}
                 alt={`Image of ${player.Player}`}
                 width={64}
@@ -18,7 +18,7 @@ const FavPlayerDisplay = ({ player, imgsrc }) => {
               />
             ) : (
               <div className="w-16 h-16 rounded-full border-2 border-gray-600 flex items-center justify-center">
-                <span className="text-sm text-gray-500">No Image</span>
+                <span className="text-sm text-white">No Image</span>
               </div>
             )}
             <p className="text-lg font-medium text-white">{player.Player}</p>
@@ -31,7 +31,7 @@ const FavPlayerDisplay = ({ player, imgsrc }) => {
           </div>
         </div>
       ) : (
-        <p className="text-center text-gray-500">No favorite player selected.</p>
+        <p className="text-center text-white">No Favorite Player Selected.</p>
       )}
     </div>
   );

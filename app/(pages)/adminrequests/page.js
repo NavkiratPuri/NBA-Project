@@ -52,16 +52,16 @@ const AdminRequests = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-700">
       <Header />
       <main className="flex-grow">
-        <div className="max-w-md mx-auto mt-10 p-4 border rounded-md shadow-md">
-          <h2 className="text-xl font-bold mb-4">Admin Privilege Requests</h2>
+        <div className="max-w-md mx-auto mt-10 p-4 border border-indigo-600 rounded-md shadow-md bg-gray-800">
+          <h2 className="text-xl font-bold mb-4 text-white">Admin Privilege Requests</h2>
           {requests.length === 0 ? (
-            <p>No pending requests.</p>
+            <p className="text-orange-400">No pending requests.</p>
           ) : (
             requests.map((req) => (
-              <div key={req.id} className="mb-4 p-4 border rounded-md">
+              <div key={req.id} className="mb-4 p-4 border rounded-md text-white">
                 <p><strong>Name:</strong> {req.name}</p>
                 <p><strong>Email:</strong> {req.email}</p>
                 <p><strong>Message:</strong> {req.message}</p>
