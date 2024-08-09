@@ -3,10 +3,12 @@ import Image from "next/image";
 
 const FavPlayerDisplay = ({ player, imgsrc }) => {
   return (
-    <div className="mt-4 p-4 bg-gray-600 rounded-lg shadow-md border border-indigo-800">
+    <div className="mt-4 p-4 bg-gray-600 rounded-lg shadow-md border border-orange-500">
       {player ? (
         <div className="space-y-2 text-center">
-          <h2 className="text-2xl font-semibold text-orange-500">Favorite Player</h2>
+          <h2 className="text-2xl font-semibold text-orange-500">
+            Favorite Player
+          </h2>
           <div className="flex flex-col items-center space-y-2">
             {imgsrc ? (
               <img
@@ -23,11 +25,21 @@ const FavPlayerDisplay = ({ player, imgsrc }) => {
             )}
             <p className="text-lg font-medium text-white">{player.Player}</p>
             <p className="text-lg font-medium text-white">Team: {player.Tm}</p>
-            <p className="text-lg font-medium text-white">Points Per Game: {player.PTS}</p>
-            <p className="text-lg font-medium text-white">Assists Per Game: {player.AST}</p>
-            <p className="text-lg font-medium text-white">Blocks Per Game: {player.BLK}</p>
-            <p className="text-lg font-medium text-white">Steals Per Game: {player.STL}</p>
-            <p className="text-lg font-medium text-white">Rebounds Per Game: {player.TRB}</p>
+            <p className="text-lg font-medium text-white">
+              Points Per Game: {player.PTS}
+            </p>
+            <p className="text-lg font-medium text-white">
+              Assists Per Game: {player.AST}
+            </p>
+            <p className="text-lg font-medium text-white">
+              Blocks Per Game: {player.BLK}
+            </p>
+            <p className="text-lg font-medium text-white">
+              Steals Per Game: {player.STL}
+            </p>
+            <p className="text-lg font-medium text-white">
+              Rebounds Per Game: {player.TRB}
+            </p>
           </div>
         </div>
       ) : (

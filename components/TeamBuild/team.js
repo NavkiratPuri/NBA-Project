@@ -346,11 +346,15 @@ const TeamBuilder = () => {
                           }
                           className="h-16 w-16 mr-3 ml-3 rounded-full"
                         />
-                        <p className="mr-2">
+                        <p className="mr-2 b-r-2 border-gray-600">
                           {selectedPlayers[position].Player}
                         </p>
-                        <p className="mr-2">{selectedPlayers[position].Tm}</p>
-                        <p className="mr-2">{selectedPlayers[position].Year}</p>
+                        <p className="mr-2 font-bold">
+                          {selectedPlayers[position].Tm}
+                        </p>
+                        <p className="mr-2 font-bold">
+                          {selectedPlayers[position].Year}
+                        </p>
                       </div>
                       <button
                         onClick={() => handleDeselectPlayer(position)}

@@ -24,12 +24,12 @@ const processPlayerData = (data, playerName) => {
     Games: playerData.map((player) => player.G),
     GamesStarted: playerData.map((player) => player.GS),
     Rebounds: playerData.map(
-      (player) => (parseFloat(player.ORB) || 0) + (parseFloat(player.DRB) || 0)
+      (player) => (parseFloat(player.ORB) || 0) + (parseFloat(player.DRB) || 0),
     ),
     PersonalFouls: playerData.map((player) => player.PF),
     Minutes: playerData.map((player) => player.MP),
     TotalValue: playerData.map(
-      (player) => calculatePlayerValue(player).totalValue
+      (player) => calculatePlayerValue(player).totalValue,
     ),
   };
 };
@@ -72,7 +72,7 @@ const Compare = () => {
 
       const getCategoryData = (ages, categoryData, allAges) => {
         const ageDataMap = new Map(
-          ages.map((age, idx) => [age, categoryData[idx]])
+          ages.map((age, idx) => [age, categoryData[idx]]),
         );
         return allAges.map((age) => ageDataMap.get(age) || null);
       };
@@ -80,12 +80,12 @@ const Compare = () => {
       const player1CategoryData = getCategoryData(
         player1Data.ages,
         player1Data[category],
-        allAges
+        allAges,
       );
       const player2CategoryData = getCategoryData(
         player2Data.ages,
         player2Data[category],
-        allAges
+        allAges,
       );
 
       setChartData({
@@ -94,7 +94,7 @@ const Compare = () => {
           {
             label: `${player1.Player}`,
             data: player1CategoryData,
-            borderColor: "red",
+            borderColor: "cyan",
             borderWidth: 5,
             borderCapStyle: "round",
             fill: false,
@@ -102,7 +102,7 @@ const Compare = () => {
           {
             label: `${player2.Player}`,
             data: player2CategoryData,
-            borderColor: "blue",
+            borderColor: "white",
             borderWidth: 5,
             fill: false,
           },
@@ -129,7 +129,7 @@ const Compare = () => {
           {
             label: `Average ${category}`,
             data: allPlayersAverages[category],
-            borderColor: "green",
+            borderColor: "orange",
             borderWidth: 5,
             borderCapStyle: "round",
             fill: false,
@@ -198,7 +198,7 @@ const Compare = () => {
                       alt={player1.Player}
                       className="w-20 h-20 rounded-full border-2 border-gray-600 bg-white"
                     />
-                    <span className="text-7xl font-bold text-red-600 ml-2">
+                    <span className="text-7xl font-bold text-cyan-200 ml-2">
                       {player1.Player}
                     </span>
                   </div>
@@ -217,7 +217,7 @@ const Compare = () => {
                       alt={player2.Player}
                       className="w-20 h-20 rounded-full border-2 border-gray-600 bg-white"
                     />
-                    <span className="text-7xl font-bold text-blue-600 ml-2">
+                    <span className="text-7xl font-bold text-white ml-2">
                       {player2.Player}
                     </span>
                   </div>

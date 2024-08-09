@@ -67,7 +67,7 @@ const Trade = () => {
   const selectPlayer = (selectedPlayers, team) => {
     const totalSalary = selectedPlayers.reduce(
       (total, player) => total + (parseFloat(player.Salary) || 0),
-      0
+      0,
     );
 
     if (team === "A") {
@@ -85,14 +85,14 @@ const Trade = () => {
       const salary = parseFloat(playerToRemove?.Salary) || 0;
       setTeamASalary((prevSalary) => prevSalary - salary);
       setTeamAPlayers((prevPlayers) =>
-        prevPlayers.filter((_, i) => i !== index)
+        prevPlayers.filter((_, i) => i !== index),
       );
     } else if (team === "B") {
       const playerToRemove = teamBPlayers[index];
       const salary = parseFloat(playerToRemove?.Salary) || 0;
       setTeamBSalary((prevSalary) => prevSalary - salary);
       setTeamBPlayers((prevPlayers) =>
-        prevPlayers.filter((_, i) => i !== index)
+        prevPlayers.filter((_, i) => i !== index),
       );
     }
   };
@@ -178,11 +178,11 @@ const Trade = () => {
       { name: "Kevin Durant", year: 2024, team: "PHO" },
       { name: "Anthony Edwards", year: 2024, team: "MIN" },
       { name: "Joel Embiid", year: 2024, team: "PHI" },
-      { name: "Tyrese Haliburton", year: 2024, team: "IND" },
-      { name: "Jrue Holiday", year: 2024, team: "BOS" },
+      // { name: "Tyrese Haliburton", year: 2024, team: "IND" },
+      // { name: "Jrue Holiday", year: 2024, team: "BOS" },
       { name: "Jayson Tatum", year: 2024, team: "BOS" },
-      { name: "Derrick White", year: 2024, team: "BOS" },
-    ];
+      // { name: "Derrick White", year: 2024, team: "BOS" },
+    ]; //;
 
     const teamBPlayersList = [
       { name: "Charles Barkley", year: 1992, team: "PHI" },
@@ -192,11 +192,11 @@ const Trade = () => {
       { name: "Magic Johnson", year: 1992, team: "LAL" },
       { name: "Michael Jordan", year: 1992, team: "CHI" },
       { name: "Karl Malone", year: 1992, team: "UTA" },
-      { name: "Chris Mullin", year: 1992, team: "GSW" },
+      //   { name: "Chris Mullin", year: 1992, team: "GSW" },
       { name: "Scottie Pippen", year: 1992, team: "CHI" },
-      { name: "David Robinson", year: 1992, team: "SAS" },
+      //   { name: "David Robinson", year: 1992, team: "SAS" },
       { name: "John Stockton", year: 1992, team: "UTA" },
-      { name: "Christian Laettner", year: 1992, team: "MIN" },
+      //   { name: "Christian Laettner", year: 1992, team: "MIN" },
     ];
 
     const selectedTeamAPlayers = players.filter((player) =>
@@ -204,8 +204,8 @@ const Trade = () => {
         (p) =>
           p.name === player.Player &&
           p.year === parseInt(player.Year) &&
-          p.team === player.Tm
-      )
+          p.team === player.Tm,
+      ),
     );
 
     const selectedTeamBPlayers = players.filter((player) =>
@@ -213,8 +213,8 @@ const Trade = () => {
         (p) =>
           p.name === player.Player &&
           p.year === parseInt(player.Year) &&
-          p.team === player.Tm
-      )
+          p.team === player.Tm,
+      ),
     );
     selectPlayer(selectedTeamAPlayers, "A");
     selectPlayer(selectedTeamBPlayers, "B");
@@ -296,7 +296,7 @@ const Trade = () => {
               <p className="text-lg font-bold">Team A Salary</p>
               <p
                 className={`text-lg font-bold ${
-                  teamASalary >= SALARY_CAP ? "text-red-700" : "text-green-700"
+                  teamASalary >= SALARY_CAP ? "text-red-400" : "text-green-400"
                 }`}
               >
                 ${teamASalary}M / ${SALARY_CAP}M
@@ -334,7 +334,7 @@ const Trade = () => {
               <p className="text-lg font-bold text-white">Team B Salary</p>
               <p
                 className={`text-lg font-bold ${
-                  teamBSalary > SALARY_CAP ? "text-red-700" : "text-green-700"
+                  teamBSalary > SALARY_CAP ? "text-red-400" : "text-green-400"
                 }`}
               >
                 ${teamBSalary}M / ${SALARY_CAP}M

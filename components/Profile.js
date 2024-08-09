@@ -30,7 +30,11 @@ const Profile = () => {
   }
 
   if (status === "unauthenticated") {
-    return <div className="text-center mt-4">You need to be authenticated to view your profile.</div>;
+    return (
+      <div className="text-center mt-4">
+        You need to be authenticated to view your profile.
+      </div>
+    );
   }
 
   if (error) {
@@ -44,12 +48,18 @@ const Profile = () => {
 
   return (
     <div className="p-4 bg-gray-50 rounded-lg shadow-md bg-gray-800">
-      <h2 className="text-2xl font-semibold mb-4 text-center text-white">{profile.name}</h2>
-      {session.user.isAdmin && <p className="text-lg mb-2 text-center"><span className="font-semibold text-orange-400">App Admin</span></p>}
+      <h2 className="text-2xl font-semibold mb-4 text-center text-white">
+        {profile.name}
+      </h2>
+      {session.user.isAdmin && (
+        <p className="text-lg mb-2 text-center">
+          <span className="font-semibold text-orange-400">App Admin</span>
+        </p>
+      )}
       <div className="text-center mb-4">
         <a
           href="/edit-account"
-          className="inline-block bg-indigo-900 text-white text-sm font-semibold py-2 px-4 rounded-md shadow-md hover:bg-indigo-700 transition duration-200"
+          className="inline-block bg-orange-500 text-white text-sm font-semibold py-2 px-4 rounded-md shadow-md hover:bg-orange-700 transition duration-200"
         >
           Edit Account
         </a>

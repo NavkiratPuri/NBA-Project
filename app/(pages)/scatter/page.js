@@ -27,18 +27,18 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ChartDataLabels
+  ChartDataLabels,
 );
 
 const calculateAverages = (players) => {
   if (players.length === 0) return { bpm: 0, wsfoureight: 0 };
   const totalBpm = players.reduce(
     (sum, player) => sum + parseFloat(player.BPM),
-    0
+    0,
   );
   const totalWsfoureight = players.reduce(
     (sum, player) => sum + parseFloat(player.WSfoureight),
-    0
+    0,
   );
   return {
     bpm: totalBpm / players.length,
@@ -137,6 +137,11 @@ const ScatterChartPage = () => {
           display: true,
           text: "WS/48",
           color: "white",
+          font: {
+            size: 40,
+            weight: "bold",
+            lineHeight: 2,
+          },
         },
         ticks: {
           stepSize: 0.025,
@@ -152,10 +157,19 @@ const ScatterChartPage = () => {
           display: true,
           text: "BPM",
           color: "white",
+          font: {
+            size: 40,
+            weight: "bold",
+            lineHeight: 1,
+          },
         },
         ticks: {
           stepSize: 0.5,
           color: "white",
+          font: {
+            size: 20,
+            weight: "semibold",
+          },
         },
         grid: {
           color: "rgba(255, 255, 255, 0.2)",
@@ -212,8 +226,8 @@ const ScatterChartPage = () => {
         (p) =>
           p.name === player.Player &&
           p.year === parseInt(player.Year) &&
-          p.team === player.Tm
-      )
+          p.team === player.Tm,
+      ),
     );
 
     const selectedTeamBPlayers = players.filter((player) =>
@@ -221,8 +235,8 @@ const ScatterChartPage = () => {
         (p) =>
           p.name === player.Player &&
           p.year === parseInt(player.Year) &&
-          p.team === player.Tm
-      )
+          p.team === player.Tm,
+      ),
     );
 
     selectPlayers(selectedTeamAPlayers, "A");
