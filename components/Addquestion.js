@@ -42,10 +42,10 @@ function AddQuestion({ showModal, setShowModal }) {
     return (
         <Modal showModal={showModal} setShowModal={setShowModal}>
             <div className="p-5">
-                <h2 className="text-2xl font-bold mb-4">Add New Trivia Question</h2>
+                <h2 className="text-2xl font-bold mb-4 text-white ">Add New Trivia Question</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="question">
+                    <div className="mb-4 ">
+                        <label className="block text-white  text-sm font-bold mb-2" htmlFor="question">
                             Question
                         </label>
                         <input
@@ -58,7 +58,7 @@ function AddQuestion({ showModal, setShowModal }) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="optionA">
+                        <label className="block text-white  text-sm font-bold mb-2" htmlFor="optionA">
                             Option A
                         </label>
                         <input
@@ -71,7 +71,7 @@ function AddQuestion({ showModal, setShowModal }) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="optionB">
+                        <label className="block text-white  text-sm font-bold mb-2" htmlFor="optionB">
                             Option B
                         </label>
                         <input
@@ -84,7 +84,7 @@ function AddQuestion({ showModal, setShowModal }) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="optionC">
+                        <label className="block text-white  text-sm font-bold mb-2" htmlFor="optionC">
                             Option C
                         </label>
                         <input
@@ -97,7 +97,7 @@ function AddQuestion({ showModal, setShowModal }) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="optionD">
+                        <label className="block text-white text-sm font-bold mb-2" htmlFor="optionD">
                             Option D
                         </label>
                         <input
@@ -110,7 +110,7 @@ function AddQuestion({ showModal, setShowModal }) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="correctAnswer">
+                        <label className="block text-white  text-sm font-bold mb-2" htmlFor="correctAnswer">
                             Correct Answer
                         </label>
                         <select

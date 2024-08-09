@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/header";
 import PlayerDisplay from "@/components/PlayerDisplay";
 import playerData from "@/utils/playerData";
+import Footer from "@/components/footer";
 
 const teamMapping = {
   ATL: "Atlanta Hawks",
@@ -77,7 +78,7 @@ const Team = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-700">
       <Header />
-      <main className="mt-2">
+      <main className="mt-2 flex-grow">
         <div className="flex flex-wrap mb-4">
           <div className="flex-1 mr-4">
             <label
@@ -132,8 +133,11 @@ const Team = () => {
             />
           ))}
         </div>
+        
       </main>
+      <Footer/>
     </div>
+    
   );
 };
 

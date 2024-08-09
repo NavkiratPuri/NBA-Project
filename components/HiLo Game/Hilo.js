@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { shuffle } from '@/utils/shuffle';
 import categories from '@/utils/categories';
 import GameInfo from './GameInfo';
 import PlayerCard from './PlayerCard';
 import GameOver from './GameOver';
-import playerData from '@/utils/playerData';
+import playerData from '@/utils/fetch60Player';
 import fetchPlayerImage from '@/utils/fetchPlayerImage';
 
 // Fetch player data from the API
@@ -154,7 +153,7 @@ const HiLo = ({ onGameEnd }) => {
         if (lives > 0) {
             setTimeout(() => {
                 startNewTurn();
-            }, 2000); // 2-second delay before starting a new turn
+            },500);//0.5 seconds
         }
     };
 
